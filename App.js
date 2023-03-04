@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { NativeBaseProvider } from "native-base";
 import BottomNavigator from "./src/navigation/BottomNavigator";
+import WelcomeScreen from "./src/screens/WelCome/WelCome";
+import Login from "./src/screens/Login/Login";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,16 @@ export default function App() {
           //     headerShown: false
           // }}
         >
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: "Đăng nhập", headerShown: false }}
+          />
           <Stack.Screen
             name="Home"
             component={BottomNavigator}

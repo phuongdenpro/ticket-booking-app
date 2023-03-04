@@ -2,8 +2,8 @@ import React from "react";
 import { SafeAreaView, StyleSheet, View, Text, Image } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import COLORS from "../consts/color";
-import { PrimaryButton } from "../components/Button";
+import COLORS from "../../consts/color";
+import { PrimaryButton } from "../../components/Button/Button";
 
 const SearchScreen = ({ navigation }) => {
   return (
