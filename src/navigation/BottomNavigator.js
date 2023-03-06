@@ -7,10 +7,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import COLORS from "../consts/color";
 import { View } from "react-native";
 import HomeScreen from "../screens/Home/Home";
-import MyTicketScreen from "../screens/MyTicket/MyTicket";
+import MyTicketScreen from "../screens/MyTicket/MyHistoryTicket";
 import NotificationScreen from "../screens/Notification/Notification";
 import MyAccountScreen from "../screens/MyAccount/MyAccount";
 import SearchScreen from "../screens/Search/Search";
+import MyTicketNow from "../screens/MyTicket/MyTicketNow";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,9 +41,10 @@ const BottomNavigator = () => {
           headerShown: false,
         }}
       />
+      
       <Tab.Screen
         name="Vé của tôi"
-        component={MyTicketScreen}
+        component={MyTicketNow}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="ios-receipt-outline" color={color} size={28} />

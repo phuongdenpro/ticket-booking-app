@@ -1,10 +1,11 @@
 import axiosClient from "./axiosClient";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class AuthApi {
   //[POST] auth/login
   login = (params) => {
     const url = "auth/user/login";
-    return axiosClient.post(url, params);
+    return  axiosClient.post(url, params);
   };
 
   //[GET] auth/register
@@ -14,13 +15,13 @@ class AuthApi {
   };
 
   getInfor = (params) => {
-    const url = "auth/user/profile";
+    const url = "user/profile";
     return axiosClient.get(url, params);
   };
 
   save_token = (response) => {
-    AsyncStorage.setItem("access", response.data.data.access);
-    AsyncStorage.setItem("refresh", response.data.data.refresh);
+    AsyncStorage.setItem("access", response.data.data.access_token);
+    AsyncStorage.setItem("refresh", response.data.data.refresh_token);
   };
   clear_token = () => {
     AsyncStorage.removeItem("access");

@@ -6,11 +6,22 @@ import { Center } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { Stack, Avatar } from "@react-native-material/core";
+import authApi from "../../utils/authApi";
+import moment from 'moment';
 const win = Dimensions.get("window");
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
   const [info, setInfo] = useState({});
+  const handleInfo = async () => {
+    const _info = await authApi.getStorageInfo()
+    console.log(_info);
+    setInfo(_info)
+}
+
+useEffect(() => {
+    handleInfo()
+}, [])
   return (
     <SafeAreaView
       style={{
@@ -56,24 +67,20 @@ const MyAccountScreen = () => {
         }}
       >
         <View style={styles.itemProfileStyle}>
-          <Text style={styles.text}>Mã khách hàng</Text>
-          <Text style={styles.text}>5</Text>
-        </View>
-        <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Tên khách hàng</Text>
-          <Text style={styles.text}>Phan Đình Phương</Text>
+          <Text style={styles.text}>{info.fullName}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Số điện thoại</Text>
-          <Text style={styles.text}>0354043344</Text>
+          <Text style={styles.text}>{info.phone}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Email</Text>
-          <Text style={styles.text}>phuongdenpro@gmail.com</Text>
+          <Text style={styles.text}>{info.email}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Ngày sinh</Text>
-          <Text style={styles.text}>02-01-2001</Text>
+          <Text style={styles.text}>{moment(info.birthday).format("DD-MM-YYYY") }</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Giới tính</Text>
@@ -92,6 +99,22 @@ const MyAccountScreen = () => {
           marginVertical: 10,
         }}
       >
+      <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("MyTicket");
+      }}
+    >
+      <View style={styles.itemProfileStyle}>
+        <Text style={styles.text}>Xem lịch sử đặt vé</Text>
+        <Image
+          style={{
+            width: 20,
+            height: 20,
+          }}
+          source={require("../../../assets/arrow-to-right.png")}
+        />
+      </View>
+    </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ChangePassword");
@@ -110,7 +133,7 @@ const MyAccountScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            api.account.clear_token();
+            authApi.clear_token();
             navigation.navigate("Login");
           }}
         >
@@ -135,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c67e8",
     display: "flex",
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 35,
     justifyContent: "space-between",
     paddingVertical: 20,
     paddingHorizontal: 20,

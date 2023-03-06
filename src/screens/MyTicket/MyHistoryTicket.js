@@ -7,7 +7,6 @@ import { PrimaryButton } from "../../components/Button/Button";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import TabBarNavigator from "./Components/TabTask";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import MyTicketCancel from "./MyTicketCancel";
 import MyTicketIssued from "./MyTicketIssued";
@@ -20,7 +19,7 @@ const TabNavigator = () => {
   const navigation = useNavigation();
   return (
     <Tab.Navigator
-      initialRouteName="MyTicketNow"
+      initialRouteName="MyTicketIssued"
       screenOptions={{
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#F8F8F8",
@@ -39,34 +38,21 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="MyTicketNow"
-        options={{
-          tabBarLabel: "Vé hiện tại",
-          tabBarLabelStyle: { color: "#000" },
-        }}
-        component={MyTicketNow}
-        listeners={() => ({
-          tabPress: (e) => {
-            // Prevent default action
-            console.log('vào');
-
-            // Do something with the `navigation` object
-            navigation.navigate("MyTicketNow");
-          },
-        })}
-      />
-
-      <Tab.Screen
         name="MyTicketIssued"
         options={{
           tabBarLabel: "Vé đã đi",
-          tabBarLabelStyle: { color: "#000" },
+          tabBarLabelStyle: {
+            color: "#000",
+            fontSize: 15,
+            fontWeight: "600",
+            textTransform: "capitalize",
+          },
         }}
         component={MyTicketIssued}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
-            console.log('vào 2');
+            console.log("vào 2");
 
             // Do something with the `navigation` object
             navigation.navigate("MyTicketIssued");
@@ -78,13 +64,18 @@ const TabNavigator = () => {
         name="MyTicketCancel"
         options={{
           tabBarLabel: "Vé đã hủy",
-          tabBarLabelStyle: { color: "#000" },
+          tabBarLabelStyle: {
+            color: "#000",
+            fontSize: 15,
+            fontWeight: "600",
+            textTransform: "capitalize",
+          },
         }}
         component={MyTicketCancel}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
-            console.log('vào 3');
+            console.log("vào 3");
 
             // Do something with the `navigation` object
             navigation.navigate("MyTicketCancel");
@@ -104,9 +95,22 @@ const MyTicketScreen = ({ navigation }) => {
       }}
     >
       <View style={styles.top}>
+        <Icon
+          name="arrow-back"
+          size={24}
+          onPress={navigation.goBack}
+          color="white"
+        />
         <View style={styles.topInfo}>
-          <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>
-            Vé của tôi
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 17,
+              fontWeight: "bold",
+              marginLeft: 10,
+            }}
+          >
+            Lịch sử đặt vé
           </Text>
         </View>
       </View>
@@ -133,8 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c67e8",
     display: "flex",
     flexDirection: "row",
-    marginTop: 30,
-    justifyContent: "space-between",
+    marginTop: 35,
+
     paddingVertical: 20,
     paddingHorizontal: 20,
     alignItems: "center",

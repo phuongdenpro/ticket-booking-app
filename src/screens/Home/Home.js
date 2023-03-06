@@ -7,7 +7,7 @@ import { PrimaryButton } from "../../components/Button/Button";
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1,marginTop: 30 }}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1,marginTop: 35 }}>
       <Text> Screen Home</Text>
     </SafeAreaView>
   );
