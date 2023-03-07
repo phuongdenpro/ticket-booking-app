@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
   Image,
-  RefreshControl,
-  ScrollView,
+  RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, View
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../consts/color";
-import { PrimaryButton } from "../../components/Button/Button";
 
 const MyTicketNow = ({ navigation }) => {
   const [data, setData] = useState([]);
@@ -75,7 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c67e8",
     display: "flex",
     flexDirection: "row",
-    marginTop: 35,
     paddingVertical: 20,
     paddingHorizontal: 20,
     alignItems: "center",

@@ -1,17 +1,12 @@
-import "react-native-gesture-handler";
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import IconMaterial from "react-native-vector-icons/MaterialIcons";
+import React from "react";
+import "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import COLORS from "../consts/color";
-import { View } from "react-native";
-import HomeScreen from "../screens/Home/Home";
-import MyTicketScreen from "../screens/MyTicket/MyHistoryTicket";
-import NotificationScreen from "../screens/Notification/Notification";
 import MyAccountScreen from "../screens/MyAccount/MyAccount";
-import SearchScreen from "../screens/Search/Search";
 import MyTicketNow from "../screens/MyTicket/MyTicketNow";
+import NotificationScreen from "../screens/Notification/Notification";
+import SearchScreen from "../screens/Search/Search";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +28,7 @@ const BottomNavigator = () => {
     >
       <Tab.Screen
         name="Tìm vé"
-        component={HomeScreen}
+        component={SearchScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="search-outline" color={color} size={28} />

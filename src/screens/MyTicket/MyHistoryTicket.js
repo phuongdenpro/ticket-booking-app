@@ -1,16 +1,12 @@
-import React from "react";
-import { SafeAreaView, StyleSheet, View, Text, Image } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import COLORS from "../../consts/color";
-import { PrimaryButton } from "../../components/Button/Button";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import React from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import COLORS from "../../consts/color";
 import MyTicketCancel from "./MyTicketCancel";
 import MyTicketIssued from "./MyTicketIssued";
-import MyTicketNow from "./MyTicketNow";
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -137,7 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c67e8",
     display: "flex",
     flexDirection: "row",
-    marginTop: 35,
 
     paddingVertical: 20,
     paddingHorizontal: 20,

@@ -1,13 +1,11 @@
-import { Button, Icon, InputItem, View, Text } from "@ant-design/react-native";
+import { Text, View } from "@ant-design/react-native";
 
-import { Image, SafeAreaView, TouchableOpacity } from "react-native";
-import { Dimensions, StyleSheet } from "react-native";
-import { Center } from "native-base";
+import { Avatar } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { Stack, Avatar } from "@react-native-material/core";
-import authApi from "../../utils/authApi";
 import moment from 'moment';
+import { useEffect, useState } from "react";
+import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
 
 const MyAccountScreen = () => {
@@ -15,13 +13,12 @@ const MyAccountScreen = () => {
   const [info, setInfo] = useState({});
   const handleInfo = async () => {
     const _info = await authApi.getStorageInfo()
-    console.log(_info);
     setInfo(_info)
 }
 
 useEffect(() => {
     handleInfo()
-}, [])
+}, [info])
   return (
     <SafeAreaView
       style={{
@@ -38,7 +35,7 @@ useEffect(() => {
           </View>
           <View style={styles.topInfo}>
             <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>
-              Phương Đình Phan
+            {info.fullName}
             </Text>
             <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }}>
               Thành viên mới
@@ -158,7 +155,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#3c67e8",
     display: "flex",
     flexDirection: "row",
-    marginTop: 35,
     justifyContent: "space-between",
     paddingVertical: 20,
     paddingHorizontal: 20,

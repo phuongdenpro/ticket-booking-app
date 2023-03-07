@@ -42,7 +42,7 @@ export default WelcomeScreen = () => {
     ]).start();
     setTimeout(() => {
       handleVerifyCustomer();
-    }, 5000);
+    }, 2000);
   }, []);
 
   const handleVerifyCustomer = async () => {
@@ -50,6 +50,7 @@ export default WelcomeScreen = () => {
       const res = await authApi.getInfor();
       if (res.data.statusCode == 200) {
         authApi.save_info(res);
+        navigation.navigate("Home")
         return;
       }
       navigation.navigate("Login");
