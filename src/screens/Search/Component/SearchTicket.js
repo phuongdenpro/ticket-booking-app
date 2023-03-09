@@ -1,6 +1,7 @@
 import { TextInput } from "@react-native-material/core";
+import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -10,10 +11,19 @@ const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
-const SearchComponent = () => {
+const SearchComponent = (props) => {
+  const navigation = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState();
+  const [selectedFromPosition, setSelectedFromPosition] = useState({});
+  const [selectedToPosition, setSelectedToPosition] = useState({});
 
+  const handleCallBackFrom = (newData) => {
+    setSelectedFromPosition(newData);
+  };
+  const handleCallBackTo = (newData) => {
+    setSelectedToPosition(newData);
+  };
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -28,6 +38,7 @@ const SearchComponent = () => {
     setSelectedDate(x);
     hideDatePicker();
   };
+
   return (
     <View
       style={{
@@ -46,39 +57,43 @@ const SearchComponent = () => {
           width: windowWidth - 40,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#fff",
+          backgroundColor: "#f5f5f5",
           padding: 10,
           borderRadius: 15,
+          borderWidth: 1,
         }}
       >
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <FontAwesome5 name="bus" size={25} color="blue" />
-          <Text style={{ fontSize: 20, color: "#3c67e8" }}>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "#000",
+              fontWeight: "bold",
+              marginBottom: 5,
+            }}
+          >
             Tìm kiếm chuyến xe
           </Text>
-          <View
-            style={{
-              position: "absolute",
-              bottom: 0,
-              height: 3,
-              width: "100%",
-              backgroundColor: "#3c67e8",
-            }}
-          ></View>
         </View>
         <View
           style={{
             width: windowWidth - 100,
-            height: 45,
+            height: 50,
             marginTop: 20,
             flexDirection: "row",
-            backgroundColor: "white",
             alignItems: "center",
+            backgroundColor: "#f5f5f5",
           }}
         >
           <FontAwesome5 name="dot-circle" color="#3c67e8" size={25} />
           <TouchableOpacity
-            onPress={showDatePicker}
+            onPress={() =>
+              navigation.navigate("SearchProvince", {
+                callback: handleCallBackFrom,
+                type: "from",
+              })
+            }
             style={{ display: "flex", flexDirection: "row" }}
           >
             <TextInput
@@ -94,6 +109,7 @@ const SearchComponent = () => {
               autoCapitalize={false}
               variant="standard"
               label="Nơi xuất phát"
+              value={selectedFromPosition?.name}
             ></TextInput>
           </TouchableOpacity>
         </View>
@@ -101,16 +117,20 @@ const SearchComponent = () => {
         <View
           style={{
             width: windowWidth - 100,
-            height: 45,
+            height: 50,
             marginTop: 20,
             flexDirection: "row",
-            backgroundColor: "white",
             alignItems: "center",
           }}
         >
           <FontAwesome5 name="dot-circle" color="red" size={25} />
           <TouchableOpacity
-            onPress={showDatePicker}
+            onPress={() =>
+              navigation.navigate("SearchProvince", {
+                callback: handleCallBackTo,
+                type: "to",
+              })
+            }
             style={{ display: "flex", flexDirection: "row" }}
           >
             <TextInput
@@ -120,12 +140,12 @@ const SearchComponent = () => {
                 fontSize: 16,
                 width: "100%",
                 marginLeft: 20,
-                borderBottomColor: "#998e8e",
               }}
               label="Bạn muốn đi đâu"
               editable={false}
               autoCapitalize={false}
               variant="standard"
+              value={selectedToPosition?.name}
             ></TextInput>
           </TouchableOpacity>
         </View>
@@ -133,18 +153,18 @@ const SearchComponent = () => {
         <View
           style={{
             width: windowWidth - 100,
-            height: 45,
+            height: 50,
             marginTop: 20,
             flexDirection: "row",
-            backgroundColor: "white",
             alignItems: "center",
+            backgroundColor: "#f5f5f5",
           }}
         >
+          <MaterialIcons name="date-range" size={25} color="#3c67e8" />
           <TouchableOpacity
             onPress={showDatePicker}
             style={{ display: "flex", flexDirection: "row" }}
           >
-            <MaterialIcons name="date-range" size={25} color="#3c67e8" />
             <TextInput
               style={{
                 height: "100%",
@@ -152,7 +172,6 @@ const SearchComponent = () => {
                 fontSize: 16,
                 width: "100%",
                 marginLeft: 20,
-                color: "#000",
               }}
               editable={false}
               autoCapitalize={false}
@@ -182,8 +201,11 @@ const SearchComponent = () => {
           marginTop: 10,
           borderRadius: 10,
         }}
+        onPress={() => navigation.navigate("TicketList")}
       >
-        <Text style={{ color: "white", fontSize: 16 }}>Tìm vé</Text>
+        <Text style={{ color: "white", fontSize: 17, fontWeight: "bold" }}>
+          Tìm vé
+        </Text>
       </TouchableOpacity>
     </View>
   );

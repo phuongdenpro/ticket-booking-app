@@ -38,7 +38,7 @@ const SearchScreen = ({ navigation }) => {
       <StatusBar barStyle="light-content"></StatusBar>
       <View
         style={{
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#fff",
           flex: 1,
         }}
       >
@@ -52,7 +52,7 @@ const SearchScreen = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={{ display: "flex", flexDirection: "row" }}
-            onPress={() => navigation.navigate('Tài khoản')}
+            onPress={() => navigation.navigate("Tài khoản")}
           >
             <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
               Chào {info.fullName}
@@ -61,7 +61,12 @@ const SearchScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View
-          style={{ height: 320, width: "100%", backgroundColor: "#f5f5f5" }}
+          style={{
+            height: 350,
+            width: "100%",
+            backgroundColor: "#f5f5f5",
+           
+          }}
         >
           <SearchComponent />
         </View>
@@ -69,7 +74,7 @@ const SearchScreen = ({ navigation }) => {
           style={{
             height: 200,
             width: "100%",
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#ffffff",
             marginTop: 50,
           }}
         >
@@ -79,7 +84,7 @@ const SearchScreen = ({ navigation }) => {
           style={{
             height: 200,
             width: "100%",
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#ffffff",
             marginTop: 40,
           }}
         >
@@ -166,6 +171,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     width: "100%",
+    height:100
   },
   topInfo: {
     display: "flex",

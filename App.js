@@ -1,13 +1,15 @@
-import "react-native-gesture-handler";
-import { StyleSheet, Text, View } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NativeBaseProvider } from "native-base";
+import { StyleSheet } from "react-native";
+import "react-native-gesture-handler";
 import BottomNavigator from "./src/navigation/BottomNavigator";
-import WelcomeScreen from "./src/screens/WelCome/WelCome";
+import ChangePassScreen from "./src/screens/Change_Password/Change_Password";
 import Login from "./src/screens/Login/Login";
 import MyTicketScreen from "./src/screens/MyTicket/MyHistoryTicket";
-import ChangePassScreen from "./src/screens/Change_Password/Change_Password";
+import SearchProvince from "./src/screens/Search/Component/SearchProvinceFrom";
+import TicketList from "./src/screens/Search/Component/TicketList";
+import WelcomeScreen from "./src/screens/WelCome/WelCome";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +37,16 @@ export default function App() {
             name="ChangePassword"
             component={ChangePassScreen}
             options={{ title: "Đổi mật khẩu", headerShown: false }}
+          />
+          <Stack.Screen
+            name="SearchProvince"
+            component={SearchProvince}
+            options={{ title: "Tìm kiếm nơi đi", headerShown: false }}
+          />
+          <Stack.Screen
+            name="TicketList"
+            component={TicketList}
+            options={{ title: "Tìm vé", headerShown: false }}
           />
           <Stack.Screen
             name="Home"
