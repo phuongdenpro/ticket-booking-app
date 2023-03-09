@@ -2,9 +2,15 @@ import { Text, View } from "@ant-design/react-native";
 
 import { Avatar } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
-import moment from 'moment';
+import moment from "moment";
 import { useEffect, useState } from "react";
-import { Dimensions, Image, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
 
@@ -12,13 +18,13 @@ const MyAccountScreen = () => {
   const navigation = useNavigation();
   const [info, setInfo] = useState({});
   const handleInfo = async () => {
-    const _info = await authApi.getStorageInfo()
-    setInfo(_info)
-}
+    const _info = await authApi.getStorageInfo();
+    setInfo(_info);
+  };
 
-useEffect(() => {
-    handleInfo()
-}, [info])
+  useEffect(() => {
+    handleInfo();
+  }, [info]);
   return (
     <SafeAreaView
       style={{
@@ -35,7 +41,7 @@ useEffect(() => {
           </View>
           <View style={styles.topInfo}>
             <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>
-            {info.fullName}
+              {info.fullName}
             </Text>
             <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }}>
               Thành viên mới
@@ -77,7 +83,9 @@ useEffect(() => {
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Ngày sinh</Text>
-          <Text style={styles.text}>{moment(info.birthday).format("DD-MM-YYYY") }</Text>
+          <Text style={styles.text}>
+            {moment(info.birthday).format("DD-MM-YYYY")}
+          </Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Giới tính</Text>
@@ -96,22 +104,22 @@ useEffect(() => {
           marginVertical: 10,
         }}
       >
-      <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("MyTicket");
-      }}
-    >
-      <View style={styles.itemProfileStyle}>
-        <Text style={styles.text}>Xem lịch sử đặt vé</Text>
-        <Image
-          style={{
-            width: 20,
-            height: 20,
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("MyTicket");
           }}
-          source={require("../../../assets/arrow-to-right.png")}
-        />
-      </View>
-    </TouchableOpacity>
+        >
+          <View style={styles.itemProfileStyle}>
+            <Text style={styles.text}>Xem lịch sử đặt vé</Text>
+            <Image
+              style={{
+                width: 20,
+                height: 20,
+              }}
+              source={require("../../../assets/arrow-to-right.png")}
+            />
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ChangePassword");
