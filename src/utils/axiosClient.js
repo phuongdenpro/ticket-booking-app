@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const base_url = "https://ticket-booking-server-production.up.railway.app/";
+const base_url = "http://192.168.0.5:3001";
 const axiosClient = axios.create({
   baseURL: base_url,
   headers: {

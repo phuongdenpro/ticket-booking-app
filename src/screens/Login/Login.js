@@ -26,6 +26,7 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { TextInput } from "react-native-gesture-handler";
 
+
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -238,7 +239,7 @@ const FooterComponent = () => {
 };
 const LoginComponent = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("dangdan28075@gmail.com");
+  const [email, setEmail] = useState("superman@gmail.com");
   const [password, setPassword] = useState("12345678");
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -332,7 +333,7 @@ const LoginComponent = () => {
               autoCapitalize={false}
               placeholder="Email hoặc số điện thoại"
               onChangeText={setEmail}
-              defaultValue="dangdan28075@gmail.com"
+              defaultValue="superman@gmail.com"
               type="email"
             ></TextInput>
           </ScrollView>

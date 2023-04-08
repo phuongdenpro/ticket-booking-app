@@ -42,13 +42,13 @@ export default WelcomeScreen = () => {
     ]).start();
     setTimeout(() => {
       handleVerifyCustomer();
-    }, 2000);
+    }, 1000);
   }, []);
 
   const handleVerifyCustomer = async () => {
     try {
       const res = await authApi.getInfor();
-      if (res.data.statusCode == 200) {
+      if (res.data.status == 200) {
         authApi.save_info(res);
         navigation.navigate("Home")
         return;

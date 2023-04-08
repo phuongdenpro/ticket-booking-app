@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     width: "100%",
-    height:100
+    height:70
   },
   topInfo: {
     display: "flex",

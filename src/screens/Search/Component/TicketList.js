@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Image,
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -15,11 +16,19 @@ import provinceApi from "../../../utils/provinceApi";
 import { Divider } from "@react-native-material/core";
 import Loader from "../../../components/Loader/loader";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import moment from "moment";
+import { Button } from "native-base";
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 const TicketList = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const data = route.params?.data ?? [];
+  const from = route.params.from || "Unknown";
+  const to = route.params.to || "Unknown";
+  const date = moment(route.params.date, "MM-DD-YYYY").format("DD-MM-YYYY");
+
   const provinces = [
     {
       id: 1,
@@ -68,7 +77,7 @@ const TicketList = ({ navigation, route }) => {
     },
   ];
   return (
-    <View>
+    <View style={{ backgroundColor: "#f5f5f5" }}>
       <View style={styles.top}>
         <View style={styles.topInfo}>
           <Icon
@@ -87,7 +96,7 @@ const TicketList = ({ navigation, route }) => {
                   marginLeft: 10,
                 }}
               >
-                Cao Bằng
+                {from}
               </Text>
               <MaterialIcons name="navigate-next" size={25} color="#fff" />
               <Text
@@ -97,7 +106,7 @@ const TicketList = ({ navigation, route }) => {
                   fontWeight: "bold",
                 }}
               >
-                Thanh Hóa
+                {to}
               </Text>
             </View>
 
@@ -109,134 +118,299 @@ const TicketList = ({ navigation, route }) => {
                 marginLeft: 10,
               }}
             >
-              10/03/2023
+              {date}
             </Text>
           </View>
-        </View>
-        <View>
-          <TouchableOpacity>
-            <Text
-              style={{
-                color: "#fff",
-                textDecorationLine: "underline",
-                fontWeight: "700",
-              }}
-            >
-              Thay đổi
-            </Text>
-          </TouchableOpacity>
         </View>
       </View>
-      <FlatList
-        data={provinces}
-        keyExtractor={(item) => item.id.toString()}
-        style={{height: windowHeight - 100 }}
-        renderItem={({ item }) => (
-          <View>
-            <View>
-              <View
-                style={{
-                  display: "flex",
-                  marginLeft: 10,
-                  alignItems: "center",
-                  padding: 10,
-                  height: 200,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    width: windowWidth - 60,
-                  }}
-                >
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View style={{ display: "flex", flexDirection: "row" }}>
-                      <Text style={{ marginRight: 10, fontSize: 20 }}>
-                        {item.startDate}
-                      </Text>
-                      <FontAwesome5
-                        style={{ marginRight: 10 }}
-                        name="dot-circle"
-                        color="#3c67e8"
-                        size={25}
-                      />
-                      <Text style={{ marginRight: 10, fontSize: 20 }}>
-                        {item.from}
-                      </Text>
-                    </View>
+      <View>
+        <TouchableOpacity
+          style={{
+            width: 70,
+            height: 30,
+            backgroundColor: "#f5f5f5",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth: 1,
+            borderColor: "black",
+            borderRadius: 10,
+            marginTop: 10,
+            marginLeft: 5,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="playlist-edit"
+            size={25}
+            color="#ea8648"
+          />
+          <Text style={{ color: "#000" }}>Lọc</Text>
+        </TouchableOpacity>
+      </View>
 
-                    <Text>{item.price}đ</Text>
-                  </View>
-                </View>
-                <View>
-                  <Text style={{ fontSize: 16, marginLeft: 300 }}>
-                    {item.status}
-                  </Text>
-                </View>
+      {data.length > 0 ? (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          style={{ height: windowHeight - 100 }}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                backgroundColor: "#c0f9f3",
+                borderRadius: 20,
+                marginTop: 10,
+                marginLeft: 7,
+                marginRight: 7,
+              }}
+            >
+              <View>
                 <View
                   style={{
                     display: "flex",
-                    justifyContent: "space-between",
-                    width: windowWidth - 60,
+                    alignItems: "center",
+                    height: 300,
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
                   <View
                     style={{
                       display: "flex",
+                      justifyContent: "space-between",
+                      width: windowWidth - 60,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            fontSize: 16,
+                            fontWeight: "500",
+                          }}
+                        >
+                          {moment(item.departureTime).format("HH:MM")}
+                        </Text>
+                        <FontAwesome5
+                          style={{ marginRight: 5 }}
+                          name="dot-circle"
+                          color="#3c67e8"
+                          size={25}
+                        />
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            fontSize: 16,
+                            fontWeight: "500",
+                          }}
+                        >
+                          {item.trip.fromStation.name}
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          marginRight: 5,
+                          fontSize: 16,
+                          fontWeight: "500",
+                        }}
+                      >
+                        500.000đ
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginRight: 15,
+                      marginTop: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        marginLeft: 300,
+                        marginTop: 0,
+                        marginBottom: 5,
+                        marginRight: 5,
+                      }}
+                    >
+                      {item.status}
+                    </Text>
+                    <MaterialCommunityIcons
+                      name="ticket"
+                      size={25}
+                      color="#ea8648"
+                    />
+                  </View>
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: windowWidth - 60,
+                    }}
+                  >
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            fontSize: 16,
+                            fontWeight: "500",
+                          }}
+                        >
+                          {moment(item.expectedTime).format("HH:MM")}
+                        </Text>
+                        <FontAwesome5
+                          style={{ marginRight: 5 }}
+                          name="dot-circle"
+                          color="red"
+                          size={25}
+                        />
+                        <Text
+                          style={{
+                            marginRight: 5,
+                            fontSize: 16,
+                            fontWeight: "500",
+                          }}
+                        >
+                          {item.trip.toStation.name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        height: 1,
+                        backgroundColor: "black",
+                        marginTop: 10,
+                      }}
+                    />
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        marginTop: 10,
+                      }}
+                    >
+                      <View>
+                        <Image
+                          source={{ uri: item.vehicle.images[0].url }}
+                          style={{ width: 100, height: 70, borderRadius: 7 }}
+                        ></Image>
+                      </View>
+                      <View style={{ marginLeft: 10 }}>
+                        <Text style={{ fontSize: 16, fontWeight: "800" }}>
+                          {item.vehicle.name}
+                        </Text>
+                        <Text style={{ fontSize: 16, marginTop: 7 }}>
+                          {item.vehicle.type}, {item.vehicle.floorNumber} tầng,{" "}
+                          {item.vehicle.totalSeat} ghế
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      width: "90%",
+                      display: "flex",
                       flexDirection: "row",
                       justifyContent: "space-between",
                     }}
                   >
-                    <View style={{ display: "flex", flexDirection: "row" }}>
-                      <Text style={{ marginRight: 10, fontSize: 20 }}>
-                        {item.endDate}
-                      </Text>
-                      <FontAwesome5
-                        style={{ marginRight: 10 }}
-                        name="dot-circle"
-                        color="red"
-                        size={25}
-                      />
-                      <Text style={{ marginRight: 10, fontSize: 20 }}>
-                        {item.to}
-                      </Text>
+                    <View style={{ marginTop: 20, marginRight: 10 }}>
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        <MaterialCommunityIcons
+                          name="piggy-bank"
+                          size={25}
+                          color="#46c423"
+                        />
+                        <Text style={{ marginLeft: 7, marginTop: 3 }}>
+                          Không cần thanh toán trước
+                        </Text>
+                      </View>
+
+                      <View style={{ display: "flex", flexDirection: "row" }}>
+                        <MaterialCommunityIcons
+                          name="ticket-confirmation"
+                          size={25}
+                          color="#46c423"
+                        />
+                        <Text style={{ marginLeft: 7, marginTop: 3 }}>
+                          Xác nhận vé tức thì
+                        </Text>
+                      </View>
                     </View>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#050b2d",
+                        width: 100,
+                        height: 40,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 10,
+                        marginTop: 30,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#ffffff",
+                          fontWeight: "bold",
+                          fontSize: 17,
+                        }}
+                      >
+                        Đặt vé
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#050b2d",
-                      width: 100,
-                      height: 30,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 10,
-                      marginTop: 30,
-                      marginLeft: 230,
-                    }}
-                  >
-                    <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
-                      Đặt vé
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                <Divider />
               </View>
-              <Divider />
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      ) : (
+        <View style={styles.content}>
+          <Text
+            style={{
+              color: "#000",
+              fontWeight: "bold",
+              fontSize: 20,
+            }}
+          >
+            Không tìm thấy chuyến
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              marginHorizontal: 20,
+              marginTop: 10,
+            }}
+          >
+            Hiện tại không có chuyến xe nào đi từ{" "}
+            <Text style={{ fontWeight: "bold" }}> {from}</Text> đến
+            <Text style={{ fontWeight: "bold" }}> {to}</Text> ngày
+            <Text style={{ fontWeight: "bold" }}> {date}</Text> , mời bạn quay
+            lại sau !!!
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -262,6 +436,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#d8bcbc",
     borderBottomWidth: 3,
     paddingBottom: 5,
+  },
+  content: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop:30
   },
 });
 

@@ -6,6 +6,9 @@ import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Toast from "react-native-toast-message";
+import tripApi from "../../../utils/tripApi";
+import Loader from "../../../components/Loader/loader";
 moment.locale("vi");
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
@@ -17,6 +20,8 @@ const SearchComponent = (props) => {
   const [selectedDate, setSelectedDate] = useState();
   const [selectedFromPosition, setSelectedFromPosition] = useState({});
   const [selectedToPosition, setSelectedToPosition] = useState({});
+  const [dataTripDetail, setDataTripDetail] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCallBackFrom = (newData) => {
     setSelectedFromPosition(newData);
@@ -34,9 +39,38 @@ const SearchComponent = (props) => {
 
   const handleConfirm = (date) => {
     const dt = new Date(date);
-    const x = moment(dt).format("DD-MM-YYYY");
+    const x = moment(dt).format("MM-DD-YYYY");
     setSelectedDate(x);
     hideDatePicker();
+  };
+
+  const handleSearchTrip = async () => {
+    setIsLoading(true);
+    console.log(selectedFromPosition?.name);
+    const params = {
+      fromProvinceCode: selectedFromPosition?.code,
+      toProvinceCode: selectedToPosition?.code,
+      departureTime: selectedDate,
+    };
+    try {
+      const res = await tripApi.findAllTrip({
+        isAll: true,
+        ...params,
+      });
+
+      setDataTripDetail(res?.data?.data);
+
+      setIsLoading(false);
+      navigation.navigate("TicketList", {
+        data: res?.data?.data,
+        from: selectedFromPosition?.name,
+        to: selectedToPosition?.name,
+        date: selectedDate
+      });
+    } catch (error) {
+      console.log("Failed:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -177,7 +211,7 @@ const SearchComponent = (props) => {
               autoCapitalize={false}
               variant="standard"
               label="Ngày đi"
-              value={selectedDate}
+              value={moment(selectedDate,'MM-DD-YYYY').format("DD-MM-YYYY")}
             ></TextInput>
           </TouchableOpacity>
           <DateTimePickerModal
@@ -201,12 +235,13 @@ const SearchComponent = (props) => {
           marginTop: 10,
           borderRadius: 10,
         }}
-        onPress={() => navigation.navigate("TicketList")}
+        onPress={handleSearchTrip}
       >
         <Text style={{ color: "white", fontSize: 17, fontWeight: "bold" }}>
           Tìm vé
         </Text>
       </TouchableOpacity>
+      <Loader isLoading={isLoading} />
     </View>
   );
 };

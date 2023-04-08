@@ -44,7 +44,7 @@ const MyAccountScreen = () => {
               {info.fullName}
             </Text>
             <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }}>
-              Thành viên mới
+            {info?.customerGroup?.name}
             </Text>
           </View>
         </View>
