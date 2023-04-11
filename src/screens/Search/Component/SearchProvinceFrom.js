@@ -21,7 +21,9 @@ const SearchProvince = ({ navigation, route }) => {
   const handelData = async () => {
     setIsLoading(true);
     const res = await provinceApi.getAll();
-    setProvinces(res?.data?.data);
+    const data = res?.data?.data;
+    const newData = data.filter(item => item.code !== 0);
+    setProvinces(newData);
     setIsLoading(false);
   };
   useEffect(() => {

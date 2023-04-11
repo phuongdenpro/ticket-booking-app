@@ -5,29 +5,9 @@ const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
-const PromotionPopular = () => {
-  const data = [
-    {
-      price: 150,
-      name: "Stabuck Coffee",
-      image: require("../../../../assets/logo.png"),
-    },
-    {
-      price: 120,
-      name: "Black Coffee",
-      image: require("../../../../assets/logo.png"),
-    },
-    {
-      price: 130,
-      name: "Black Coffee",
-      image: require("../../../../assets/logo.png"),
-    },
-    {
-      price: 140,
-      name: "Black Coffee",
-      image: require("../../../../assets/logo.png"),
-    },
-  ];
+const PromotionPopular = (props) => {
+  const { data } = props;
+
   return (
     <View>
       <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
@@ -48,28 +28,31 @@ const PromotionPopular = () => {
             <TouchableOpacity
               style={[
                 {
-                  backgroundColor: "#1087a5",
-                  margin: 10,
-                  alignItems: "center",
-                  borderRadius: 20,
-                  height: 170,
-                  width: 190,
+                  backgroundColor: "#ffffff",
+                  margin:10,
+                  borderRadius: 10,
+                  height: 250,
+                  width: 300,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 5,
+                  display:'flex',
                 },
               ]}
             >
               <Image
-                source={item.image}
-                style={{ width: 70, height: 100, marginTop: 10 }}
-              ></Image>
-              <Text
-                style={{ fontSize: 17, fontWeight: "bold", color: "white" }}
-              >
+                source={{ uri: item.image }}
+                style={{
+                  width: "100%",
+                  height: "80%",
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                }}
+              />
+              <Text style={{ fontSize: 17, fontWeight: "bold", color: "#000", textAlign:'left', marginLeft:10 }}>
                 {item.name}
-              </Text>
-              <Text
-                style={{ fontSize: 17, fontWeight: "bold", color: "#eac809" }}
-              >
-                {item.price}$
               </Text>
             </TouchableOpacity>
           </View>

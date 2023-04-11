@@ -8,6 +8,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-toast-message";
 import tripApi from "../../../utils/tripApi";
+import priceListApi from "../../../utils/priceListApi";
 import Loader from "../../../components/Loader/loader";
 moment.locale("vi");
 const win = Dimensions.get("window");
@@ -17,7 +18,7 @@ const windowWidth = Dimensions.get("window").width;
 const SearchComponent = (props) => {
   const navigation = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFromPosition, setSelectedFromPosition] = useState({});
   const [selectedToPosition, setSelectedToPosition] = useState({});
   const [dataTripDetail, setDataTripDetail] = useState([]);
@@ -57,15 +58,30 @@ const SearchComponent = (props) => {
         isAll: true,
         ...params,
       });
+      const data = res?.data?.data;
 
-      setDataTripDetail(res?.data?.data);
+      const updatedData = await Promise.all(
+        data.map(async (item) => {
+          const response1 = await priceListApi.getPrice({
+            applyDate: new Date(),
+            tripDetailCode: item?.code,
+            seatType: item?.vehicle?.type,
+          });
+  
+          item.price = response1?.data?.data?.price;
+  
+          return item;
+        })
+      );
+
+      setDataTripDetail(updatedData);
 
       setIsLoading(false);
       navigation.navigate("TicketList", {
-        data: res?.data?.data,
+        data: updatedData,
         from: selectedFromPosition?.name,
         to: selectedToPosition?.name,
-        date: selectedDate
+        date: selectedDate,
       });
     } catch (error) {
       console.log("Failed:", error);
@@ -82,29 +98,35 @@ const SearchComponent = (props) => {
         alignItems: "center",
         marginTop: 10,
         marginBottom: 10,
+        
       }}
     >
       <View
         style={{
           flex: 1,
           height: "100%",
-          width: windowWidth - 40,
+          width: windowWidth - 20,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#ffffff",
           padding: 10,
-          borderRadius: 15,
+          borderRadius: 10,
+          borderColor: "#ccc",
           borderWidth: 1,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 5,
+          elevation: 5,
         }}
       >
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <FontAwesome5 name="bus" size={25} color="blue" />
           <Text
             style={{
               fontSize: 20,
               color: "#000",
-              fontWeight: "bold",
-              marginBottom: 5,
+              fontWeight: "800",
+              marginBottom: 20,
             }}
           >
             Tìm kiếm chuyến xe
@@ -114,10 +136,10 @@ const SearchComponent = (props) => {
           style={{
             width: windowWidth - 100,
             height: 50,
-            marginTop: 20,
+            marginTop: 5,
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#ffffff",
           }}
         >
           <FontAwesome5 name="dot-circle" color="#3c67e8" size={25} />
@@ -138,6 +160,7 @@ const SearchComponent = (props) => {
                 width: "100%",
                 marginLeft: 20,
                 color: "#000",
+                backgroundColor: "#ffffff",
               }}
               editable={false}
               autoCapitalize={false}
@@ -191,7 +214,7 @@ const SearchComponent = (props) => {
             marginTop: 20,
             flexDirection: "row",
             alignItems: "center",
-            backgroundColor: "#f5f5f5",
+            backgroundColor: "#ffffff",
           }}
         >
           <MaterialIcons name="date-range" size={25} color="#3c67e8" />
@@ -211,7 +234,7 @@ const SearchComponent = (props) => {
               autoCapitalize={false}
               variant="standard"
               label="Ngày đi"
-              value={moment(selectedDate,'MM-DD-YYYY').format("DD-MM-YYYY")}
+              value={moment(selectedDate, "MM-DD-YYYY").format("DD-MM-YYYY")}
             ></TextInput>
           </TouchableOpacity>
           <DateTimePickerModal
@@ -227,17 +250,18 @@ const SearchComponent = (props) => {
       </View>
       <TouchableOpacity
         style={{
-          height: 50,
-          width: 350,
+          height: 55,
+          width: 380,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#141e5b",
+          backgroundColor: "#f48642",
           marginTop: 10,
           borderRadius: 10,
+          
         }}
         onPress={handleSearchTrip}
       >
-        <Text style={{ color: "white", fontSize: 17, fontWeight: "bold" }}>
+        <Text style={{ color: "white", fontSize: 19, fontWeight: "600" }}>
           Tìm vé
         </Text>
       </TouchableOpacity>

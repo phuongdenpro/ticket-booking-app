@@ -10,6 +10,8 @@ import MyTicketScreen from "./src/screens/MyTicket/MyHistoryTicket";
 import SearchProvince from "./src/screens/Search/Component/SearchProvinceFrom";
 import TicketList from "./src/screens/Search/Component/TicketList";
 import WelcomeScreen from "./src/screens/WelCome/WelCome";
+import TicketScreen from "./src/screens/Ticket/Ticket";
+
 
 const Stack = createStackNavigator();
 
@@ -58,6 +60,12 @@ export default function App() {
             component={MyTicketScreen}
             options={{ title: "Đăng nhập", headerShown: false }}
           />
+          <Stack.Screen
+            name="TicketScreen"
+            component={TicketScreen}
+            options={{ title: "Danh sách ghế", headerShown: false }}
+          />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

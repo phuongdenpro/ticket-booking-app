@@ -48,11 +48,11 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Thông báo"
+        name="Ưu đãi"
         component={NotificationScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="notifications-outline" color={color} size={28} />
+            <Ionicons name="gift-outline" color={color} size={28} />
           ),
           headerShown: false,
         }}

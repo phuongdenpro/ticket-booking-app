@@ -18,12 +18,52 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import authApi from "../../utils/authApi";
+import promotionApi from "../../utils/promotionApi";
+import provinceApi from "../../utils/provinceApi";
+import tripApi from "../../utils/tripApi";
+import Loader from "../../components/Loader/loader";
+import moment from "moment";
+
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 const SearchScreen = ({ navigation }) => {
   const [info, setInfo] = useState({});
+  const [dataPromotion, setDataPromotion] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSearchTrip = async (from, to, nameFrom, nameTo) => {
+    setIsLoading(true);
+    const today = new Date();
+
+    // Lấy ngày hôm sau
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+    const params = {
+      fromProvinceCode: from,
+      toProvinceCode: to,
+      departureTime: moment(tomorrow).format("MM-DD-YYYY"),
+    };
+    try {
+      const res = await tripApi.findAllTrip({
+        isAll: true,
+        ...params,
+      });
+
+      setIsLoading(false);
+      navigation.navigate("TicketList", {
+        data: res?.data?.data,
+        from: nameFrom,
+        to: nameTo,
+        date: moment(tomorrow).format("MM-DD-YYYY"),
+      });
+    } catch (error) {
+      console.log("Failed:", error);
+      setIsLoading(false);
+      // Thêm xử lý lỗi vào đây nếu cần
+    }
+  };
 
   const handleInfo = async () => {
     const _info = await authApi.getStorageInfo();
@@ -33,6 +73,23 @@ const SearchScreen = ({ navigation }) => {
   useEffect(() => {
     handleInfo();
   }, [info]);
+
+  const handleGetDataPromotion = async () => {
+    try {
+      const response = await promotionApi.findAll({
+        status: "Đang hoạt động",
+        page: 1,
+        pageSize: 5,
+      });
+      setDataPromotion(response?.data?.data);
+    } catch (error) {
+      console.error("Error while fetching data: ", error);
+      // Xử lý lỗi ở đây
+    }
+  };
+  useEffect(() => {
+    handleGetDataPromotion();
+  }, []);
   return (
     <ScrollView>
       <StatusBar barStyle="light-content"></StatusBar>
@@ -60,38 +117,39 @@ const SearchScreen = ({ navigation }) => {
             <MaterialIcons name="navigate-next" color="#fff" size={25} />
           </TouchableOpacity>
         </View>
+
         <View
           style={{
-            height: 350,
+            height: 320,
             width: "100%",
             backgroundColor: "#f5f5f5",
-           
+            marginTop: 5,
           }}
         >
           <SearchComponent />
         </View>
         <View
           style={{
-            height: 200,
+            height: 230,
             width: "100%",
             backgroundColor: "#ffffff",
             marginTop: 50,
           }}
         >
-          <TripPopular />
+          <TripPopular handleSearchTrip={handleSearchTrip} />
         </View>
         <View
           style={{
-            height: 200,
+            height: 300,
             width: "100%",
             backgroundColor: "#ffffff",
             marginTop: 40,
           }}
         >
-          <PromotionPopular />
+          <PromotionPopular data={dataPromotion} />
         </View>
 
-        <View style={{ height: 500, marginTop: 50, width: windowWidth - 60 }}>
+        <View style={{ height: 500, marginTop: 20, width: windowWidth - 60 }}>
           <Text
             style={{
               marginBottom: 20,
@@ -157,6 +215,7 @@ const SearchScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+      <Loader isLoading={isLoading} />
     </ScrollView>
   );
 };
@@ -171,7 +230,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     width: "100%",
-    height:70
+    height: 70,
   },
   topInfo: {
     display: "flex",

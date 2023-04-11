@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { Divider } from "@react-native-material/core";
+import moment from "moment";
+import React, { useState } from "react";
 import {
   Dimensions,
   FlatList,
+  Image,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  Image,
   View,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
-import provinceApi from "../../../utils/provinceApi";
-import { Divider } from "@react-native-material/core";
-import Loader from "../../../components/Loader/loader";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import moment from "moment";
-import { Button } from "native-base";
+import {
+  default as Icon,
+  default as MaterialIcons,
+} from "react-native-vector-icons/MaterialIcons";
+import { convertCurrency } from "../../../utils/curren";
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -29,53 +27,6 @@ const TicketList = ({ navigation, route }) => {
   const to = route.params.to || "Unknown";
   const date = moment(route.params.date, "MM-DD-YYYY").format("DD-MM-YYYY");
 
-  const provinces = [
-    {
-      id: 1,
-      from: "Bến xe Bờ Kè",
-      to: "Bến xe Bờ Ao",
-      price: 150,
-      status: "Còn chỗ",
-      startDate: "21:00 AM",
-      endDate: "07:00 PM",
-    },
-    {
-      id: 2,
-      from: "Bến xe Mỹ Đình",
-      to: "Bến xe Mỹ Phú",
-      price: 100,
-      status: "Còn chỗ",
-      startDate: "21:30 AM",
-      endDate: "07:00 PM",
-    },
-    {
-      id: 3,
-      from: "Bến xe Mỹ Đình",
-      to: "Bến xe Mỹ Phú",
-      price: 100,
-      status: "Còn chỗ",
-      startDate: "21:30 AM",
-      endDate: "07:00 PM",
-    },
-    {
-      id: 4,
-      from: "Bến xe Mỹ Đình",
-      to: "Bến xe Mỹ Phú",
-      price: 100,
-      status: "Còn chỗ",
-      startDate: "21:30 AM",
-      endDate: "07:00 PM",
-    },
-    {
-      id: 5,
-      from: "Bến xe Mỹ Đình",
-      to: "Bến xe Mỹ Phú",
-      price: 100,
-      status: "Còn chỗ",
-      startDate: "21:30 AM",
-      endDate: "07:00 PM",
-    },
-  ];
   return (
     <View style={{ backgroundColor: "#f5f5f5" }}>
       <View style={styles.top}>
@@ -93,7 +44,7 @@ const TicketList = ({ navigation, route }) => {
                   color: "#fff",
                   fontSize: 17,
                   fontWeight: "bold",
-                  marginLeft: 10,
+                  marginLeft: 5,
                 }}
               >
                 {from}
@@ -109,17 +60,18 @@ const TicketList = ({ navigation, route }) => {
                 {to}
               </Text>
             </View>
-
-            <Text
-              style={{
-                color: "#fff",
-                fontSize: 14,
-                fontWeight: "700",
-                marginLeft: 10,
-              }}
-            >
-              {date}
-            </Text>
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <Text
+                style={{
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: "700",
+                  marginLeft: 5,
+                }}
+              >
+                {date}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -221,7 +173,7 @@ const TicketList = ({ navigation, route }) => {
                           fontWeight: "500",
                         }}
                       >
-                        500.000đ
+                        {convertCurrency(item.price)}
                       </Text>
                     </View>
                   </View>
@@ -366,6 +318,9 @@ const TicketList = ({ navigation, route }) => {
                         borderRadius: 10,
                         marginTop: 30,
                       }}
+                      onPress={() =>
+                        navigation.navigate("TicketScreen", { item: item })
+                      }
                     >
                       <Text
                         style={{
@@ -441,7 +396,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop:30
+    marginTop: 30,
   },
 });
 
