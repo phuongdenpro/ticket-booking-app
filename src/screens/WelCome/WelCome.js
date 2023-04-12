@@ -65,7 +65,7 @@ export default WelcomeScreen = () => {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#3c67e8",
+      backgroundColor: "#ea733c",
       opacity: backgroundFade,
     },
     logo: {

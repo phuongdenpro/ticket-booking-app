@@ -10,7 +10,8 @@ import { Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-// import { validPassword } from '../utils/regex';
+import authApi from "../../utils/authApi";
+import { validPassword } from "../../utils/regex";
 
 const win = Dimensions.get("window");
 
@@ -20,70 +21,64 @@ const ChangePassScreen = ({ phone }) => {
   const [newPassword, setNewPassword] = useState("");
   const [reNewPassword, setReNewPassword] = useState("");
 
-  // const onChangePassword = async () => {
-  //     const info = await api.account.get_storage_info()
-  //     if(password.trim() == ""){
-  //         ToastAndroid.showWithGravityAndOffset(
-  //             "Mật khẩu không được bỏ trống!",
-  //             ToastAndroid.LONG,
-  //             ToastAndroid.BOTTOM,
-  //             25,
-  //             50
-  //         );
-  //         return
-  //     }
+  const onChangePassword = async () => {
+    if (password.trim() == "") {
+      ToastAndroid.showWithGravityAndOffset(
+        "Mật khẩu không được bỏ trống!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
 
-  //     if(!validPassword.test(newPassword)){
-  //         ToastAndroid.showWithGravityAndOffset(
-  //             "Mật khẩu mới phải lớn hơn 6 ký tự!",
-  //             ToastAndroid.LONG,
-  //             ToastAndroid.BOTTOM,
-  //             25,
-  //             50
-  //         );
-  //         return
-  //     }
+    if (!validPassword.test(newPassword)) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Mật khẩu mới phải lớn hơn 6 ký tự!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
 
-  //     if(newPassword != reNewPassword){
-  //         ToastAndroid.showWithGravityAndOffset(
-  //             "Nhập lại mật khẩu không khớp",
-  //             ToastAndroid.LONG,
-  //             ToastAndroid.BOTTOM,
-  //             25,
-  //             50
-  //         );
-  //         return
-  //     }
+    if (newPassword != reNewPassword) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Nhập lại mật khẩu không khớp",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
 
-  //     try{
-  //         const res = await api.account.change_password({
-  //             phone: info.phone,
-  //             password: password,
-  //             new_password: newPassword
-  //         })
-  //         if(res.data.code == 1){
-  //             ToastAndroid.showWithGravityAndOffset(
-  //                 "Đổi mật khẩu thành công",
-  //                 ToastAndroid.LONG,
-  //                 ToastAndroid.BOTTOM,
-  //                 25,
-  //                 50
-  //             );
-  //             navigation.goBack()
-  //         }else{
-  //             ToastAndroid.showWithGravityAndOffset(
-  //                 res.data.message,
-  //                 ToastAndroid.LONG,
-  //                 ToastAndroid.BOTTOM,
-  //                 25,
-  //                 50
-  //             );
-  //         }
-
-  //     }catch(error) {
-  //         console.log('Failed:', error)
-  //     }
-  // }
+    try {
+      const res = await authApi.change_password({
+        oldPassword: password,
+        newPassword: newPassword,
+        confirmNewPassword: reNewPassword,
+      });
+      ToastAndroid.showWithGravityAndOffset(
+        "Đổi mật khẩu thành công",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      navigation.goBack();
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  };
 
   return (
     <SafeAreaView
@@ -99,7 +94,14 @@ const ChangePassScreen = ({ phone }) => {
           color="white"
         />
         <View style={styles.topInfo}>
-          <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold", marginLeft:10 }}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 17,
+              fontWeight: "bold",
+              marginLeft: 10,
+            }}
+          >
             Đổi mật khẩu
           </Text>
         </View>
@@ -138,11 +140,13 @@ const ChangePassScreen = ({ phone }) => {
             marginTop: 10,
             marginBottom: 10,
             marginHorizontal: 10,
-            backgroundColor: "#3c67e8",
+            backgroundColor: "#F43E26",
           }}
-          // onPress={onChangePassword}
+          onPress={onChangePassword}
         >
-          <Text style={{ fontSize: 17, fontWeight: "bold", color:"#fff" }}>Đổi mật khẩu</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}>
+            Đổi mật khẩu
+          </Text>
         </Button>
       </View>
     </SafeAreaView>
@@ -152,15 +156,15 @@ const ChangePassScreen = ({ phone }) => {
 export default ChangePassScreen;
 
 const styles = StyleSheet.create({
-    top: {
-        backgroundColor: "#3c67e8",
-        display: "flex",
-        flexDirection: "row",
-    
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        alignItems: "center",
-      },
+  top: {
+    backgroundColor: "#ea733c",
+    display: "flex",
+    flexDirection: "row",
+
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
   text: {
     marginLeft: "20%",
     fontSize: 20,

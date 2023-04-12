@@ -4,6 +4,7 @@ import { Avatar } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   Dimensions,
   Image,
@@ -35,8 +36,8 @@ const MyAccountScreen = () => {
         <View style={styles.topLeft}>
           <View style={styles.imgAvt}>
             <Avatar
-              image={require("../../../assets/avt.png")}
-              style={{ backgroundColor: "#7ad6b4", marginRight: 5 }}
+            icon={props => <Icon name="account" {...props} size={50}/>}
+              style={{ backgroundColor: "#f2eea4", marginRight: 5 }}
             />
           </View>
           <View style={styles.topInfo}>
@@ -44,7 +45,7 @@ const MyAccountScreen = () => {
               {info.fullName}
             </Text>
             <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }}>
-            {info?.customerGroup?.name}
+              {info?.customerGroup?.name}
             </Text>
           </View>
         </View>
@@ -160,7 +161,7 @@ const MyAccountScreen = () => {
 
 const styles = StyleSheet.create({
   top: {
-    backgroundColor: "#3c67e8",
+    backgroundColor: "#ea733c",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",

@@ -100,6 +100,7 @@ const TicketScreen = ({ navigation, route }) => {
     } catch (error) {}
   };
 
+  console.log(dataTicket);
   const handlePromotion = async () => {
     try {
       const res = await promotionApi.getPromotionAvailable({
@@ -828,7 +829,7 @@ const TicketScreen = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
   top: {
-    backgroundColor: "#3c67e8",
+    backgroundColor: "#ea733c",
     display: "flex",
     flexDirection: "row",
     paddingVertical: 15,

@@ -254,7 +254,7 @@ const SearchComponent = (props) => {
           width: 380,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "#f48642",
+          backgroundColor: "#F43E26",
           marginTop: 10,
           borderRadius: 10,
           

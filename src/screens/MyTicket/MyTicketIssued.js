@@ -57,7 +57,7 @@ const MyTicketIssued = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   top: {
-    backgroundColor: "#3c67e8",
+    backgroundColor: "#ea733c",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",

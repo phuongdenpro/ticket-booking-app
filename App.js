@@ -11,6 +11,7 @@ import SearchProvince from "./src/screens/Search/Component/SearchProvinceFrom";
 import TicketList from "./src/screens/Search/Component/TicketList";
 import WelcomeScreen from "./src/screens/WelCome/WelCome";
 import TicketScreen from "./src/screens/Ticket/Ticket";
+import PromotionDetail from "./src/screens/Promotion/PromotionDetail";
 
 
 const Stack = createStackNavigator();
@@ -64,6 +65,12 @@ export default function App() {
             name="TicketScreen"
             component={TicketScreen}
             options={{ title: "Danh sách ghế", headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="PromotionDetail"
+            component={PromotionDetail}
+            options={{ title: "Chi tiết", headerShown: false }}
           />
           
         </Stack.Navigator>

@@ -1,11 +1,11 @@
 import axiosClient from "./axiosClient";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class AuthApi {
   //[POST] auth/login
   login = (params) => {
     const url = "auth/user/login";
-    return  axiosClient.post(url, params);
+    return axiosClient.post(url, params);
   };
 
   //[GET] auth/register
@@ -19,6 +19,11 @@ class AuthApi {
     return axiosClient.get(url, params);
   };
 
+  change_password = (params) => {
+    const url = "user/password";
+    return axiosClient.patch(url, params);
+  };
+
   save_token = (response) => {
     AsyncStorage.setItem("access", response.data.data.access_token);
     AsyncStorage.setItem("refresh", response.data.data.refresh_token);
@@ -27,10 +32,11 @@ class AuthApi {
     AsyncStorage.removeItem("access");
     AsyncStorage.removeItem("refresh");
   };
+  
   save_info = (response) => {
     AsyncStorage.setItem("info", JSON.stringify(response.data.data));
   };
-  
+
   getStorageInfo = async () => {
     const value = await AsyncStorage.getItem("info");
     if (value !== null) {

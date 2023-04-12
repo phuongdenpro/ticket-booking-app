@@ -30,6 +30,13 @@ class PromotionApi {
     });
     return res;
   }
+
+  getPromotionLine(codePromotion) {
+    const url = `promotion-line?promotionCode=${codePromotion}&sort=ASC&isAll=true`;
+
+    const res = axiosClient.get(url);
+    return res;
+  }
 }
 
 const promotionApi = new PromotionApi();

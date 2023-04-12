@@ -27,10 +27,10 @@ const TabNavigator = () => {
           fontSize: 12,
         },
         tabBarIndicatorStyle: {
-          borderBottomColor: "#3c67e8",
+          borderBottomColor: "#F43E26",
           borderBottomWidth: 2,
         },
-        tabBarPressColor: "#3c67e8",
+        tabBarPressColor: "#F43E26",
       }}
     >
       <Tab.Screen
@@ -130,7 +130,7 @@ const MyTicketScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   top: {
-    backgroundColor: "#3c67e8",
+    backgroundColor: "#ea733c",
     display: "flex",
     flexDirection: "row",
 

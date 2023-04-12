@@ -62,7 +62,7 @@ const TopComponent = ({ page, setPage }) => {
           style={{
             width: "100%",
             flex: 1,
-            backgroundColor: "#3c67e8",
+            backgroundColor: "#ea733c",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
@@ -93,7 +93,7 @@ const TopComponent = ({ page, setPage }) => {
             onPress={() => setPage(SIGN_IN)}
             disabled={page === SIGN_IN ? true : false}
           >
-            <Text style={{ fontSize: 20, color: "#3c67e8" }}>Đăng nhập</Text>
+            <Text style={{ fontSize: 20, color: "#ea733c" }}>Đăng nhập</Text>
 
             {page === SIGN_IN ? (
               <View
@@ -102,7 +102,7 @@ const TopComponent = ({ page, setPage }) => {
                   bottom: 0,
                   height: 3,
                   width: "100%",
-                  backgroundColor: "#3c67e8",
+                  backgroundColor: "#ea733c",
                 }}
               ></View>
             ) : null}
@@ -117,7 +117,7 @@ const TopComponent = ({ page, setPage }) => {
             onPress={() => setPage(SIGN_UP)}
             disabled={page === SIGN_UP ? true : false}
           >
-            <Text style={{ fontSize: 20, color: "#3c67e8" }}>Đăng ký</Text>
+            <Text style={{ fontSize: 20, color: "#ea733c" }}>Đăng ký</Text>
             {page === SIGN_UP ? (
               <View
                 style={{
@@ -125,7 +125,7 @@ const TopComponent = ({ page, setPage }) => {
                   bottom: 0,
                   height: 3,
                   width: "100%",
-                  backgroundColor: "#3c67e8",
+                  backgroundColor: "#ea733c",
                 }}
               ></View>
             ) : null}
@@ -267,7 +267,7 @@ const LoginComponent = () => {
     } catch (error) {
       console.log("Failed:", error);
       ToastAndroid.showWithGravityAndOffset(
-        "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
+        error.response.data.message,
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         25,
@@ -401,7 +401,7 @@ const LoginComponent = () => {
             width: windowWidth - 60,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#3c67e8",
+            backgroundColor: "#ea733c",
             marginLeft: 30,
             marginTop: 10,
             borderRadius: 100,
