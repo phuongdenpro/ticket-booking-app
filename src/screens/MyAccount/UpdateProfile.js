@@ -1,83 +1,60 @@
-import { Button, InputItem, View, Text } from "@ant-design/react-native";
-import { padding } from "../../utils/format";
-import {
-  Image,
-  SafeAreaView,
-  ToastAndroid,
-  TouchableOpacity,
-} from "react-native";
-import { Dimensions, StyleSheet } from "react-native";
+import { Button, InputItem, Text, View } from "@ant-design/react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import {
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import authApi from "../../utils/authApi";
-import { validPassword } from "../../utils/regex";
-
+import { padding } from "../../utils/format";
+import { Avatar } from "@react-native-material/core";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import moment from "moment";
 const win = Dimensions.get("window");
 
-const UpdateProfile = ({ phone }) => {
+const UpdateProfile = ({ route }) => {
+  const info = route.params.info;
   const navigation = useNavigation();
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [reNewPassword, setReNewPassword] = useState("");
+  const [name, setName] = useState(info?.fullName || "");
+  const [email, setEmail] = useState(info?.email || "");
+  const [gender, setGender] = useState(info?.gender);
+  const [birthDay, setBirthDay] = useState(new Date(info?.birthday) || "");
+  const [address, setAddress] = useState(info?.address || "");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || birthDay;
+    setShowDatePicker(false);
+    setBirthDay(currentDate);
+  };
 
-  const onChangePassword = async () => {
-    if (password.trim() == "") {
-      ToastAndroid.showWithGravityAndOffset(
-        "Mật khẩu không được bỏ trống!",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-      return;
-    }
+  const handleShowDatePicker = () => {
+    setShowDatePicker(true);
+  };
 
-    if (!validPassword.test(newPassword)) {
-      ToastAndroid.showWithGravityAndOffset(
-        "Mật khẩu mới phải lớn hơn 6 ký tự!",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-      return;
-    }
+  console.log(name);
 
-    if (newPassword != reNewPassword) {
-      ToastAndroid.showWithGravityAndOffset(
-        "Nhập lại mật khẩu không khớp",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-      return;
-    }
+  const handleNameChange = (text) => {
+    setName(text);
+  };
 
-    try {
-      const res = await authApi.change_password({
-        oldPassword: password,
-        newPassword: newPassword,
-        confirmNewPassword: reNewPassword,
-      });
-      ToastAndroid.showWithGravityAndOffset(
-        "Đổi mật khẩu thành công",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-      navigation.goBack();
-    } catch (error) {
-      ToastAndroid.showWithGravityAndOffset(
-        error.response.data.message,
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-    }
+  const handleEmailChange = (text) => {
+    setEmail(text);
+  };
+  const handleUpdateGender = (selectedGender) => {
+    setGender(selectedGender);
+  };
+  const handleUpdateAddress = (text) => {
+    setAddress(text);
+  };
+
+  const handleSubmit = () => {
+    // Handle form submission logic here
   };
 
   return (
@@ -106,48 +83,124 @@ const UpdateProfile = ({ phone }) => {
           </Text>
         </View>
       </View>
-      <View
-        style={{
-          ...padding(10, 10),
-        }}
-      >
-        <View style={styles.viewInput}>
-          <InputItem
-            style={styles.inputform}
-            type="password"
-            placeholder="Mật khẩu cũ"
-            onChangeText={setPassword}
-          ></InputItem>
-        </View>
-        <View style={styles.viewInput}>
-          <InputItem
-            style={styles.inputform}
-            type="password"
-            placeholder="Mật khẩu mới"
-            onChangeText={setNewPassword}
-          ></InputItem>
-        </View>
-        <View style={styles.viewInput}>
-          <InputItem
-            style={styles.inputform}
-            type="password"
-            placeholder="Nhập lại mật khẩu mới"
-            onChangeText={setReNewPassword}
-          ></InputItem>
-        </View>
-        <Button
+      <View style={styles.container}>
+        <View
           style={{
-            marginTop: 10,
-            marginBottom: 10,
-            marginHorizontal: 10,
-            backgroundColor: "#F43E26",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          onPress={onChangePassword}
         >
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}>
-            Đổi mật khẩu
-          </Text>
-        </Button>
+          <Avatar
+            icon={(props) => <Icons name="account" {...props} size={50} />}
+            style={{ backgroundColor: "#f2eea4", marginRight: 5 }}
+          />
+        </View>
+        <Text style={styles.label}>Họ và tên:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Họ và tên"
+          onChangeText={handleNameChange}
+          value={name}
+        />
+        <Text style={styles.label}>Email:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={handleEmailChange}
+          value={email}
+        />
+        <Text style={styles.label}>Ngày sinh:</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.inputDate}
+            placeholder="Chọn ngày sinh"
+            value={moment(birthDay).format("DD/MM/YYYY")}
+            editable={false}
+          />
+          <TouchableOpacity onPress={handleShowDatePicker}>
+            <FontAwesome name="calendar" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        )}
+        <Text style={styles.label}>Giới tính:</Text>
+        <View style={styles.genderSelection}>
+          <TouchableOpacity
+            style={[
+              styles.genderButton,
+              gender === "M" && styles.selectedGenderButton,
+            ]}
+            onPress={() => handleUpdateGender("M")}
+          >
+            <Text
+              style={[
+                styles.genderButtonText,
+                gender === "M" && styles.selectedGenderButtonText,
+              ]}
+            >
+              Nam
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.genderButton,
+              gender === "F" && styles.selectedGenderButton,
+            ]}
+            onPress={() => handleUpdateGender("F")}
+          >
+            <Text
+              style={[
+                styles.genderButtonText,
+                gender === "F" && styles.selectedGenderButtonText,
+              ]}
+            >
+              Nữ
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.genderButton,
+              gender === "O" && styles.selectedGenderButton,
+            ]}
+            onPress={() => handleUpdateGender("O")}
+          >
+            <Text
+              style={[
+                styles.genderButtonText,
+                gender === "O" && styles.selectedGenderButtonText,
+              ]}
+            >
+              Khác
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>Chọn địa chỉ:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={handleEmailChange}
+          value={email}
+        />
+
+        <Text style={styles.label}>Số nhà:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Địa chỉ"
+          onChangeText={handleUpdateAddress}
+          value={address}
+        />
+        
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Cập nhật</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -180,5 +233,92 @@ const styles = StyleSheet.create({
   inputform: {},
   viewInput: {
     marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    // alignItems: "center",
+    padding: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  input: {
+    width: "100%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    height: 40,
+    width: "100%",
+    borderColor: "gray",
+    color: "#000",
+    marginBottom:5
+  },
+  inputDate: {
+    flex: 1,
+    color: "#000",
+  },
+  button: {
+    backgroundColor: "#ea733c",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  genderSelection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "80%",
+    marginBottom: 20,
+    marginLeft: 30,
+  },
+  genderButton: {
+    backgroundColor: "#ddd",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  selectedGenderButton: {
+    backgroundColor: "#7f58af",
+  },
+  genderButtonText: {
+    color: "#444",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  selectedGenderButtonText: {
+    color: "#fff",
+  },
+  updateButton: {
+    backgroundColor: "#7f58af",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  updateButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

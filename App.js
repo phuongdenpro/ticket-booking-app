@@ -15,7 +15,7 @@ import PromotionDetail from "./src/screens/Promotion/PromotionDetail";
 import UpdateProfile from "./src/screens/MyAccount/UpdateProfile";
 import TicketDetail from "./src/screens/MyTicket/TicketDetail";
 import Payment from "./src/screens/Payment/Payment";
-
+import ForgotScreen from "./src/screens/Login/Forgot";
 
 const Stack = createStackNavigator();
 
@@ -90,7 +90,12 @@ export default function App() {
             component={Payment}
             options={{ title: "Thanh toán", headerShown: false }}
           />
-          
+          <Stack.Screen
+            name="Forgot"
+            component={ForgotScreen}
+            options={{ title: "Quên mật khẩu", headerShown: false }}
+          />
+       
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

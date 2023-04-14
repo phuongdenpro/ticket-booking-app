@@ -36,7 +36,7 @@ const MyAccountScreen = () => {
         <View style={styles.topLeft}>
           <View style={styles.imgAvt}>
             <Avatar
-            icon={props => <Icon name="account" {...props} size={50}/>}
+              icon={(props) => <Icon name="account" {...props} size={50} />}
               style={{ backgroundColor: "#f2eea4", marginRight: 5 }}
             />
           </View>
@@ -52,7 +52,7 @@ const MyAccountScreen = () => {
 
         <View>
           <TouchableOpacity
-          onPress={()=>navigation.navigate("UpdateProfile")}
+            onPress={() => navigation.navigate("UpdateProfile", { info: info })}
           >
             <Text
               style={{

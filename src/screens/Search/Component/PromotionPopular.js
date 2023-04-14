@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -7,6 +8,7 @@ const windowWidth = Dimensions.get("window").width;
 
 const PromotionPopular = (props) => {
   const { data } = props;
+  const navigation = useNavigation();
 
   return (
     <View>
@@ -41,6 +43,9 @@ const PromotionPopular = (props) => {
                   display:'flex',
                 },
               ]}
+              onPress={() =>
+                navigation.navigate("PromotionDetail", { item: item })
+              }
             >
               <Image
                 source={{ uri: item.image }}

@@ -12,8 +12,10 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  TextInput,
   ToastAndroid,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -24,8 +26,6 @@ import authApi from "../../utils/authApi";
 import { KeyboardAvoidingView, StatusBar } from "native-base";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import FeatherIcon from "react-native-vector-icons/Feather";
-import { TextInput } from "react-native-gesture-handler";
-
 
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
@@ -42,12 +42,9 @@ const LoginScreen = (props) => {
         <TopComponent page={page} setPage={setPage}></TopComponent>
       </View>
       <View
-        style={{ height: "50%", width: "100%", backgroundColor: "#f5f5f5" }}
+        style={{ height: "70%", width: "100%", backgroundColor: "#f5f5f5" }}
       >
         {page === SIGN_IN ? <LoginComponent /> : <RegisterComponent />}
-      </View>
-      <View style={{ flex: 1 }}>
-        <FooterComponent />
       </View>
     </View>
   );
@@ -157,7 +154,9 @@ const FooterComponent = () => {
             style={{ height: 1, width: "20%", backgroundColor: "#707070" }}
           ></View>
 
-          <Text style={{marginLeft:20, marginRight:20}}>Hoặc đăng nhập bằng</Text>
+          <Text style={{ marginLeft: 20, marginRight: 20 }}>
+            Hoặc đăng nhập bằng
+          </Text>
           <View
             style={{ height: 1, width: "20%", backgroundColor: "#707070" }}
           ></View>
@@ -291,12 +290,11 @@ const LoginComponent = () => {
     }
   };
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1, marginTop: 25 }}>
+    <KeyboardAvoidingView behavior="padding">
       <View
         style={{
           height: "100%",
-          height: "100%",
-          justifyContent: "center",
+          marginTop: 60,
         }}
       >
         <Text style={{ fontSize: 24, marginLeft: 30 }}>
@@ -389,7 +387,12 @@ const LoginComponent = () => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity style={{ position: "absolute", right: 0 }}>
+          <TouchableOpacity
+            style={{ position: "absolute", right: 0 }}
+            onPress={() => {
+              navigation.navigate("Forgot");
+            }}
+          >
             <Text style={{ color: "#707070" }}>Quên mật khẩu ?</Text>
           </TouchableOpacity>
         </View>
@@ -416,59 +419,27 @@ const LoginComponent = () => {
 
 const RegisterComponent = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("superman@gmail.com");
-  const [password, setPassword] = useState("12345678");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [name, setName] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
-  const onLogin = async () => {
-    setIsLoading(true);
-    try {
-      const res = await authApi.login({
-        email: email,
-        password: password,
-      });
-      if (res.data.statusCode == 200) {
-        authApi.save_token(res);
-        handleVerifyCustomer();
-        navigation.navigate("Home");
-      } else {
-        ToastAndroid.showWithGravityAndOffset(
-          "Sai số điện thoại hoặc mật khẩu!",
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          25,
-          50
-        );
-      }
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Failed:", error);
-      ToastAndroid.showWithGravityAndOffset(
-        error.response.data.message,
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        50
-      );
-      setIsLoading(false);
-    }
+  const handleNameChange = (text) => {
+    setName(text);
   };
 
-  const handleVerifyCustomer = async () => {
-    let token = await AsyncStorage.getItem("access");
-    console.log("access", token);
-    try {
-      const res = await authApi.getInfor();
-      if (res.data.statusCode == 200) {
-        console.log("vào");
-        authApi.save_info(res);
-        console.log(await AsyncStorage.getItem("info"));
-        return;
-      }
-    } catch (error) {
-      console.log("Failed:", error);
-    }
+  const handlePhoneChange = (text) => {
+    setPhone(text);
   };
+
+  const handleSubmit = () => {
+    // Handle form submission logic here
+  };
+
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1, marginTop: 25 }}>
       <View
@@ -478,100 +449,39 @@ const RegisterComponent = () => {
           justifyContent: "center",
         }}
       >
-        <Text style={{ fontSize: 24, marginLeft: 30 }}>
-          Đăng ký tài khoản.
-        </Text>
-        <View
-          style={{
-            width: windowWidth - 60,
-            marginLeft: 30,
-            height: 45,
-            marginTop: 20,
-            flexDirection: "row",
-            backgroundColor: "white",
-            alignItems: "center",
-          }}
-        >
-          <AntIcon
-            name="user"
-            size={20}
-            color="#000"
-            style={{ marginLeft: 10 }}
+        <Text style={{ fontSize: 24, marginLeft: 30 }}>Đăng ký tài khoản.</Text>
+
+        <View style={styles.container}>
+          <Text style={styles.label}>Name:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            onChangeText={handleNameChange}
+            value={name}
           />
-          <ScrollView keyboardShouldPersistTaps="handled">
-            <TextInput
-              style={{
-                height: "100%",
-                flex: 1,
-                marginLeft: 10,
-                fontSize: 16,
-                width: "100%",
-              }}
-              autoCapitalize={false}
-              placeholder="Email hoặc số điện thoại"
-              onChangeText={setEmail}
-              defaultValue="superman@gmail.com"
-              type="email"
-            ></TextInput>
-          </ScrollView>
+          <Text style={styles.label}>Số điện thoại:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="phone"
+            onChangeText={handlePhoneChange}
+            value={phone}
+          />
+          <Text style={styles.label}>Mật khẩu:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="phone"
+            onChangeText={handlePhoneChange}
+            value={phone}
+          />
+          <Text style={styles.label}>Mật khẩu:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="phone"
+            onChangeText={handlePhoneChange}
+            value={phone}
+          />
         </View>
 
-        <View
-          style={{
-            width: windowWidth - 60,
-            marginLeft: 30,
-            height: 45,
-            marginTop: 20,
-            flexDirection: "row",
-            backgroundColor: "white",
-            alignItems: "center",
-          }}
-        >
-          <FeatherIcon
-            name="lock"
-            size={20}
-            color="#000"
-            style={{ marginLeft: 10 }}
-          />
-          <TextInput
-            style={{ height: "90%", flex: 1, marginLeft: 10, fontSize: 16 }}
-            autoCapitalize={false}
-            placeholder="Mật khẩu"
-            secureTextEntry={passwordHidden ? true : false}
-            type="password"
-            onChangeText={setPassword}
-            defaultValue="12345678"
-          ></TextInput>
-          <TouchableOpacity
-            style={{
-              height: "100%",
-              aspectRatio: 1,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => setPasswordHidden(!passwordHidden)}
-          >
-            <AntIcon
-              name="eye"
-              style={{ width: 20, height: "100%", marginTop: 25 }}
-              size={20}
-            ></AntIcon>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: windowWidth - 60,
-            marginLeft: 30,
-            height: 30,
-            marginTop: 10,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity style={{ position: "absolute", right: 0 }}>
-            <Text style={{ color: "#707070" }}>Quên mật khẩu ?</Text>
-          </TouchableOpacity>
-        </View>
         <TouchableOpacity
           style={{
             height: 50,
@@ -580,17 +490,72 @@ const RegisterComponent = () => {
             alignItems: "center",
             backgroundColor: "#ea733c",
             marginLeft: 30,
-            marginTop: 10,
             borderRadius: 100,
           }}
-          onPress={onLogin}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Đăng nhập</Text>
+          <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
         </TouchableOpacity>
         <Loader isLoading={isLoading} />
       </View>
     </KeyboardAvoidingView>
   );
 };
+const styles = StyleSheet.create({
+  top: {
+    backgroundColor: "#ea733c",
+    display: "flex",
+    flexDirection: "row",
+
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  text: {
+    marginLeft: "20%",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
+  textIn: {
+    fontSize: 20,
+    fontStyle: "italic",
+    marginTop: 40,
+  },
+
+  inputform: {},
+  viewInput: {
+    marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+
+    // alignItems: "center",
+    padding: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  input: {
+    width: "100%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  button: {
+    backgroundColor: "blue",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});
 
 export default LoginScreen;
