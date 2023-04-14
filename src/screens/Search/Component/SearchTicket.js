@@ -47,7 +47,6 @@ const SearchComponent = (props) => {
 
   const handleSearchTrip = async () => {
     setIsLoading(true);
-    console.log(selectedFromPosition?.name);
     const params = {
       fromProvinceCode: selectedFromPosition?.code,
       toProvinceCode: selectedToPosition?.code,

@@ -12,6 +12,7 @@ import TicketList from "./src/screens/Search/Component/TicketList";
 import WelcomeScreen from "./src/screens/WelCome/WelCome";
 import TicketScreen from "./src/screens/Ticket/Ticket";
 import PromotionDetail from "./src/screens/Promotion/PromotionDetail";
+import UpdateProfile from "./src/screens/MyAccount/UpdateProfile";
 
 
 const Stack = createStackNavigator();
@@ -71,6 +72,11 @@ export default function App() {
             name="PromotionDetail"
             component={PromotionDetail}
             options={{ title: "Chi tiết", headerShown: false }}
+          />
+          <Stack.Screen
+            name="UpdateProfile"
+            component={UpdateProfile}
+            options={{ title: "Cập nhật thông tin", headerShown: false }}
           />
           
         </Stack.Navigator>

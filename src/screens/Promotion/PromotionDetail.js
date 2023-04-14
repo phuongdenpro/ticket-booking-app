@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  FlatList,
   Image,
   RefreshControl,
   SafeAreaView,
@@ -48,69 +49,91 @@ const PromotionDetail = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
-      >
-        <View style={styles.top}>
-          <Icon
-            name="arrow-back"
-            size={25}
-            onPress={navigation.goBack}
-            color="white"
+      <View style={styles.top}>
+        <Icon
+          name="arrow-back"
+          size={25}
+          onPress={navigation.goBack}
+          color="white"
+        />
+        <View style={styles.topInfo}>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 17,
+              fontWeight: "bold",
+              marginLeft: 5,
+            }}
+          >
+            Chi tiết ưu đãi
+          </Text>
+        </View>
+      </View>
+      <View style={styles.content}>
+        <Image
+          source={{ uri: dataPromotion?.image }}
+          style={{ width: 150, height: 100, marginTop: 30, borderRadius: 10 }}
+        ></Image>
+        <Text
+          style={{
+            color: "#000",
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+        >
+          {dataPromotion.name}
+        </Text>
+        <Text
+          style={{
+            color: "#000",
+            fontWeight: "400",
+            fontSize: 20,
+          }}
+        >
+          Ngày kết thúc: {moment(dataPromotion.endDate).format("DD/MM/YYYY")}
+        </Text>
+      </View>
+      <View>
+        <Text
+          style={{
+            color: "#000",
+            fontWeight: "400",
+            fontSize: 20,
+            marginTop:10,
+            marginBottom:10,
+            marginLeft:10
+          }}
+        >
+          Thông tin chung
+        </Text>
+        <View style={styles.content2}>
+          <Text style={{ fontSize: 16 }}>
+            Mô tả: {dataPromotion?.description}
+          </Text>
+          <Text style={{ fontSize: 16 }}>Danh sách khuyến mãi chi tiết:</Text>
+          <FlatList
+            data={promotionLine}
+            keyExtractor={(item) => item.id.toString()}
+            style={{ margin: 10 }}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={{ fontWeight: "700", fontSize: 15 }}>
+                  - {item.title}
+                </Text>
+                <Text style={{ fontSize: 14 }}>
+                  + Loại giảm giá: {item.type}
+                </Text>
+                <Text style={{ fontSize: 14 }}>
+                  + Áp dụng cho:{" "}
+                  {item.promotionDetail.trip == null
+                    ? "Tất cả các chuyến"
+                    : item.promotionDetail.trip.name}
+                </Text>
+              </View>
+            )}
           />
-          <View style={styles.topInfo}>
-            <Text
-              style={{
-                color: "#fff",
-                fontSize: 17,
-                fontWeight: "bold",
-                marginLeft: 5,
-              }}
-            >
-              Chi tiết ưu đãi
-            </Text>
-          </View>
         </View>
-        <View style={styles.content}>
-          <Image
-            source={{ uri: dataPromotion?.image }}
-            style={{ width: 100, height: 100, marginTop: 30 }}
-          ></Image>
-          <Text
-            style={{
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-          >
-            {dataPromotion.name}
-          </Text>
-          <Text
-            style={{
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-          >
-            Ngày kết thúc: {moment(dataPromotion.endDate).format("DD/MM/YYYY")}
-          </Text>
-        </View>
-        <View>
-          <Text>Thông tin chung</Text>
-          <View style={styles.content2}>
-            <Text>Mô tả: {dataPromotion?.description}</Text>
-            <Text>Danh sách khuyến mãi:</Text>
-            {promotionLine.length > 0 &&
-              promotionLine.map((item) => (
-                <View>
-                  <Text> {item.title}</Text>
-                </View>
-              ))}
-          </View>
-        </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -127,14 +150,22 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:'#f5f5f5'
+    backgroundColor: "#d3cfcf",
+    borderRadius: 20,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
   },
-  content2:{
+  content2: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor:'#f5f5f5'
-  }
+    backgroundColor: "#edd0d0",
+    borderRadius: 20,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+  },
 });
 
 export default PromotionDetail;

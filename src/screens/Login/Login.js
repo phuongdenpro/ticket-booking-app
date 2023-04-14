@@ -44,7 +44,7 @@ const LoginScreen = (props) => {
       <View
         style={{ height: "50%", width: "100%", backgroundColor: "#f5f5f5" }}
       >
-        {page === SIGN_IN ? <LoginComponent /> : null}
+        {page === SIGN_IN ? <LoginComponent /> : <RegisterComponent />}
       </View>
       <View style={{ flex: 1 }}>
         <FooterComponent />
@@ -283,6 +283,183 @@ const LoginComponent = () => {
     try {
       const res = await authApi.getInfor();
       if (res.data.statusCode == 200) {
+        authApi.save_info(res);
+        return;
+      }
+    } catch (error) {
+      console.log("Failed:", error);
+    }
+  };
+  return (
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1, marginTop: 25 }}>
+      <View
+        style={{
+          height: "100%",
+          height: "100%",
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ fontSize: 24, marginLeft: 30 }}>
+          Đăng nhập bằng tài khoản.
+        </Text>
+        <View
+          style={{
+            width: windowWidth - 60,
+            marginLeft: 30,
+            height: 45,
+            marginTop: 20,
+            flexDirection: "row",
+            backgroundColor: "white",
+            alignItems: "center",
+          }}
+        >
+          <AntIcon
+            name="user"
+            size={20}
+            color="#000"
+            style={{ marginLeft: 10 }}
+          />
+          <ScrollView keyboardShouldPersistTaps="handled">
+            <TextInput
+              style={{
+                height: "100%",
+                flex: 1,
+                marginLeft: 10,
+                fontSize: 16,
+                width: "100%",
+              }}
+              autoCapitalize={false}
+              placeholder="Email hoặc số điện thoại"
+              onChangeText={setEmail}
+              defaultValue="superman@gmail.com"
+              type="email"
+            ></TextInput>
+          </ScrollView>
+        </View>
+
+        <View
+          style={{
+            width: windowWidth - 60,
+            marginLeft: 30,
+            height: 45,
+            marginTop: 20,
+            flexDirection: "row",
+            backgroundColor: "white",
+            alignItems: "center",
+          }}
+        >
+          <FeatherIcon
+            name="lock"
+            size={20}
+            color="#000"
+            style={{ marginLeft: 10 }}
+          />
+          <TextInput
+            style={{ height: "90%", flex: 1, marginLeft: 10, fontSize: 16 }}
+            autoCapitalize={false}
+            placeholder="Mật khẩu"
+            secureTextEntry={passwordHidden ? true : false}
+            type="password"
+            onChangeText={setPassword}
+            defaultValue="12345678"
+          ></TextInput>
+          <TouchableOpacity
+            style={{
+              height: "100%",
+              aspectRatio: 1,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => setPasswordHidden(!passwordHidden)}
+          >
+            <AntIcon
+              name="eye"
+              style={{ width: 20, height: "100%", marginTop: 25 }}
+              size={20}
+            ></AntIcon>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: windowWidth - 60,
+            marginLeft: 30,
+            height: 30,
+            marginTop: 10,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity style={{ position: "absolute", right: 0 }}>
+            <Text style={{ color: "#707070" }}>Quên mật khẩu ?</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={{
+            height: 50,
+            width: windowWidth - 60,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#ea733c",
+            marginLeft: 30,
+            marginTop: 10,
+            borderRadius: 100,
+          }}
+          onPress={onLogin}
+        >
+          <Text style={{ color: "white", fontSize: 16 }}>Đăng nhập</Text>
+        </TouchableOpacity>
+        <Loader isLoading={isLoading} />
+      </View>
+    </KeyboardAvoidingView>
+  );
+};
+
+const RegisterComponent = () => {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState("superman@gmail.com");
+  const [password, setPassword] = useState("12345678");
+  const [passwordHidden, setPasswordHidden] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const onLogin = async () => {
+    setIsLoading(true);
+    try {
+      const res = await authApi.login({
+        email: email,
+        password: password,
+      });
+      if (res.data.statusCode == 200) {
+        authApi.save_token(res);
+        handleVerifyCustomer();
+        navigation.navigate("Home");
+      } else {
+        ToastAndroid.showWithGravityAndOffset(
+          "Sai số điện thoại hoặc mật khẩu!",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Failed:", error);
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyCustomer = async () => {
+    let token = await AsyncStorage.getItem("access");
+    console.log("access", token);
+    try {
+      const res = await authApi.getInfor();
+      if (res.data.statusCode == 200) {
         console.log("vào");
         authApi.save_info(res);
         console.log(await AsyncStorage.getItem("info"));
@@ -302,7 +479,7 @@ const LoginComponent = () => {
         }}
       >
         <Text style={{ fontSize: 24, marginLeft: 30 }}>
-          Đăng nhập bằng tài khoản.
+          Đăng ký tài khoản.
         </Text>
         <View
           style={{

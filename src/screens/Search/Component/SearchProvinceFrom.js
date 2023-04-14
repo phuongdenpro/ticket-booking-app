@@ -13,6 +13,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import provinceApi from "../../../utils/provinceApi";
 import { Divider } from "@react-native-material/core";
 import Loader from "../../../components/Loader/loader";
+
 const SearchProvince = ({ navigation, route }) => {
   const [query, setQuery] = useState("");
   const [provinces, setProvinces] = useState([]);

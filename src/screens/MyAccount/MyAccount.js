@@ -51,7 +51,9 @@ const MyAccountScreen = () => {
         </View>
 
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={()=>navigation.navigate("UpdateProfile")}
+          >
             <Text
               style={{
                 color: "#fff",
@@ -165,8 +167,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     alignItems: "center",
   },
   topLeft: {

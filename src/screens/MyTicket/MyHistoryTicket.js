@@ -30,7 +30,7 @@ const TabNavigator = () => {
           borderBottomColor: "#F43E26",
           borderBottomWidth: 2,
         },
-        tabBarPressColor: "#F43E26",
+        tabBarPressColor: "#ffffff",
       }}
     >
       <Tab.Screen

@@ -75,31 +75,7 @@ const TicketList = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-      <View>
-        <TouchableOpacity
-          style={{
-            width: 70,
-            height: 30,
-            backgroundColor: "#f5f5f5",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            borderWidth: 1,
-            borderColor: "black",
-            borderRadius: 10,
-            marginTop: 10,
-            marginLeft: 5,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="playlist-edit"
-            size={25}
-            color="#ea8648"
-          />
-          <Text style={{ color: "#000" }}>Lọc</Text>
-        </TouchableOpacity>
-      </View>
+      
 
       {data.length > 0 ? (
         <FlatList
@@ -109,7 +85,7 @@ const TicketList = ({ navigation, route }) => {
           renderItem={({ item }) => (
             <View
               style={{
-                backgroundColor: "#c0f9f3",
+                backgroundColor: "#f4efba",
                 borderRadius: 20,
                 marginTop: 10,
                 marginLeft: 7,

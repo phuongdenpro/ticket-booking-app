@@ -30,7 +30,6 @@ const PromotionScreen = ({ navigation }) => {
   useEffect(() => {
     handleGetDataPromotion();
   }, []);
-  console.log(dataPromotion);
   return (
     <SafeAreaView
       style={{
