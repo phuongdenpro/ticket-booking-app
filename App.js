@@ -13,6 +13,8 @@ import WelcomeScreen from "./src/screens/WelCome/WelCome";
 import TicketScreen from "./src/screens/Ticket/Ticket";
 import PromotionDetail from "./src/screens/Promotion/PromotionDetail";
 import UpdateProfile from "./src/screens/MyAccount/UpdateProfile";
+import TicketDetail from "./src/screens/MyTicket/TicketDetail";
+import Payment from "./src/screens/Payment/Payment";
 
 
 const Stack = createStackNavigator();
@@ -77,6 +79,16 @@ export default function App() {
             name="UpdateProfile"
             component={UpdateProfile}
             options={{ title: "Cập nhật thông tin", headerShown: false }}
+          />
+          <Stack.Screen
+            name="TicketDetail"
+            component={TicketDetail}
+            options={{ title: "Chi tiết vé", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Payment"
+            component={Payment}
+            options={{ title: "Thanh toán", headerShown: false }}
           />
           
         </Stack.Navigator>

@@ -47,45 +47,6 @@ const TicketScreen = ({ navigation, route }) => {
     setIsModalVehicle(!isModalVehicle);
   };
 
-  useEffect(() => {
-    seatsFloor1.sort((a, b) => {
-      // Tách phần không có số và phần có số của tên ghế
-      const aParts = a.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
-      const bParts = b.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
-
-      // So sánh phần không có số
-      if (aParts[1] < bParts[1]) {
-        return -1;
-      } else if (aParts[1] > bParts[1]) {
-        return 1;
-      } else {
-        // So sánh phần có số
-        const aNumber = parseInt(aParts[2], 10);
-        const bNumber = parseInt(bParts[2], 10);
-        return aNumber - bNumber;
-      }
-    });
-    if (seatsFloor2.length > 0) {
-      seatsFloor2.sort((a, b) => {
-        // Tách phần không có số và phần có số của tên ghế
-        const aParts = a.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
-        const bParts = b.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
-
-        // So sánh phần không có số
-        if (aParts[1] < bParts[1]) {
-          return -1;
-        } else if (aParts[1] > bParts[1]) {
-          return 1;
-        } else {
-          // So sánh phần có số
-          const aNumber = parseInt(aParts[2], 10);
-          const bNumber = parseInt(bParts[2], 10);
-          return aNumber - bNumber;
-        }
-      });
-    }
-  }, [seatsFloor1, seatsFloor2]);
-
   const handleDataTicket = async () => {
     try {
       const res = await ticketApi.findAllTicket({
@@ -133,6 +94,42 @@ const TicketScreen = ({ navigation, route }) => {
           seatsFloor2.push(dataTicket[i]);
         }
       }
+    }
+    seatsFloor1.sort((a, b) => {
+      // Tách phần không có số và phần có số của tên ghế
+      const aParts = a.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
+      const bParts = b.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
+
+      // So sánh phần không có số
+      if (aParts[1] < bParts[1]) {
+        return -1;
+      } else if (aParts[1] > bParts[1]) {
+        return 1;
+      } else {
+        // So sánh phần có số
+        const aNumber = parseInt(aParts[2], 10);
+        const bNumber = parseInt(bParts[2], 10);
+        return aNumber - bNumber;
+      }
+    });
+    if (seatsFloor2.length > 0) {
+      seatsFloor2.sort((a, b) => {
+        // Tách phần không có số và phần có số của tên ghế
+        const aParts = a.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
+        const bParts = b.seat.name.match(/([a-zA-Z]+)([0-9]+)/);
+
+        // So sánh phần không có số
+        if (aParts[1] < bParts[1]) {
+          return -1;
+        } else if (aParts[1] > bParts[1]) {
+          return 1;
+        } else {
+          // So sánh phần có số
+          const aNumber = parseInt(aParts[2], 10);
+          const bNumber = parseInt(bParts[2], 10);
+          return aNumber - bNumber;
+        }
+      });
     }
     setSeatsFloor1(seatsFloor1);
     setSeatsFloor2(seatsFloor2);
@@ -204,6 +201,9 @@ const TicketScreen = ({ navigation, route }) => {
     setReduceAmount(total);
   }, [selectedSeats, dataPromotionResults]);
 
+  const handlePayment = async () => {
+    navigation.navigate("Payment");
+  };
   return (
     <SafeAreaView
       style={{
@@ -706,6 +706,7 @@ const TicketScreen = ({ navigation, route }) => {
               justifyContent: "center",
               borderRadius: 7,
             }}
+            onPress={handlePayment}
           >
             <Text style={{ fontSize: 15, fontWeight: "500" }}>Tiếp tục</Text>
           </TouchableOpacity>
@@ -803,7 +804,13 @@ const TicketScreen = ({ navigation, route }) => {
           <Text style={{ fontSize: 18, fontWeight: "bold" }}>Hình ảnh:</Text>
           <Image
             source={{ uri: dataTripDetail.vehicle.images[0].url }}
-            style={{ width: 150, height: 100, borderRadius: 7,marginTop:20,marginBottom:30 }}
+            style={{
+              width: 150,
+              height: 100,
+              borderRadius: 7,
+              marginTop: 20,
+              marginBottom: 30,
+            }}
           />
           <TouchableOpacity
             style={{

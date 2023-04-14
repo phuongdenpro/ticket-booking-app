@@ -17,15 +17,17 @@ import { TouchableOpacity } from "react-native";
 import moment from "moment";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
 
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-const MyTicketNow = ({ navigation }) => {
+const MyTicketNow = (props) => {
   const [data, setData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [seat, setSeat] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
+  const navigation = useNavigation();
 
   const fetchData = async () => {
     // Lấy dữ liệu từ API hoặc local storage
@@ -95,7 +97,9 @@ const MyTicketNow = ({ navigation }) => {
         </View>
         {data.length > 0 ? (
           data.map((item) => (
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={()=>navigation.navigate("TicketDetail",{item: item})}
+            >
               <View
                 style={{
                   display: "flex",
