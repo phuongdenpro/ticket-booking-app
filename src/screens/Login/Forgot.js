@@ -107,9 +107,10 @@ const ForgotScreen = (props) => {
           </Text>
         </View>
         <InputItem
-          placeholder="Số điện thoại"
+          placeholder="Email hoặc số điện thoại"
           onChangeText={setPhone}
           type="phone"
+          style={{borderWidth:1, width:'100%', borderColor:'#ccc', padding:3}}
         ></InputItem>
         <Button
           type="primary"

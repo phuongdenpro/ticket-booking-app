@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   Dimensions,
+  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -58,6 +59,11 @@ const UpdateProfile = ({ route }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      KeyboardAvoidingView = {30}
+      style={{flex:1}}
+    >
     <SafeAreaView
       style={{
         flex: 1,
@@ -89,11 +95,16 @@ const UpdateProfile = ({ route }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            marginTop:50
           }}
         >
           <Avatar
-            icon={(props) => <Icons name="account" {...props} size={50} />}
-            style={{ backgroundColor: "#f2eea4", marginRight: 5 }}
+            icon={(props) => <Icons name="account" {...props} size={70} />}
+            style={{
+              backgroundColor: "#f2eea4",
+              height: 70,
+              width: 70,
+            }}
           />
         </View>
         <Text style={styles.label}>Họ và tên:</Text>
@@ -182,27 +193,12 @@ const UpdateProfile = ({ route }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.label}>Chọn địa chỉ:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          onChangeText={handleEmailChange}
-          value={email}
-        />
-
-        <Text style={styles.label}>Số nhà:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Địa chỉ"
-          onChangeText={handleUpdateAddress}
-          value={address}
-        />
-        
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Cập nhật</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -263,7 +259,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderColor: "gray",
     color: "#000",
-    marginBottom:5
+    marginBottom: 10,
+    marginTop:10
   },
   inputDate: {
     flex: 1,
@@ -290,6 +287,7 @@ const styles = StyleSheet.create({
     width: "80%",
     marginBottom: 20,
     marginLeft: 30,
+    marginTop:10
   },
   genderButton: {
     backgroundColor: "#ddd",

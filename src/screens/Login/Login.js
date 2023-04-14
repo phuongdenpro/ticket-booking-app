@@ -442,6 +442,7 @@ const RegisterComponent = () => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1, marginTop: 25 }}>
+    <ScrollView>
       <View
         style={{
           height: "100%",
@@ -452,51 +453,60 @@ const RegisterComponent = () => {
         <Text style={{ fontSize: 24, marginLeft: 30 }}>Đăng ký tài khoản.</Text>
 
         <View style={styles.container}>
-          <Text style={styles.label}>Name:</Text>
+          <Text style={styles.label}>Họ và tên:</Text>
           <TextInput
             style={styles.input}
-            placeholder="Name"
+            placeholder="Họ và tên"
             onChangeText={handleNameChange}
             value={name}
           />
           <Text style={styles.label}>Số điện thoại:</Text>
           <TextInput
             style={styles.input}
-            placeholder="phone"
+            placeholder="Số điện thoại"
             onChangeText={handlePhoneChange}
             value={phone}
           />
           <Text style={styles.label}>Mật khẩu:</Text>
           <TextInput
             style={styles.input}
-            placeholder="phone"
+            placeholder="Mật khẩu"
             onChangeText={handlePhoneChange}
             value={phone}
           />
-          <Text style={styles.label}>Mật khẩu:</Text>
+          <Text style={styles.label}>Nhập lại mật khẩu:</Text>
           <TextInput
             style={styles.input}
-            placeholder="phone"
+            placeholder="Xác nhận mật khẩu"
             onChangeText={handlePhoneChange}
             value={phone}
           />
+          <View style={{
+            width:'100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop:25
+          }}>
+            <TouchableOpacity
+              style={{
+                height: 50,
+                width: windowWidth - 60,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#ea733c",
+                // marginLeft: 12,
+                borderRadius: 100,
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <TouchableOpacity
-          style={{
-            height: 50,
-            width: windowWidth - 60,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#ea733c",
-            marginLeft: 30,
-            borderRadius: 100,
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
-        </TouchableOpacity>
         <Loader isLoading={isLoading} />
       </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
