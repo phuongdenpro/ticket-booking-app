@@ -16,6 +16,8 @@ import UpdateProfile from "./src/screens/MyAccount/UpdateProfile";
 import TicketDetail from "./src/screens/MyTicket/TicketDetail";
 import Payment from "./src/screens/Payment/Payment";
 import ForgotScreen from "./src/screens/Login/Forgot";
+import RegisterVerifyScreen from "./src/screens/Login/RegisterVerifyScreen";
+import ForgotVerifyScreen from "./src/screens/Login/ForgotVerifyScreen";
 
 const Stack = createStackNavigator();
 
@@ -94,6 +96,18 @@ export default function App() {
             name="Forgot"
             component={ForgotScreen}
             options={{ title: "Quên mật khẩu", headerShown: false }}
+          />
+
+          <Stack.Screen
+            name="RegisterVerifyScreen"
+            component={RegisterVerifyScreen}
+            options={{ title: "Xác thực số điện thoại" }}
+          />
+          
+          <Stack.Screen
+            name="ForgotVerifyScreen"
+            component={ForgotVerifyScreen}
+            options={{ title: "Xác thực số điện thoại" }}
           />
        
         </Stack.Navigator>

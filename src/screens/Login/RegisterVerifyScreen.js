@@ -1,52 +1,82 @@
-import { Button, InputItem, View, Text } from "@ant-design/react-native";
+import {
+  Button,
+  Icon,
+  InputItem,
+  View,
+  Text,
+  Grid,
+} from "@ant-design/react-native";
 import { padding } from "../../utils/format";
-import { IconOutline } from "@ant-design/icons-react-native";
+
 import { Image } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dimensions } from "react-native";
+// import { CodeField } from 'react-native-confirmation-code-field'
 import Loader from "../../components/Loader/loader";
 import { ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import {
-  default as Icon,
-  default as MaterialIcons,
-} from "react-native-vector-icons/MaterialIcons";
 const win = Dimensions.get("window");
 
-const ForgotScreen = (props) => {
+const RegisterVerifyScreen = (props) => {
   const navigation = useNavigation();
-  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState([]);
+  const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [phone, setPhone] = useState();
 
-  const onSendOTP = async () => {
-    navigation.navigate("ForgotVerifyScreen", { phone: phone })
+  useEffect(() => {
+    if (props.route.params.phone) {
+      setPhone(props.route.params.phone);
+    }
+  }, [props.route.params.phone]);
+
+  useEffect(() => {
+    let inputItems = [];
+    for (var i = 0; i < 6; i++)
+      inputItems.push(
+        <InputItem
+          style={{
+            flex: 1,
+          }}
+          placeholder="x"
+          underlineColor="transparent"
+        ></InputItem>
+      );
+    setOtp(inputItems);
+  }, []);
+
+
+  const onVerify = async () => {
     // setIsLoading(true)
     // try {
-    //     const res = await api.account.forgot_password({
-    //         phone: phone
+    //     const res = await api.account.forgot_password_verify({
+    //         phone: phone,
+    //         code: value
     //     })
-    //     console.log("onSendOTP", res)
+    //     console.log("onVerify", res)
     //     if (res.data.code == 1) {
     //         ToastAndroid.showWithGravityAndOffset(
-    //             "Gửi OTP thành công!",
+    //             "Xác thực thành công, mật khẩu sẽ được gửi đến số điện thoại của bạn!",
     //             ToastAndroid.LONG,
     //             ToastAndroid.BOTTOM,
     //             25,
     //             50
     //         );
-    //         navigation.navigate("ForgotVerify", { phone: phone })
+    //         navigation.navigate("Login")
+    //         setIsLoading(false)
+    //         return
     //     } else {
     //         ToastAndroid.showWithGravityAndOffset(
-    //             "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
+    //             "Mã OTP không hợp lệ!",
     //             ToastAndroid.LONG,
     //             ToastAndroid.BOTTOM,
     //             25,
     //             50
     //         );
+    //         setIsLoading(false)
     //     }
-    //     setIsLoading(false)
-    // } catch {
+    // } catch (error) {
+    //     console.log('Failed:', error)
     //     ToastAndroid.showWithGravityAndOffset(
     //         "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
     //         ToastAndroid.LONG,
@@ -88,7 +118,6 @@ const ForgotScreen = (props) => {
           <Text style={{ color: "#ffffff" }}>đặt vé xe giá rẻ</Text>
         </View>
       </View>
-
       <View
         style={{
           ...padding(10, 20),
@@ -100,18 +129,20 @@ const ForgotScreen = (props) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            marginBottom: 50,
+            marginBottom: 20,
+            marginTop:15
           }}
         >
-          <Text style={{ fontSize: 30, fontWeight: "500", color: "#050f59" }}>
-            Quên mật khẩu
+          <Text style={{ fontSize: 16, fontWeight: "500", color: "#000" }}>
+            Nhập mã OTP được gửi về số <Text style={{color:'#0c1228'}}>{phone}</Text> 
           </Text>
         </View>
         <InputItem
-          placeholder="Email hoặc số điện thoại"
-          onChangeText={setPhone}
-          type="phone"
-          style={{borderWidth:1, width:'100%', borderColor:'#ccc', padding:3}}
+          type="number-pad"
+          maxLength={6}
+          value={value}
+          onChangeText={setValue}
+          placeholder="Mã OTP"
         ></InputItem>
         <Button
           type="primary"
@@ -121,29 +152,20 @@ const ForgotScreen = (props) => {
             backgroundColor: "#F9813A",
             borderColor: "black",
           }}
-          onPress={onSendOTP}
+          onPress={onVerify}
         >
-          Gửi mã OTP
+          Xác thực OTP
         </Button>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "flex-end",
           }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-            style={{ display: "flex", flexDirection: "row" }}
-          >
-            <Text style={{fontSize:17}}>Đăng nhập</Text>
-            <Icon name="navigate-next" size={25} color="black" />
-          </TouchableOpacity>
-        </View>
+        ></View>
       </View>
       <Loader isLoading={isLoading} />
     </View>
   );
 };
-export default ForgotScreen;
+
+export default RegisterVerifyScreen;

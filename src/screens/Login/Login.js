@@ -26,6 +26,8 @@ import authApi from "../../utils/authApi";
 import { KeyboardAvoidingView, StatusBar } from "native-base";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import FeatherIcon from "react-native-vector-icons/Feather";
+import { validPassword } from "../../utils/regex";
+import { validPhone } from "../../utils/regex";
 
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
@@ -421,11 +423,9 @@ const RegisterComponent = () => {
   const navigation = useNavigation();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [name, setName] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const handleNameChange = (text) => {
@@ -436,76 +436,174 @@ const RegisterComponent = () => {
     setPhone(text);
   };
 
-  const handleSubmit = () => {
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+  };
+  const handleConfirmPasswordChange = (text) => {
+    setConfirmPassword(text);
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordHidden(!passwordHidden);
+  };
+
+  const handleSubmit = async() => {
     // Handle form submission logic here
+    if (name.trim() == "") {
+      ToastAndroid.showWithGravityAndOffset(
+        "Tên không được phép bỏ trống!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    if (phone.trim() == "") {
+      ToastAndroid.showWithGravityAndOffset(
+        "Vui lòng nhập số điện thoại!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    if (!validPhone.test(phone)) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Số điện thoại nhập không đúng định dạng!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    if (password.trim() == "") {
+      ToastAndroid.showWithGravityAndOffset(
+        "Mật khẩu không được bỏ trống!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    if (!validPassword.test(password)) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Mật khẩu mới phải lớn hơn 6 ký tự!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    if (password != confirmPassword) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Nhập lại mật khẩu không khớp",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+    try{
+      const res = await authApi.register({
+        fullName: name,
+        phone: phone,
+        password: password,
+        isOtp: true
+      });
+      navigation.navigate("RegisterVerifyScreen", { phone: phone })
+    }catch(error){
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+    
   };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1, marginTop: 25 }}>
-    <ScrollView>
-      <View
-        style={{
-          height: "100%",
-          height: "100%",
-          justifyContent: "center",
-        }}
-      >
-        <Text style={{ fontSize: 24, marginLeft: 30 }}>Đăng ký tài khoản.</Text>
+      <ScrollView>
+        <View
+          style={{
+            height: "100%",
+            height: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 24, marginLeft: 30 }}>
+            Đăng ký tài khoản.
+          </Text>
 
-        <View style={styles.container}>
-          <Text style={styles.label}>Họ và tên:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Họ và tên"
-            onChangeText={handleNameChange}
-            value={name}
-          />
-          <Text style={styles.label}>Số điện thoại:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Số điện thoại"
-            onChangeText={handlePhoneChange}
-            value={phone}
-          />
-          <Text style={styles.label}>Mật khẩu:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Mật khẩu"
-            onChangeText={handlePhoneChange}
-            value={phone}
-          />
-          <Text style={styles.label}>Nhập lại mật khẩu:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Xác nhận mật khẩu"
-            onChangeText={handlePhoneChange}
-            value={phone}
-          />
-          <View style={{
-            width:'100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop:25
-          }}>
-            <TouchableOpacity
+          <View style={styles.container}>
+            <Text style={styles.label}>Họ và tên:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Họ và tên"
+              onChangeText={handleNameChange}
+              value={name}
+            />
+            <Text style={styles.label}>Số điện thoại:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Số điện thoại"
+              onChangeText={handlePhoneChange}
+              value={phone}
+            />
+            <Text style={styles.label}>Mật khẩu:</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Mật khẩu"
+              secureTextEntry={passwordHidden}
+              onChangeText={handlePasswordChange}
+              value={password}
+            />
+
+            <Text style={styles.label}>Nhập lại mật khẩu:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Xác nhận mật khẩu"
+              secureTextEntry={passwordHidden}
+              onChangeText={handleConfirmPasswordChange}
+              value={confirmPassword}
+            />
+            <View
               style={{
-                height: 50,
-                width: windowWidth - 60,
+                width: "100%",
+                display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#ea733c",
-                // marginLeft: 12,
-                borderRadius: 100,
+                marginTop: 25,
               }}
             >
-              <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  height: 50,
+                  width: windowWidth - 60,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#ea733c",
+                  // marginLeft: 12,
+                  borderRadius: 100,
+                }}
+                onPress={handleSubmit}
+              >
+                <Text style={{ color: "white", fontSize: 16 }}>Đăng ký</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
 
-        <Loader isLoading={isLoading} />
-      </View>
+          <Loader isLoading={isLoading} />
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
