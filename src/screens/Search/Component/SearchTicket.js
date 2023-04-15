@@ -46,13 +46,13 @@ const SearchComponent = (props) => {
   };
 
   const handleSearchTrip = async () => {
-    setIsLoading(true);
     const params = {
       fromProvinceCode: selectedFromPosition?.code,
       toProvinceCode: selectedToPosition?.code,
       departureTime: selectedDate,
     };
     try {
+      setIsLoading(true);
       const res = await tripApi.findAllTrip({
         isAll: true,
         ...params,
@@ -61,15 +61,23 @@ const SearchComponent = (props) => {
 
       const updatedData = await Promise.all(
         data.map(async (item) => {
-          const response1 = await priceListApi.getPrice({
+          const response = await tripApi.getTripDetailById(item.id);
+          item.trip = response?.data?.data?.trip;
+          item.vehicle = response?.data?.data?.vehicle;
+          return item;
+        })
+      );
+
+      // Gọi API để lấy giá cho từng chuyến đi
+      await Promise.all(
+        updatedData.map(async (item) => {
+          const response = await priceListApi.getPrice({
             applyDate: new Date(),
             tripDetailCode: item?.code,
             seatType: item?.vehicle?.type,
           });
-  
-          item.price = response1?.data?.data?.price;
-  
-          return item;
+
+          item.price = response?.data?.data?.price;
         })
       );
 
@@ -97,7 +105,6 @@ const SearchComponent = (props) => {
         alignItems: "center",
         marginTop: 10,
         marginBottom: 10,
-        
       }}
     >
       <View
@@ -256,7 +263,6 @@ const SearchComponent = (props) => {
           backgroundColor: "#F43E26",
           marginTop: 10,
           borderRadius: 10,
-          
         }}
         onPress={handleSearchTrip}
       >

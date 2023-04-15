@@ -17,6 +17,7 @@ import {
   default as MaterialIcons,
 } from "react-native-vector-icons/MaterialIcons";
 import { convertCurrency } from "../../../utils/curren";
+moment.locale("vi");
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -75,7 +76,6 @@ const TicketList = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-      
 
       {data.length > 0 ? (
         <FlatList
@@ -124,7 +124,9 @@ const TicketList = ({ navigation, route }) => {
                             fontWeight: "500",
                           }}
                         >
-                          {moment(item.departureTime).format("HH:MM")}
+                          {moment(item.departureTime).format(
+                            "HH:mm"
+                          )}
                         </Text>
                         <FontAwesome5
                           style={{ marginRight: 5 }}
@@ -201,7 +203,8 @@ const TicketList = ({ navigation, route }) => {
                             fontWeight: "500",
                           }}
                         >
-                          {moment(item.expectedTime).format("HH:MM")}
+                        {moment(item.expectedTime).format('HH:mm') }
+                          
                         </Text>
                         <FontAwesome5
                           style={{ marginRight: 5 }}

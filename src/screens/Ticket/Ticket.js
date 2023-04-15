@@ -61,7 +61,6 @@ const TicketScreen = ({ navigation, route }) => {
     } catch (error) {}
   };
 
-  console.log(dataTicket);
   const handlePromotion = async () => {
     try {
       const res = await promotionApi.getPromotionAvailable({

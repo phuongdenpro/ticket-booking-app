@@ -12,6 +12,16 @@ class TripApi {
     });
     return res;
   };
+
+  getTripDetailById(id, params) {
+    const url = `trip-detail/id/${id}`;
+    const res = axiosClient.get(url, {
+      params: {
+        ...params,
+      },
+    });
+    return res;
+  }
 }
 
 const tripApi = new TripApi();

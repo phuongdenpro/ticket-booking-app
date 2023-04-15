@@ -34,7 +34,7 @@ const SearchScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchTrip = async (from, to, nameFrom, nameTo) => {
-    setIsLoading(true);
+    
     const today = new Date();
 
     // Lấy ngày hôm sau
@@ -46,14 +46,39 @@ const SearchScreen = ({ navigation }) => {
       departureTime: moment(tomorrow).format("MM-DD-YYYY"),
     };
     try {
+      setIsLoading(true);
       const res = await tripApi.findAllTrip({
         isAll: true,
         ...params,
       });
 
+      const data = res?.data?.data;
+
+      const updatedData = await Promise.all(
+        data.map(async (item) => {
+          const response = await tripApi.getTripDetailById(item.id);
+          item.trip = response?.data?.data?.trip;
+          item.vehicle = response?.data?.data?.vehicle;
+          return item;
+        })
+      );
+      
+      // Gọi API để lấy giá cho từng chuyến đi
+      await Promise.all(
+        updatedData.map(async (item) => {
+          const response = await priceListApi.getPrice({
+            applyDate: new Date(),
+            tripDetailCode: item?.code,
+            seatType: item?.vehicle?.type,
+          });
+      
+          item.price = response?.data?.data?.price;
+        })
+      );
+
       setIsLoading(false);
       navigation.navigate("TicketList", {
-        data: res?.data?.data,
+        data: updatedData,
         from: nameFrom,
         to: nameTo,
         date: moment(tomorrow).format("MM-DD-YYYY"),
