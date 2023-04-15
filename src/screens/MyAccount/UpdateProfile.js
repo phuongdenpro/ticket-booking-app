@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  ToastAndroid,
 } from "react-native";
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -17,6 +18,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import { KeyboardAvoidingView } from "native-base";
+import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
 
 const UpdateProfile = ({ route }) => {
@@ -39,7 +41,6 @@ const UpdateProfile = ({ route }) => {
     setShowDatePicker(true);
   };
 
-  console.log(name);
 
   const handleNameChange = (text) => {
     setName(text);
@@ -51,12 +52,37 @@ const UpdateProfile = ({ route }) => {
   const handleUpdateGender = (selectedGender) => {
     setGender(selectedGender);
   };
-  const handleUpdateAddress = (text) => {
-    setAddress(text);
-  };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Handle form submission logic here
+    const params = {
+      fullName: name,
+      email: email == "" ? undefined : email,
+      birthDate: birthDay,
+      gender: gender,
+    };
+
+
+    try{
+      const res = await authApi.updateProfile(params);
+      ToastAndroid.showWithGravityAndOffset(
+        "Cập nhật thông tin thành công!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      authApi.save_info(res);
+
+    }catch(error){
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
   };
 
   return (
@@ -91,16 +117,13 @@ const UpdateProfile = ({ route }) => {
           </View>
         </View>
         <View style={styles.container}>
-          <KeyboardAvoidingView
-            behavior="padding"
-          >
+          <KeyboardAvoidingView behavior="padding">
             <ScrollView>
               <View
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                
                 }}
               >
                 <Avatar

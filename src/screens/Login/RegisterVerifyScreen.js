@@ -15,77 +15,82 @@ import { Dimensions } from "react-native";
 import Loader from "../../components/Loader/loader";
 import { ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import authApi from "../../utils/authApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const win = Dimensions.get("window");
 
 const RegisterVerifyScreen = (props) => {
   const navigation = useNavigation();
-  const [otp, setOtp] = useState([]);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState();
+  const [password, setPassword] = useState();
 
   useEffect(() => {
     if (props.route.params.phone) {
       setPhone(props.route.params.phone);
     }
   }, [props.route.params.phone]);
-
   useEffect(() => {
-    let inputItems = [];
-    for (var i = 0; i < 6; i++)
-      inputItems.push(
-        <InputItem
-          style={{
-            flex: 1,
-          }}
-          placeholder="x"
-          underlineColor="transparent"
-        ></InputItem>
-      );
-    setOtp(inputItems);
-  }, []);
-
+    if (props.route.params.password) {
+      setPassword(props.route.params.password);
+    }
+  }, [props.route.params.password]);
 
   const onVerify = async () => {
-    // setIsLoading(true)
-    // try {
-    //     const res = await api.account.forgot_password_verify({
-    //         phone: phone,
-    //         code: value
-    //     })
-    //     console.log("onVerify", res)
-    //     if (res.data.code == 1) {
-    //         ToastAndroid.showWithGravityAndOffset(
-    //             "Xác thực thành công, mật khẩu sẽ được gửi đến số điện thoại của bạn!",
-    //             ToastAndroid.LONG,
-    //             ToastAndroid.BOTTOM,
-    //             25,
-    //             50
-    //         );
-    //         navigation.navigate("Login")
-    //         setIsLoading(false)
-    //         return
-    //     } else {
-    //         ToastAndroid.showWithGravityAndOffset(
-    //             "Mã OTP không hợp lệ!",
-    //             ToastAndroid.LONG,
-    //             ToastAndroid.BOTTOM,
-    //             25,
-    //             50
-    //         );
-    //         setIsLoading(false)
-    //     }
-    // } catch (error) {
-    //     console.log('Failed:', error)
-    //     ToastAndroid.showWithGravityAndOffset(
-    //         "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
-    //         ToastAndroid.LONG,
-    //         ToastAndroid.BOTTOM,
-    //         25,
-    //         50
-    //     );
-    //     setIsLoading(false)
-    // }
+    setIsLoading(true);
+    console.log(value);
+    console.log(phone);
+    try {
+      const res = await authApi.activeAccount({
+        phone: phone,
+        otp: value,
+      });
+
+      ToastAndroid.showWithGravityAndOffset(
+        "Xác thực thành công!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      const params = {
+        password: password,
+        phone: phone,
+      };
+
+      const res1 = await authApi.login(params);
+
+      authApi.save_token(res1);
+      handleVerifyCustomer();
+      navigation.navigate("Home");
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Failed:", error);
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyCustomer = async () => {
+    let token = await AsyncStorage.getItem("access");
+    console.log("access", token);
+    try {
+      const res = await authApi.getInfor();
+      if (res.data.statusCode == 200) {
+        authApi.save_info(res);
+        return;
+      }
+    } catch (error) {
+      console.log("Failed:", error);
+    }
   };
 
   return (
@@ -130,11 +135,12 @@ const RegisterVerifyScreen = (props) => {
             justifyContent: "center",
             alignItems: "center",
             marginBottom: 20,
-            marginTop:15
+            marginTop: 15,
           }}
         >
           <Text style={{ fontSize: 16, fontWeight: "500", color: "#000" }}>
-            Nhập mã OTP được gửi về số <Text style={{color:'#0c1228'}}>{phone}</Text> 
+            Nhập mã OTP được gửi về số{" "}
+            <Text style={{ color: "#0c1228" }}>{phone}</Text>
           </Text>
         </View>
         <InputItem

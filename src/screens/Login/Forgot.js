@@ -12,6 +12,7 @@ import {
   default as Icon,
   default as MaterialIcons,
 } from "react-native-vector-icons/MaterialIcons";
+import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
 
 const ForgotScreen = (props) => {
@@ -20,42 +21,33 @@ const ForgotScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSendOTP = async () => {
-    navigation.navigate("ForgotVerifyScreen", { phone: phone })
-    // setIsLoading(true)
-    // try {
-    //     const res = await api.account.forgot_password({
-    //         phone: phone
-    //     })
-    //     console.log("onSendOTP", res)
-    //     if (res.data.code == 1) {
-    //         ToastAndroid.showWithGravityAndOffset(
-    //             "Gửi OTP thành công!",
-    //             ToastAndroid.LONG,
-    //             ToastAndroid.BOTTOM,
-    //             25,
-    //             50
-    //         );
-    //         navigation.navigate("ForgotVerify", { phone: phone })
-    //     } else {
-    //         ToastAndroid.showWithGravityAndOffset(
-    //             "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
-    //             ToastAndroid.LONG,
-    //             ToastAndroid.BOTTOM,
-    //             25,
-    //             50
-    //         );
-    //     }
-    //     setIsLoading(false)
-    // } catch {
-    //     ToastAndroid.showWithGravityAndOffset(
-    //         "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
-    //         ToastAndroid.LONG,
-    //         ToastAndroid.BOTTOM,
-    //         25,
-    //         50
-    //     );
-    //     setIsLoading(false)
-    // }
+    navigation.navigate("ForgotVerifyScreen", { phone: phone });
+    setIsLoading(true);
+    try {
+      const res = await authApi.sendOtp({
+        phone: phone,
+      });
+
+      ToastAndroid.showWithGravityAndOffset(
+        "Gửi OTP thành công!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      navigation.navigate("ForgotVerifyScreen", { phone: phone });
+
+      setIsLoading(false);
+    } catch {
+      ToastAndroid.showWithGravityAndOffset(
+        "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,7 +103,12 @@ const ForgotScreen = (props) => {
           placeholder="Email hoặc số điện thoại"
           onChangeText={setPhone}
           type="phone"
-          style={{borderWidth:1, width:'100%', borderColor:'#ccc', padding:3}}
+          style={{
+            borderWidth: 1,
+            width: "100%",
+            borderColor: "#ccc",
+            padding: 3,
+          }}
         ></InputItem>
         <Button
           type="primary"
@@ -137,7 +134,7 @@ const ForgotScreen = (props) => {
             }}
             style={{ display: "flex", flexDirection: "row" }}
           >
-            <Text style={{fontSize:17}}>Đăng nhập</Text>
+            <Text style={{ fontSize: 17 }}>Đăng nhập</Text>
             <Icon name="navigate-next" size={25} color="black" />
           </TouchableOpacity>
         </View>

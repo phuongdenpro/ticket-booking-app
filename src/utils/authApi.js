@@ -37,6 +37,20 @@ class AuthApi {
     AsyncStorage.setItem("info", JSON.stringify(response.data.data));
   };
 
+  activeAccount = (params) => {
+    const url = "user/active";
+    return axiosClient.post(url, params);
+  };
+  sendOtp = (params) => {
+    const url = "auth/user/send-otp";
+    return axiosClient.post(url, params);
+  };
+
+  updateProfile = (params) => {
+    const url = "user/update-info";
+    return axiosClient.patch(url, params);
+  };
+
   getStorageInfo = async () => {
     const value = await AsyncStorage.getItem("info");
     if (value !== null) {

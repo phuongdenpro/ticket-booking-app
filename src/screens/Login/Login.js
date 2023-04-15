@@ -19,7 +19,7 @@ import {
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loader from "../../components/Loader/loader";
 import authApi from "../../utils/authApi";
@@ -240,17 +240,85 @@ const FooterComponent = () => {
 };
 const LoginComponent = () => {
   const navigation = useNavigation();
-  const [email, setEmail] = useState("superman@gmail.com");
+
   const [password, setPassword] = useState("12345678");
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  // const [email, setEmail] = useState("superman@gmail.com");
+  const [inputType, setInputType] = useState("email");
+  const [inputValue, setInputValue] = useState("superman@gmail.com");
+
+  const validateInput = (inputValue) => {
+    const isPhoneNumber = /^\d{10}$/.test(inputValue);
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue);
+    return isPhoneNumber || isEmail;
+  };
+
+  const handleInputChange = (newInputValue) => {
+    setInputValue(newInputValue);
+    setInputType(
+      validateInput(newInputValue)
+        ? /@/.test(newInputValue)
+          ? "email"
+          : "phone"
+        : ""
+    );
+  };
+
+  useEffect(() => {
+    if (inputValue == "") {
+      setEmail("");
+      setPhone("");
+    }
+    if (inputType === "email") {
+      setEmail(inputValue);
+      setPhone("");
+    } else if (inputType === "phone") {
+      setPhone(inputValue);
+      setEmail("");
+    }
+  }, [inputType, inputValue]);
+
   const onLogin = async () => {
-    setIsLoading(true);
+    if (inputType === "email") {
+      if (email.trim() == "") {
+        ToastAndroid.showWithGravityAndOffset(
+          "Email hoặc số điện thoại không được phép bỏ trống!",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+        return;
+      }
+    }
+    if (inputType === "phone") {
+      if (phone.trim() == "") {
+        ToastAndroid.showWithGravityAndOffset(
+          "Email hoặc số điện thoại không được phép bỏ trống1!",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+
+        return;
+      }
+    }
     try {
-      const res = await authApi.login({
-        email: email,
+      setIsLoading(true);
+      let params;
+
+      params = {
+        email: email == "" ? undefined : email,
         password: password,
-      });
+        phone: phone == "" ? undefined : phone,
+      };
+
+      console.log(params);
+      const res = await authApi.login(params);
       if (res.data.statusCode == 200) {
         authApi.save_token(res);
         handleVerifyCustomer();
@@ -330,9 +398,10 @@ const LoginComponent = () => {
               }}
               autoCapitalize={false}
               placeholder="Email hoặc số điện thoại"
-              onChangeText={setEmail}
+              onChangeText={handleInputChange}
               defaultValue="superman@gmail.com"
               type="email"
+              value={inputValue}
             ></TextInput>
           </ScrollView>
         </View>
@@ -447,7 +516,7 @@ const RegisterComponent = () => {
     setPasswordHidden(!passwordHidden);
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     // Handle form submission logic here
     if (name.trim() == "") {
       ToastAndroid.showWithGravityAndOffset(
@@ -509,15 +578,18 @@ const RegisterComponent = () => {
       );
       return;
     }
-    try{
+    try {
       const res = await authApi.register({
         fullName: name,
         phone: phone,
         password: password,
-        isOtp: true
+        isOtp: true,
       });
-      navigation.navigate("RegisterVerifyScreen", { phone: phone })
-    }catch(error){
+      navigation.navigate("RegisterVerifyScreen", {
+        phone: phone,
+        password: password,
+      });
+    } catch (error) {
       ToastAndroid.showWithGravityAndOffset(
         error.response.data.message,
         ToastAndroid.LONG,
@@ -526,7 +598,6 @@ const RegisterComponent = () => {
         50
       );
     }
-    
   };
 
   return (

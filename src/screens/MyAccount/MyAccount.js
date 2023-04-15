@@ -19,6 +19,7 @@ const MyAccountScreen = () => {
   const navigation = useNavigation();
   const [info, setInfo] = useState({});
   const handleInfo = async () => {
+    
     const _info = await authApi.getStorageInfo();
     setInfo(_info);
   };
