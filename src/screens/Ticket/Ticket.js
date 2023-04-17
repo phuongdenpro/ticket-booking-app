@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import {
   default as Icon,
@@ -23,6 +24,7 @@ import promotionApi from "../../utils/promotionApi";
 import { FlatList } from "react-native";
 import { Dimensions } from "react-native";
 import Modal from "react-native-modal";
+import orderApi from "../../utils/orderApi";
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -39,6 +41,9 @@ const TicketScreen = ({ navigation, route }) => {
   const [reduceAmount, setReduceAmount] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [isModalVehicle, setIsModalVehicle] = useState(false);
+  const [itemTickets, setItemTickets] = useState([]);
+
+  // console.log(itemTickets);
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
@@ -200,8 +205,39 @@ const TicketScreen = ({ navigation, route }) => {
     setReduceAmount(total);
   }, [selectedSeats, dataPromotionResults]);
 
+  const filterItem = async () => {
+    const newArray = dataTicket.filter((item) =>
+      selectedSeats.includes(item?.id)
+    );
+
+    setItemTickets(newArray);
+  };
+
+  useEffect(() => {
+    filterItem();
+  }, [selectedSeats]);
+
   const handlePayment = async () => {
-    navigation.navigate("Payment");
+    try {
+      console.log(itemTickets);
+      const params = {
+        seatCodes: itemTickets.map((item) => item?.seat?.code),
+        tripDetailCode: dataTripDetail.code,
+        promotionLineCodes:
+          promotionCodes.length > 0 ? promotionCodes : undefined,
+      };
+
+      const res = await orderApi.booking(params);
+      navigation.navigate("Payment", { data: res?.data?.data });
+    } catch (error) {
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
   };
   return (
     <SafeAreaView

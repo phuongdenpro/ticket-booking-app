@@ -23,35 +23,36 @@ import orderApi from "../../utils/orderApi";
 import QRCode from "react-native-qrcode-svg";
 import { convertCurrency } from "../../utils/curren";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import Foundation from "react-native-vector-icons/Foundation";
 
 const Payment = ({ navigation, route }) => {
-//   const dataOrder = route.params.item;
-//   const [detail, setDetail] = useState();
-//   const [isRefreshing, setIsRefreshing] = useState(false);
-//   const [promotionLine, setPromotionLine] = useState([]);
+  const dataOrder = route.params.data;
+  const [detail, setDetail] = useState();
+  //   const [isRefreshing, setIsRefreshing] = useState(false);
+  //   const [promotionLine, setPromotionLine] = useState([]);
 
-//   const getDetail = async () => {
-//     try {
-//       const res = await orderApi.getOrderById(dataOrder.id);
-//       console.log(res?.data.data);
-//       setDetail(res?.data.data);
-//     } catch (error) {
-//       console.log("Failed:", error);
-//       ToastAndroid.showWithGravityAndOffset(
-//         error.response.data.message,
-//         ToastAndroid.LONG,
-//         ToastAndroid.BOTTOM,
-//         25,
-//         50
-//       );
-//     }
-//   };
+  const getDetail = async () => {
+    try {
+      const res = await orderApi.getOrderById(dataOrder.id);
 
-//   useEffect(() => {
-//     getDetail();
-//   }, [dataOrder]);
+      setDetail(res?.data.data);
+    } catch (error) {
+      console.log("Failed:", error);
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  };
 
-  
+  useEffect(() => {
+    getDetail();
+  }, [dataOrder]);
+
+  console.log(detail);
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <View style={styles.top}>
@@ -74,13 +75,114 @@ const Payment = ({ navigation, route }) => {
           </Text>
         </View>
       </View>
-      
+
+      <View
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: "700",
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
+          Mã QR
+        </Text>
+        <QRCode
+          value={detail?.code}
+          size={150}
+          color="#000000"
+          backgroundColor="#ffffff"
+        />
+      </View>
+
       <View style={styles.content}>
         <View style={styles.contentItem}>
           <Text style={styles.textItem}>Khách hàng:</Text>
-          
+          <Text>{detail?.customer.fullName}</Text>
         </View>
-        
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Số điện thoại:</Text>
+          <Text>{detail?.customer.phone}</Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Nơi đi:</Text>
+          <Text>
+            {
+              detail?.orderDetails[0].ticketDetail.ticket.tripDetail.trip
+                .fromStation.name
+            }
+          </Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Nơi đến:</Text>
+          <Text>
+            {
+              detail?.orderDetails[0].ticketDetail.ticket.tripDetail.trip
+                .toStation.name
+            }
+          </Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Thời gian đi:</Text>
+          <Text>
+            {moment(
+              detail?.orderDetails[0].ticketDetail.ticket.tripDetail
+                .departureTime
+            ).format("DD/MM/YYYY HH:MM")}
+          </Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Xe:</Text>
+          <Text>{detail?.orderDetails[0].ticketDetail.seat.vehicle.name}</Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Biển số:</Text>
+          <Text>
+            {detail?.orderDetails[0].ticketDetail.seat.vehicle.licensePlate}
+          </Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Danh sách ghế:</Text>
+          <Text>
+            {detail?.orderDetails
+              ?.map((item) => item.ticketDetail.seat.name)
+              .join(",")}
+          </Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Tổng tiền:</Text>
+          <Text>{convertCurrency(detail?.total)}</Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Giảm giá:</Text>
+          <Text>{convertCurrency(detail?.finalTotal - detail?.total)}</Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Thành tiền:</Text>
+          <Text>{convertCurrency(detail?.finalTotal)}</Text>
+        </View>
+        <View style={styles.contentItem}>
+          <Text style={styles.textItem}>Ngày đặt:</Text>
+          <Text>{moment(detail?.createdAt).format("DD/MM/YYYY HH:MM")}</Text>
+        </View>
+        <View style={styles.contentItem}>
+        <Text style={styles.textItem}>Trạng thái:</Text>
+        <Text style={{ color: "#f23535", fontWeight: "bold" }}>
+          <Foundation
+            name="x"
+            color={"#f23535"}
+            size={14}
+            style={{ marginLeft: 10 }}
+          />{" "}
+          {detail?.status}
+        </Text>
+      </View>
         <View
           style={{
             display: "flex",
@@ -100,7 +202,9 @@ const Payment = ({ navigation, route }) => {
               borderRadius: 7,
             }}
           >
-            <Text style={{ fontSize: 20, fontWeight:'bold', color:'#000' }}>Hủy vé</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#000" }}>
+              Tiếp tục
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

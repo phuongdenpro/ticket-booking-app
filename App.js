@@ -18,6 +18,8 @@ import Payment from "./src/screens/Payment/Payment";
 import ForgotScreen from "./src/screens/Login/Forgot";
 import RegisterVerifyScreen from "./src/screens/Login/RegisterVerifyScreen";
 import ForgotVerifyScreen from "./src/screens/Login/ForgotVerifyScreen";
+import ResetPasswordScreen from "./src/screens/Login/ResetPassword";
+import ConfirmEmailScreen from "./src/screens/MyAccount/ConfirmEmail";
 
 const Stack = createStackNavigator();
 
@@ -103,17 +105,26 @@ export default function App() {
             component={RegisterVerifyScreen}
             options={{ title: "Xác thực số điện thoại" }}
           />
-          
+
           <Stack.Screen
             name="ForgotVerifyScreen"
             component={ForgotVerifyScreen}
             options={{ title: "Xác thực số điện thoại" }}
           />
-       
+
+          <Stack.Screen
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+            options={{ title: "Đặt lại mật khẩu" }}
+          />
+          <Stack.Screen
+            name="ConfirmEmailScreen"
+            component={ConfirmEmailScreen}
+            options={{ title: "Xác thực email" }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
-    
   );
 }
 

@@ -2,7 +2,7 @@ import { Button, InputItem, View, Text } from "@ant-design/react-native";
 import { padding } from "../../utils/format";
 import { IconOutline } from "@ant-design/icons-react-native";
 import { Image } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dimensions } from "react-native";
 import Loader from "../../components/Loader/loader";
 import { ToastAndroid } from "react-native";
@@ -17,16 +17,80 @@ const win = Dimensions.get("window");
 
 const ForgotScreen = (props) => {
   const navigation = useNavigation();
-  const [phone, setPhone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  // const [email, setEmail] = useState("superman@gmail.com");
+  const [inputType, setInputType] = useState("email");
+  const [inputValue, setInputValue] = useState("superman@gmail.com");
+
+  const validateInput = (inputValue) => {
+    const isPhoneNumber = /^\d{10}$/.test(inputValue);
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue);
+    return isPhoneNumber || isEmail;
+  };
+
+  const handleInputChange = (newInputValue) => {
+    setInputValue(newInputValue);
+    setInputType(
+      validateInput(newInputValue)
+        ? /@/.test(newInputValue)
+          ? "email"
+          : "phone"
+        : ""
+    );
+  };
+
+  useEffect(() => {
+    if (inputValue == "") {
+      setEmail("");
+      setPhone("");
+    }
+    if (inputType === "email") {
+      setEmail(inputValue);
+      setPhone("");
+    } else if (inputType === "phone") {
+      setPhone(inputValue);
+      setEmail("");
+    }
+  }, [inputType, inputValue]);
+
   const onSendOTP = async () => {
-    navigation.navigate("ForgotVerifyScreen", { phone: phone });
     setIsLoading(true);
     try {
-      const res = await authApi.sendOtp({
-        phone: phone,
-      });
+      if (inputType === "email") {
+        if (email.trim() == "") {
+          ToastAndroid.showWithGravityAndOffset(
+            "Email hoặc số điện thoại không được phép bỏ trống!",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+          );
+          return;
+        }
+      }
+      if (inputType === "phone") {
+        if (phone.trim() == "") {
+          ToastAndroid.showWithGravityAndOffset(
+            "Email hoặc số điện thoại không được phép bỏ trống1!",
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50
+          );
+
+          return;
+        }
+      }
+      let params;
+
+      params = {
+        email: email == "" ? undefined : email,
+        phone: phone == "" ? undefined : phone,
+      };
+      const res = await authApi.sendOtp(params);
 
       ToastAndroid.showWithGravityAndOffset(
         "Gửi OTP thành công!",
@@ -35,7 +99,7 @@ const ForgotScreen = (props) => {
         25,
         50
       );
-      navigation.navigate("ForgotVerifyScreen", { phone: phone });
+      navigation.navigate("ForgotVerifyScreen", { phone: phone, email: email });
 
       setIsLoading(false);
     } catch {
@@ -101,7 +165,7 @@ const ForgotScreen = (props) => {
         </View>
         <InputItem
           placeholder="Email hoặc số điện thoại"
-          onChangeText={setPhone}
+          onChangeText={handleInputChange}
           type="phone"
           style={{
             borderWidth: 1,

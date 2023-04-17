@@ -19,18 +19,21 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import { KeyboardAvoidingView } from "native-base";
 import authApi from "../../utils/authApi";
+import { validEmail } from "../../utils/regex";
 const win = Dimensions.get("window");
 
 const UpdateProfile = ({ route }) => {
   const info = route.params.info;
   const navigation = useNavigation();
   const [name, setName] = useState(info?.fullName || "");
+  const emailDefault = info?.email;
   const [email, setEmail] = useState(info?.email || "");
   const [gender, setGender] = useState(info?.gender);
   const [birthDay, setBirthDay] = useState(new Date(info?.birthday) || "");
   const [address, setAddress] = useState(info?.address || "");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState(new Date());
+
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || birthDay;
     setShowDatePicker(false);
@@ -40,7 +43,6 @@ const UpdateProfile = ({ route }) => {
   const handleShowDatePicker = () => {
     setShowDatePicker(true);
   };
-
 
   const handleNameChange = (text) => {
     setName(text);
@@ -54,34 +56,90 @@ const UpdateProfile = ({ route }) => {
   };
 
   const handleSubmit = async () => {
+    // console.log(emailDefault.toLowerCase() === email.toLowerCase());
     // Handle form submission logic here
-    const params = {
-      fullName: name,
-      email: email == "" ? undefined : email,
-      birthDate: birthDay,
-      gender: gender,
-    };
 
-
-    try{
-      const res = await authApi.updateProfile(params);
+    if (name.trim() == "") {
       ToastAndroid.showWithGravityAndOffset(
-        "Cập nhật thông tin thành công!",
+        "Tên không được phép bỏ trống!",
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         25,
         50
       );
-      authApi.save_info(res);
+      return;
+    }
 
-    }catch(error){
+    if (email.trim() == "" && emailDefault != "") {
       ToastAndroid.showWithGravityAndOffset(
-        error.response.data.message,
+        "Email không được phép bỏ trống!",
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         25,
         50
       );
+      return;
+    }
+
+    if (email.trim() == "" && emailDefault != "" && !validEmail.test(email)) {
+      ToastAndroid.showWithGravityAndOffset(
+        "Email nhập không đúng định dạng!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return;
+    }
+
+    if (emailDefault.toLowerCase() === email.toLowerCase()) {
+      const params = {
+        fullName: name,
+        email: email == "" ? undefined : email,
+        birthDate: birthDay,
+        gender: gender,
+      };
+
+      try {
+        const res = await authApi.updateProfile(params);
+        ToastAndroid.showWithGravityAndOffset(
+          "Cập nhật thông tin thành công!",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+        authApi.save_info(res);
+      } catch (error) {
+        params = {
+          email: email,
+        };
+        const res = await authApi.sendOtp(params);
+        ToastAndroid.showWithGravityAndOffset(
+          error.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50
+        );
+      }
+    } else {
+      let params;
+
+      params = {
+        email: email,
+       
+      };
+      console.log(params);
+      const res = await authApi.sendOtp(params);
+      ToastAndroid.showWithGravityAndOffset(
+        "Chuyển trang!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      navigation.navigate("ConfirmEmailScreen", { email: email });
     }
   };
 

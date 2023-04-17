@@ -45,6 +45,7 @@ const RegisterVerifyScreen = (props) => {
       const res = await authApi.activeAccount({
         phone: phone,
         otp: value,
+        type: "ACTIVE"
       });
 
       ToastAndroid.showWithGravityAndOffset(

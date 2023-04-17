@@ -46,6 +46,11 @@ class AuthApi {
     return axiosClient.post(url, params);
   };
 
+  resetPassword = (params) => {
+    const url = "user/reset-password";
+    return axiosClient.post(url, params);
+  };
+
   updateProfile = (params) => {
     const url = "user/update-info";
     return axiosClient.patch(url, params);

@@ -7,7 +7,7 @@ class OrderApi {
     const res = axiosClient.get(url, {
       params: {
         ...params,
-        isAll:true,
+        isAll: true,
       },
     });
     return res;
@@ -17,20 +17,25 @@ class OrderApi {
     const res = axiosClient.get(url, {
       params: {
         ...params,
-        isAll:true,
+        isAll: true,
       },
     });
     return res;
   };
 
-  getOrderById(id,params){
+  getOrderById(id, params) {
     const url = `order/id/${id}`;
     const res = axiosClient.get(url, {
       ...params,
     });
     return res;
   }
-  
+
+  booking(params) {
+    const url = `booking`;
+    const res = axiosClient.post(url, params);
+    return res;
+  }
 }
 
 const orderApi = new OrderApi();
