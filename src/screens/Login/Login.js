@@ -625,6 +625,7 @@ const RegisterComponent = () => {
             <Text style={styles.label}>Số điện thoại:</Text>
             <TextInput
               style={styles.input}
+              keyboardType="numeric"
               placeholder="Số điện thoại"
               onChangeText={handlePhoneChange}
               value={phone}

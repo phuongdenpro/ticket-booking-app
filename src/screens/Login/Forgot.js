@@ -87,7 +87,7 @@ const ForgotScreen = (props) => {
       let params;
 
       params = {
-        email: email == "" ? undefined : email,
+        oldEmail: email == "" ? undefined : email,
         phone: phone == "" ? undefined : phone,
       };
       const res = await authApi.sendOtp(params);
@@ -166,7 +166,7 @@ const ForgotScreen = (props) => {
         <InputItem
           placeholder="Email hoặc số điện thoại"
           onChangeText={handleInputChange}
-          type="phone"
+          // type="phone"
           style={{
             borderWidth: 1,
             width: "100%",

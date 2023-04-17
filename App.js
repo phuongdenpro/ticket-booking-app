@@ -21,6 +21,8 @@ import ForgotVerifyScreen from "./src/screens/Login/ForgotVerifyScreen";
 import ResetPasswordScreen from "./src/screens/Login/ResetPassword";
 import ConfirmEmailScreen from "./src/screens/MyAccount/ConfirmEmail";
 
+
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -121,7 +123,7 @@ export default function App() {
             name="ConfirmEmailScreen"
             component={ConfirmEmailScreen}
             options={{ title: "Xác thực email" }}
-          />
+          />  
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

@@ -39,14 +39,13 @@ const MyTicketNow = (props) => {
       const updatedData = await Promise.all(
         data.map(async (item) => {
           const response1 = await orderApi.getOrderById(item.id);
-  
+
           item.orderDetails = response1?.data?.data?.orderDetails;
-  
+
           return item;
         })
       );
       setData(updatedData);
-      
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +56,6 @@ const MyTicketNow = (props) => {
     setIsRefreshing(false);
   };
 
-
   const getOrderAvailable = async () => {
     try {
       const res = await orderApi.getOrderAvailable();
@@ -65,14 +63,13 @@ const MyTicketNow = (props) => {
       const updatedData = await Promise.all(
         data.map(async (item) => {
           const response1 = await orderApi.getOrderById(item.id);
-  
+
           item.orderDetails = response1?.data?.data?.orderDetails;
-  
+
           return item;
         })
       );
       setData(updatedData);
-
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +95,15 @@ const MyTicketNow = (props) => {
         {data.length > 0 ? (
           data.map((item) => (
             <TouchableOpacity
-            onPress={()=>navigation.navigate("TicketDetail",{item: item})}
+              key={item.id}
+              onPress={() =>
+                navigation.navigate("TicketDetail", {
+                  item: item,
+                  orderAvailable: {
+                    fn:getOrderAvailable
+                  },
+                })
+              }
             >
               <View
                 style={{

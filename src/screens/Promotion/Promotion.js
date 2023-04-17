@@ -105,7 +105,7 @@ const PromotionScreen = ({ navigation }) => {
                 fontSize: 20,
               }}
             >
-              Bạn chưa có thông báo nào
+              Hiện tại chưa có ưu đãi nào
             </Text>
             <Text
               style={{
@@ -115,8 +115,8 @@ const PromotionScreen = ({ navigation }) => {
                 marginTop: 5,
               }}
             >
-              Bạn sẽ nhận được thông báo khi có thông tin cập nhật về vé, chuyến
-              đi
+              Bạn sẽ nhận được ưu đãi khi có thông tin cập nhật về ưu đãi,
+              chương trình khuyến mãi
             </Text>
           </View>
         )}

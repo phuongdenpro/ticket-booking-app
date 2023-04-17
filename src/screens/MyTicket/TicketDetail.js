@@ -1,34 +1,31 @@
-import React, { useState } from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import {
-  FlatList,
-  Image,
-  RefreshControl,
+  Alert,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import COLORS from "../../consts/color";
-import {
-  default as Icon,
-  default as MaterialIcons,
-} from "react-native-vector-icons/MaterialIcons";
-import moment from "moment";
-import promotionApi from "../../utils/promotionApi";
-import { useEffect } from "react";
-import orderApi from "../../utils/orderApi";
 import QRCode from "react-native-qrcode-svg";
-import { convertCurrency } from "../../utils/curren";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import {
+  default as Icon
+} from "react-native-vector-icons/MaterialIcons";
+import COLORS from "../../consts/color";
+import { convertCurrency } from "../../utils/curren";
+import orderApi from "../../utils/orderApi";
 
 const TicketDetail = ({ navigation, route }) => {
   const dataOrder = route.params.item;
+  const { orderAvailable } = route.params;
+  const  getOrderAvailable  = orderAvailable.fn;
   const [detail, setDetail] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [promotionLine, setPromotionLine] = useState([]);
+
 
   const getDetail = async () => {
     try {
@@ -60,6 +57,40 @@ const TicketDetail = ({ navigation, route }) => {
     setIsRefreshing(true);
     fetchData();
     setIsRefreshing(false);
+  };
+
+  const handleCancel = async () => {
+    Alert.alert("Xác nhận", "Bạn có chắc muốn hủy vé không?", [
+      {
+        text: "Hủy",
+        style: "cancel",
+      },
+      {
+        text: "Đồng ý",
+        onPress: async () => {
+          // Xử lý khi người dùng xác nhận hủy
+          try {
+            const res = await orderApi.updateStatusOrder(detail?.code, {
+              status: "Hoàn tiền trả vé",
+            });
+
+            Alert.alert(
+              "Hủy thành công, gọi hotline 035.404.3344 để nhân viên hoàn tiền"
+            );
+            getOrderAvailable();
+            navigation.navigate("Vé của tôi");
+          } catch (error) {
+            ToastAndroid.showWithGravityAndOffset(
+              error.response.data.message,
+              ToastAndroid.LONG,
+              ToastAndroid.BOTTOM,
+              25,
+              50
+            );
+          }
+        },
+      },
+    ]);
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
@@ -203,8 +234,11 @@ const TicketDetail = ({ navigation, route }) => {
               justifyContent: "center",
               borderRadius: 7,
             }}
+            onPress={handleCancel}
           >
-            <Text style={{ fontSize: 20, fontWeight:'bold', color:'#000' }}>Hủy vé</Text>
+            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#000" }}>
+              Hủy vé
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

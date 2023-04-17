@@ -57,7 +57,6 @@ const MyTicketCancel = ({ navigation }) => {
     setIsRefreshing(false);
   };
 
-
   const getOrderHistory = async () => {
     try {
       const res = await orderApi.getOrderHistory({
@@ -92,6 +91,7 @@ const MyTicketCancel = ({ navigation }) => {
         {data.length > 0 ? (
           data.map((item) => (
             <View
+              key={item.id}
               style={{
                 display: "flex",
                 flexDirection: "row",

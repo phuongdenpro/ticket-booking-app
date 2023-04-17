@@ -36,6 +36,12 @@ class OrderApi {
     const res = axiosClient.post(url, params);
     return res;
   }
+
+  updateStatusOrder(code,params){
+    const url = `order/code/${code}`;
+    const res = axiosClient.patch(url,params);
+    return res;
+  }
 }
 
 const orderApi = new OrderApi();

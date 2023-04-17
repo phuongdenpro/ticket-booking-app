@@ -25,6 +25,7 @@ const win = Dimensions.get("window");
 const UpdateProfile = ({ route }) => {
   const info = route.params.info;
   const navigation = useNavigation();
+  const [phone, setPhone] = useState(info?.phone || "");
   const [name, setName] = useState(info?.fullName || "");
   const emailDefault = info?.email;
   const [email, setEmail] = useState(info?.email || "");
@@ -127,19 +128,29 @@ const UpdateProfile = ({ route }) => {
       let params;
 
       params = {
-        email: email,
-       
+        newEmail: email,
+
+        phone: phone,
       };
       console.log(params);
       const res = await authApi.sendOtp(params);
+      
       ToastAndroid.showWithGravityAndOffset(
-        "Chuyển trang!",
+        "Gửi mã OTP thành công!",
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         25,
         50
       );
-      navigation.navigate("ConfirmEmailScreen", { email: email });
+      navigation.navigate("ConfirmEmailScreen", {
+        email: email,
+        params:{
+          fullName: name,
+          birthDate: birthDay,
+          gender: gender,
+        }
+        
+      });
     }
   };
 

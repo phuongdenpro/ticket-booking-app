@@ -20,10 +20,11 @@ import {
   
   const ConfirmEmailScreen = (props) => {
     const navigation = useNavigation();
-    const [otp, setOtp] = useState([]);
     const [value, setValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState();
+    const params = props.route.params.params;
+   
   
     useEffect(() => {
       if (props.route.params.email) {
@@ -31,42 +32,29 @@ import {
       }
     }, [props.route.params.email]);
   
-    console.log(email);
-  
-    useEffect(() => {
-      let inputItems = [];
-      for (var i = 0; i < 6; i++)
-        inputItems.push(
-          <InputItem
-            style={{
-              flex: 1,
-            }}
-            placeholder="x"
-            underlineColor="transparent"
-          ></InputItem>
-        );
-      setOtp(inputItems);
-    }, []);
+    
   
     const onVerify = async () => {
       try {
-        console.log(phone);
-        const res = await authApi.activeAccount({
+        console.log(email);
+        const parasUpdate = {
           email: email,
           otp: value,
-          type: "RESET_PASSWORD",
-        });
+          ...params
+        }
+        console.log(parasUpdate);
+        const res = await authApi.updateProfile(parasUpdate);
+
   
         ToastAndroid.showWithGravityAndOffset(
-          "Xác thực thành công!",
+          "Cập nhật tài khoản thành công!",
           ToastAndroid.LONG,
           ToastAndroid.BOTTOM,
           25,
           50
         );
-        navigation.navigate("ResetPasswordScreen", {
-          email: email,
-        });
+        authApi.save_info(res);
+        navigation.navigate('Tài khoản')
       } catch (error) {
         ToastAndroid.showWithGravityAndOffset(
           error.response.data.message,
@@ -77,45 +65,7 @@ import {
         );
       }
   
-      // setIsLoading(true)
-      // try {
-      //     const res = await api.account.forgot_password_verify({
-      //         phone: phone,
-      //         code: value
-      //     })
-      //     console.log("onVerify", res)
-      //     if (res.data.code == 1) {
-      //         ToastAndroid.showWithGravityAndOffset(
-      //             "Xác thực thành công, mật khẩu sẽ được gửi đến số điện thoại của bạn!",
-      //             ToastAndroid.LONG,
-      //             ToastAndroid.BOTTOM,
-      //             25,
-      //             50
-      //         );
-      //         navigation.navigate("Login")
-      //         setIsLoading(false)
-      //         return
-      //     } else {
-      //         ToastAndroid.showWithGravityAndOffset(
-      //             "Mã OTP không hợp lệ!",
-      //             ToastAndroid.LONG,
-      //             ToastAndroid.BOTTOM,
-      //             25,
-      //             50
-      //         );
-      //         setIsLoading(false)
-      //     }
-      // } catch (error) {
-      //     console.log('Failed:', error)
-      //     ToastAndroid.showWithGravityAndOffset(
-      //         "Có lỗi xảy ra, vui lòng thử lại sau ít phút!",
-      //         ToastAndroid.LONG,
-      //         ToastAndroid.BOTTOM,
-      //         25,
-      //         50
-      //     );
-      //     setIsLoading(false)
-      // }
+      
     };
   
     return (

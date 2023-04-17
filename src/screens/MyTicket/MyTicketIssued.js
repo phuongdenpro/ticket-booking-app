@@ -17,11 +17,13 @@ import { TouchableOpacity } from "react-native";
 import moment from "moment";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
 
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-const MyTicketIssued = ({ navigation }) => {
+const MyTicketIssued = (props) => {
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [seat, setSeat] = useState([]);
@@ -55,7 +57,6 @@ const MyTicketIssued = ({ navigation }) => {
     fetchData();
     setIsRefreshing(false);
   };
-
 
   const getOrderHistory = async () => {
     try {
@@ -91,6 +92,7 @@ const MyTicketIssued = ({ navigation }) => {
         {data.length > 0 ? (
           data.map((item) => (
             <View
+              key={item.id}
               style={{
                 display: "flex",
                 flexDirection: "row",
