@@ -246,6 +246,7 @@ const SearchComponent = (props) => {
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
+            minimumDate={new Date()}
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
             style={{ width: "100%" }}
