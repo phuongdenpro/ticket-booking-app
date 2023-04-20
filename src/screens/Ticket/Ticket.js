@@ -401,48 +401,159 @@ const TicketScreen = ({ navigation, route }) => {
               </View>
             </View>
           </View>
+          {dataTripDetail?.vehicle?.totalSeat == 34 && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginRight: 0,
+                borderRadius: 10,
+              }}
+            >
+              <View style={styles.floor}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    fontWeight: "600",
+                    color: "#5b4e4e",
+                  }}
+                >
+                  Tầng dưới
+                </Text>
+                <View>
+                  <Image
+                    style={{
+                      width: 30,
+                      height: 30,
+                      marginTop: 10,
+                      marginBottom: 20,
+                    }}
+                    source={require("../../../assets/xe-removebg-preview.png")}
+                  />
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    {seatsFloor1.slice(0, 6).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor1.slice(6, 11).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    {seatsFloor1.slice(11).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                </View>
+              </View>
 
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              marginRight: 0,
-              borderRadius: 10,
-            }}
-          >
-            <View style={styles.floor}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  textTransform: "uppercase",
-                  fontWeight: "600",
-                  color: "#5b4e4e",
-                }}
-              >
-                Tầng dưới
-              </Text>
-              <View>
-                <Image
+              <View style={styles.floor}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    fontWeight: "600",
+                    color: "#5b4e4e",
+                  }}
+                >
+                  Tầng trên
+                </Text>
+                <View
                   style={{
                     width: 30,
                     height: 30,
                     marginTop: 10,
                     marginBottom: 20,
                   }}
-                  source={require("../../../assets/xe-removebg-preview.png")}
-                />
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <View>
-                  {seatsFloor1
-                    .slice(0, Math.ceil(seatsFloor1.length / 3))
-                    .map((seat) => (
+                ></View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    {seatsFloor2.slice(0, 6).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -461,18 +572,17 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
-                </View>
-                <View>
-                  {seatsFloor1
-                    .slice(
-                      Math.ceil(seatsFloor1.length / 3),
-                      Math.ceil((seatsFloor1.length * 2) / 3)
-                    )
-                    .map((seat) => (
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor2.slice(6, 11).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -491,15 +601,16 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
-                </View>
-                <View>
-                  {seatsFloor1
-                    .slice(Math.ceil((seatsFloor1.length * 2) / 3))
-                    .map((seat) => (
+                  </View>
+                  <View>
+                    {seatsFloor2.slice(11).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -518,43 +629,239 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
+                  </View>
                 </View>
               </View>
             </View>
+          )}
+          {dataTripDetail?.vehicle?.totalSeat == 44 && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginRight: 0,
+                borderRadius: 10,
+              }}
+            >
+              <View style={styles.floor}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    fontWeight: "600",
+                    color: "#5b4e4e",
+                  }}
+                >
+                  Tầng dưới
+                </Text>
+                <View>
+                  <Image
+                    style={{
+                      width: 30,
+                      height: 30,
+                      marginTop: 10,
+                      marginBottom: 20,
+                    }}
+                    source={require("../../../assets/xe-removebg-preview.png")}
+                  />
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    {seatsFloor1.slice(0, 7).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor1.slice(7, 8).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor1.slice(8, 14).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor1.slice(14, 15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    {seatsFloor1.slice(15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                </View>
+              </View>
 
-            <View style={styles.floor}>
-              <Text
-                style={{
-                  textAlign: "center",
-                  textTransform: "uppercase",
-                  fontWeight: "600",
-                  color: "#5b4e4e",
-                }}
-              >
-                Tầng trên
-              </Text>
-              <View
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 10,
-                  marginBottom: 20,
-                }}
-              ></View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <View>
-                  {seatsFloor2
-                    .slice(0, Math.ceil(seatsFloor2.length / 3))
-                    .map((seat) => (
+              <View style={styles.floor}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    fontWeight: "600",
+                    color: "#5b4e4e",
+                  }}
+                >
+                  Tầng trên
+                </Text>
+                <View
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginTop: 10,
+                    marginBottom: 20,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    {seatsFloor2.slice(0, 7).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -573,18 +880,22 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
-                </View>
-                <View>
-                  {seatsFloor2
-                    .slice(
-                      Math.ceil(seatsFloor2.length / 3),
-                      Math.ceil((seatsFloor2.length * 2) / 3)
-                    )
-                    .map((seat) => (
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor2.slice(7, 8).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -603,15 +914,17 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
-                </View>
-                <View>
-                  {seatsFloor2
-                    .slice(Math.ceil((seatsFloor2.length * 2) / 3))
-                    .map((seat) => (
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor2.slice(8, 14).map((seat) => (
                       <TouchableWithoutFeedback
                         key={seat.id}
                         onPress={() => handleSeatClick(seat?.id)}
@@ -630,14 +943,238 @@ const TicketScreen = ({ navigation, route }) => {
                             },
                           ]}
                         >
-                          <Text> {seat?.seat?.name}</Text>
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
                         </View>
                       </TouchableWithoutFeedback>
                     ))}
+                  </View>
+                  <View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    <View style={styles.seatNone}></View>
+                    {seatsFloor2.slice(14, 15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    {seatsFloor2.slice(15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
+          )}
+          {dataTripDetail?.vehicle?.totalSeat == 28 && (
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginRight: 0,
+                borderRadius: 10,
+              }}
+            >
+              <View style={styles.floor}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    textTransform: "uppercase",
+                    fontWeight: "600",
+                    color: "#5b4e4e",
+                  }}
+                >
+                  {""}
+                </Text>
+                <View>
+                  <Image
+                    style={{
+                      width: 30,
+                      height: 30,
+                      marginTop: 10,
+                      marginBottom: 20,
+                    }}
+                    source={require("../../../assets/xe-removebg-preview.png")}
+                  />
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <View>
+                    {seatsFloor1.slice(0, 7).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  
+                  <View>
+                    {seatsFloor1.slice(7, 15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    {seatsFloor2.slice(0, 7).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                  <View>
+                    {seatsFloor2.slice(7, 15).map((seat) => (
+                      <TouchableWithoutFeedback
+                        key={seat.id}
+                        onPress={() => handleSeatClick(seat?.id)}
+                      >
+                        <View
+                          style={[
+                            styles.seat,
+                            selectedSeats.includes(seat?.id)
+                              ? styles.seatSelected
+                              : "",
+                            seat.status === "Đang chờ thanh toán" && {
+                              backgroundColor: "rgb(217, 255, 0)",
+                            },
+                            seat.status === "Đã bán" && {
+                              backgroundColor: "rgb(102, 255, 0)",
+                            },
+                          ]}
+                        >
+                          <Text style={styles.seatName}>
+                            {" "}
+                            {seat?.seat?.name}
+                          </Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ))}
+                  </View>
+                </View>
+              </View>
+
+              
+            </View>
+          )}
+
           {optionPromotion.length > 0 && (
             <View style={{ marginTop: 10, marginBottom: 20 }}>
               <Text style={{ fontWeight: "700", color: "#7c6d6d" }}>
@@ -884,7 +1421,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   content: {
-    height: "75%",
+    height: "80%",
     marginLeft: 20,
     marginRight: 20,
   },
@@ -896,7 +1433,7 @@ const styles = StyleSheet.create({
   floor: {
     backgroundColor: "#f5f5f5",
     borderRadius: 15,
-    padding: 15,
+    padding: 5,
   },
   seatContent: {
     backgroundColor: "#ccc",
@@ -919,8 +1456,22 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 5,
     textAlign: "center",
-    width: 40,
-    height: 50,
+    width: 25,
+    height: 30,
+    fontSize: 14,
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  seatNone: {
+    // backgroundColor: "#ccc",
+    // borderWidth: 1,
+    // borderColor: "#aaa",
+    borderRadius: 5,
+    margin: 5,
+    textAlign: "center",
+    width: 25,
+    height: 30,
     fontSize: 14,
     fontWeight: "bold",
     justifyContent: "center",
@@ -929,6 +1480,9 @@ const styles = StyleSheet.create({
   seatSelected: {
     backgroundColor: "rgb(0, 174, 255)",
     color: "#FFF",
+  },
+  seatName: {
+    fontSize: 10,
   },
 });
 
