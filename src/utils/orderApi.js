@@ -42,6 +42,12 @@ class OrderApi {
     const res = axiosClient.patch(url,params);
     return res;
   }
+
+  bookingZalo(code,params) {
+    const url = `booking/zalopay-payment-url/${code}`;
+    const res = axiosClient.get(url, params);
+    return res;
+  }
 }
 
 const orderApi = new OrderApi();

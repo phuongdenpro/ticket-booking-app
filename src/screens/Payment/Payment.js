@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  Linking,
 } from "react-native";
 import COLORS from "../../consts/color";
 import {
@@ -24,6 +25,7 @@ import QRCode from "react-native-qrcode-svg";
 import { convertCurrency } from "../../utils/curren";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Foundation from "react-native-vector-icons/Foundation";
+import { Alert } from "react-native";
 
 const Payment = ({ navigation, route }) => {
   const dataOrder = route.params.data;
@@ -47,10 +49,39 @@ const Payment = ({ navigation, route }) => {
       );
     }
   };
-
+  console.log(detail);
   useEffect(() => {
     getDetail();
   }, [dataOrder]);
+
+  const onPayment = async () => {
+    try {
+      const res = await orderApi.bookingZalo(dataOrder.code);
+
+      const url = res?.data?.data?.zalo?.order_url;
+      console.log(url);
+      navigation.navigate("PaymentScreen", { url: url, dataOrder: dataOrder });
+    } catch (error) {
+      console.log("Failed:", error);
+      ToastAndroid.showWithGravityAndOffset(
+        error.response.data.message,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  };
+
+  const onGoback = async () => {
+    try {
+      const res = await orderApi.updateStatusOrder(dataOrder.code, {
+        status: "Hủy đặt vé",
+      });
+
+      navigation.goBack();
+    } catch (error) {}
+  };
 
   console.log(detail);
   return (
@@ -59,7 +90,7 @@ const Payment = ({ navigation, route }) => {
         <Icon
           name="arrow-back"
           size={25}
-          onPress={navigation.goBack}
+          onPress={onGoback}
           color="white"
         />
         <View style={styles.topInfo}>
@@ -172,17 +203,17 @@ const Payment = ({ navigation, route }) => {
           <Text>{moment(detail?.createdAt).format("DD/MM/YYYY HH:MM")}</Text>
         </View>
         <View style={styles.contentItem}>
-        <Text style={styles.textItem}>Trạng thái:</Text>
-        <Text style={{ color: "#f23535", fontWeight: "bold" }}>
-          <Foundation
-            name="x"
-            color={"#f23535"}
-            size={14}
-            style={{ marginLeft: 10 }}
-          />{" "}
-          {detail?.status}
-        </Text>
-      </View>
+          <Text style={styles.textItem}>Trạng thái:</Text>
+          <Text style={{ color: "#f23535", fontWeight: "bold" }}>
+            <Foundation
+              name="x"
+              color={"#f23535"}
+              size={14}
+              style={{ marginLeft: 10 }}
+            />{" "}
+            {detail?.status}
+          </Text>
+        </View>
         <View
           style={{
             display: "flex",
@@ -201,6 +232,7 @@ const Payment = ({ navigation, route }) => {
               justifyContent: "center",
               borderRadius: 7,
             }}
+            onPress={onPayment}
           >
             <Text style={{ fontSize: 20, fontWeight: "bold", color: "#000" }}>
               Tiếp tục

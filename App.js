@@ -20,6 +20,7 @@ import RegisterVerifyScreen from "./src/screens/Login/RegisterVerifyScreen";
 import ForgotVerifyScreen from "./src/screens/Login/ForgotVerifyScreen";
 import ResetPasswordScreen from "./src/screens/Login/ResetPassword";
 import ConfirmEmailScreen from "./src/screens/MyAccount/ConfirmEmail";
+import PaymentScreen from "./src/screens/Payment/payments";
 
 
 
@@ -124,6 +125,12 @@ export default function App() {
             component={ConfirmEmailScreen}
             options={{ title: "Xác thực email" }}
           />  
+          <Stack.Screen
+            name="PaymentScreen"
+            component={PaymentScreen}
+            options={{ title: "Thanh toán" }}
+          /> 
+          
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

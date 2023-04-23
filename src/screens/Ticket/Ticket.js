@@ -41,7 +41,9 @@ const TicketScreen = ({ navigation, route }) => {
   const [reduceAmount, setReduceAmount] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [isModalVehicle, setIsModalVehicle] = useState(false);
+  const [isModalPromotion, setIsModalPromotion] = useState(false);
   const [itemTickets, setItemTickets] = useState([]);
+  const [dataPromotionAvailable, setDataPromotionAvailable] = useState([]);
 
   // console.log(itemTickets);
 
@@ -50,6 +52,9 @@ const TicketScreen = ({ navigation, route }) => {
   };
   const toggleModalVehicle = () => {
     setIsModalVehicle(!isModalVehicle);
+  };
+  const toggleModalPromotion = () => {
+    setIsModalPromotion(!isModalPromotion);
   };
 
   const handleDataTicket = async () => {
@@ -200,11 +205,22 @@ const TicketScreen = ({ navigation, route }) => {
     let total = 0;
 
     if (dataPromotionResults.length > 0) {
-      dataPromotionResults.forEach((item) => (total += item?.amount));
+      let dataP = [];
+      dataPromotionResults.forEach((item) => {
+        if (item?.amount != 0) {
+          total += item?.amount;
+          dataP.push(item.promotionLineCode);
+        }
+      });
+      const filteredObjects = optionPromotion.filter((obj) =>
+        dataP.includes(obj.code)
+      );
+      setDataPromotionAvailable(filteredObjects);
     }
     setReduceAmount(total);
   }, [selectedSeats, dataPromotionResults]);
 
+  console.log(dataPromotionAvailable);
   const filterItem = async () => {
     const newArray = dataTicket.filter((item) =>
       selectedSeats.includes(item?.id)
@@ -1083,7 +1099,7 @@ const TicketScreen = ({ navigation, route }) => {
                       </TouchableWithoutFeedback>
                     ))}
                   </View>
-                  
+
                   <View>
                     {seatsFloor1.slice(7, 15).map((seat) => (
                       <TouchableWithoutFeedback
@@ -1170,8 +1186,6 @@ const TicketScreen = ({ navigation, route }) => {
                   </View>
                 </View>
               </View>
-
-              
             </View>
           )}
 
@@ -1213,7 +1227,23 @@ const TicketScreen = ({ navigation, route }) => {
       </ScrollView>
 
       {selectedSeats.length > 0 && (
-        <View style={styles.bottom}>
+        <View style={[styles.bottom,{height: dataPromotionAvailable.length > 0 ?"30%" :'20%',}]}>
+          {dataPromotionAvailable.length > 0 && (
+            <View style={{marginBottom:20}}>
+              <View>
+                <Text>Khuyến mãi được áp dụng:</Text>
+              </View>
+              <TouchableOpacity onPress={toggleModalPromotion}>
+                <View>
+                  <Text>
+                    ({dataPromotionAvailable.length}){" "}
+                    {dataPromotionAvailable[0].title}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+          <View></View>
           <View
             style={{
               display: "flex",
@@ -1277,6 +1307,10 @@ const TicketScreen = ({ navigation, route }) => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 7,
+              position:'absolute',
+              bottom: 10,
+              width:'100%',
+              marginLeft:15
             }}
             onPress={handlePayment}
           >
@@ -1353,7 +1387,7 @@ const TicketScreen = ({ navigation, route }) => {
             bottom: 0,
             width: "100%",
             backgroundColor: "#fff",
-            height: "50%",
+            height: "40%",
             display: "flex",
             alignItems: "center",
             // justifyContent: "center",
@@ -1403,6 +1437,73 @@ const TicketScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
       </Modal>
+      <Modal
+        isVisible={isModalPromotion}
+        onBackdropPress={toggleModalPromotion}
+        onBackButtonPress={toggleModalPromotion}
+        style={{ justifyContent: "flex-end", margin: 0 }}
+      >
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "#fff",
+            height: "50%",
+            display: "flex",
+            alignItems: "center",
+            // justifyContent: "center",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            padding: 20,
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}>
+            Danh sách khuyến mãi được áp dụng
+          </Text>
+          {dataPromotionAvailable.map((item, index) => (
+            <View>
+              <Text>
+                ({index + 1}) {item.title}
+              </Text>
+            </View>
+          ))}
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            bottom: 20,
+            width: "100%",
+            backgroundColor: "#fff",
+            height: 70,
+            display: "flex",
+            alignItems: "center",
+            // justifyContent: "center",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            padding: 10,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#f4c242",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: 50,
+              width: "90%",
+              borderRadius: 10,
+              marginTop: 10,
+            }}
+            onPress={toggleModalPromotion}
+          >
+            <Text style={{ color: "#ffffff", fontSize: 18, fontWeight: "600" }}>
+              Quay lại
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -1426,7 +1527,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   bottom: {
-    height: "20%",
+    
     backgroundColor: "#ffffff",
     padding: 15,
   },

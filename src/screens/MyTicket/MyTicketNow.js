@@ -22,12 +22,21 @@ import { useNavigation } from "@react-navigation/native";
 const win = Dimensions.get("window");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-const MyTicketNow = (props) => {
+const MyTicketNow = ({navigation}) => {
   const [data, setData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [seat, setSeat] = useState([]);
   const [orderDetails, setOrderDetails] = useState([]);
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Getting tickets...');
+      // Call your API to get tickets here...
+      getOrderAvailable()
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const fetchData = async () => {
     // Lấy dữ liệu từ API hoặc local storage
