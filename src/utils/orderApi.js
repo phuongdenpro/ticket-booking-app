@@ -44,7 +44,7 @@ class OrderApi {
   }
 
   bookingZalo(code,params) {
-    const url = `booking/zalopay-payment-url/${code}`;
+    const url = `payment/zalopay/${code}/url`;
     const res = axiosClient.get(url, params);
     return res;
   }
