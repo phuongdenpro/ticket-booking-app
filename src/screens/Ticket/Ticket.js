@@ -45,8 +45,6 @@ const TicketScreen = ({ navigation, route }) => {
   const [itemTickets, setItemTickets] = useState([]);
   const [dataPromotionAvailable, setDataPromotionAvailable] = useState([]);
 
-  // console.log(itemTickets);
-
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
@@ -220,7 +218,6 @@ const TicketScreen = ({ navigation, route }) => {
     setReduceAmount(total);
   }, [selectedSeats, dataPromotionResults]);
 
-  console.log(dataPromotionAvailable);
   const filterItem = async () => {
     const newArray = dataTicket.filter((item) =>
       selectedSeats.includes(item?.id)
@@ -235,7 +232,7 @@ const TicketScreen = ({ navigation, route }) => {
 
   const handlePayment = async () => {
     try {
-      console.log(itemTickets);
+
       const params = {
         seatCodes: itemTickets.map((item) => item?.seat?.code),
         tripDetailCode: dataTripDetail.code,
@@ -1462,7 +1459,7 @@ const TicketScreen = ({ navigation, route }) => {
             Danh sách khuyến mãi được áp dụng
           </Text>
           {dataPromotionAvailable.map((item, index) => (
-            <View>
+            <View key={item.id}>
               <Text>
                 ({index + 1}) {item.title}
               </Text>

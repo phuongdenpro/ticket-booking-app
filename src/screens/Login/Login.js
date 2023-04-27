@@ -396,7 +396,7 @@ const LoginComponent = () => {
                 fontSize: 16,
                 width: "100%",
               }}
-              // autoCapitalize={false}
+             
               placeholder="Email hoặc số điện thoại"
               onChangeText={handleInputChange}
               defaultValue="superman@gmail.com"
@@ -425,7 +425,7 @@ const LoginComponent = () => {
           />
           <TextInput
             style={{ height: "90%", flex: 1, marginLeft: 10, fontSize: 16 }}
-            // autoCapitalize={false}
+            
             placeholder="Mật khẩu"
             secureTextEntry={passwordHidden ? true : false}
             type="password"

@@ -21,11 +21,13 @@ const PaymentScreen = ({ navigation, route }) => {
       try {
         const res = await orderApi.getOrderById(dataOrder.id);
         const order = res.data.data;
+        console.log(order);
         if (order.status == "Đã thanh toán") {
           navigation.navigate("Vé của tôi");
           Alert.alert("Đặt vé thành công!");
         } else {
           navigation.goBack();
+          Alert.alert("Đã xảy ra lỗi!");
         }
       } catch (error) {}
     }

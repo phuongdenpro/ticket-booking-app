@@ -169,7 +169,7 @@ const SearchComponent = (props) => {
                 backgroundColor: "#ffffff",
               }}
               editable={false}
-              autoCapitalize={false}
+              // autoCapitalize={false}
               variant="standard"
               label="Nơi xuất phát"
               value={selectedFromPosition?.name}
@@ -206,7 +206,7 @@ const SearchComponent = (props) => {
               }}
               label="Bạn muốn đi đâu"
               editable={false}
-              autoCapitalize={false}
+              // autoCapitalize={false}
               variant="standard"
               value={selectedToPosition?.name}
             ></TextInput>
@@ -237,7 +237,7 @@ const SearchComponent = (props) => {
                 marginLeft: 20,
               }}
               editable={false}
-              autoCapitalize={false}
+              // autoCapitalize={false}
               variant="standard"
               label="Ngày đi"
               value={moment(selectedDate, "MM-DD-YYYY").format("DD-MM-YYYY")}
