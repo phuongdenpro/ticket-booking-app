@@ -72,7 +72,7 @@ const TicketScreen = ({ navigation, route }) => {
   const handlePromotion = async () => {
     try {
       const res = await promotionApi.getPromotionAvailable({
-        tripCode: dataTripDetail?.code,
+        tripCode: dataTripDetail?.trip?.code,
       });
       setOptionPromotion(res?.data?.data);
 
@@ -1448,14 +1448,14 @@ const TicketScreen = ({ navigation, route }) => {
             backgroundColor: "#fff",
             height: "50%",
             display: "flex",
-            alignItems: "center",
+            // alignItems: "center",
             // justifyContent: "center",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             padding: 20,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20, textAlign:'center' }}>
             Danh sách khuyến mãi được áp dụng
           </Text>
           {dataPromotionAvailable.map((item, index) => (
