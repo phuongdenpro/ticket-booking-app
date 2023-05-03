@@ -317,7 +317,7 @@ const LoginComponent = () => {
         phone: phone == "" ? undefined : phone,
       };
 
-      console.log(params);
+      
       const res = await authApi.login(params);
       if (res.data.statusCode == 200) {
         authApi.save_token(res);

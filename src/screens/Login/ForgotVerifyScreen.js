@@ -38,7 +38,6 @@ const ForgotVerifyScreen = (props) => {
     }
   }, [props.route.params.email]);
 
-  console.log(email);
 
   useEffect(() => {
     let inputItems = [];
@@ -57,7 +56,6 @@ const ForgotVerifyScreen = (props) => {
 
   const onVerify = async () => {
     try {
-      console.log(phone);
       const res = await authApi.activeAccount({
         phone: phone,
         email: email,

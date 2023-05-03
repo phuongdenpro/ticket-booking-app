@@ -49,7 +49,6 @@ const Payment = ({ navigation, route }) => {
       );
     }
   };
-  console.log(detail);
   useEffect(() => {
     getDetail();
   }, [dataOrder]);
