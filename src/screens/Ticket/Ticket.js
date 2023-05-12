@@ -232,7 +232,6 @@ const TicketScreen = ({ navigation, route }) => {
 
   const handlePayment = async () => {
     try {
-
       const params = {
         seatCodes: itemTickets.map((item) => item?.seat?.code),
         tripDetailCode: dataTripDetail.code,
@@ -1224,20 +1223,46 @@ const TicketScreen = ({ navigation, route }) => {
       </ScrollView>
 
       {selectedSeats.length > 0 && (
-        <View style={[styles.bottom,{height: dataPromotionAvailable.length > 0 ?"30%" :'20%',}]}>
+        <View
+          style={[
+            styles.bottom,
+            { height: dataPromotionAvailable.length > 0 ? "30%" : "20%" },
+          ]}
+        >
           {dataPromotionAvailable.length > 0 && (
-            <View style={{marginBottom:20}}>
+            <View style={{ marginBottom: 20 }}>
               <View>
-                <Text>Khuyến mãi được áp dụng:</Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Khuyến mãi:
+                </Text>
               </View>
-              <TouchableOpacity onPress={toggleModalPromotion}>
-                <View>
-                  <Text>
-                    ({dataPromotionAvailable.length}){" "}
-                    {dataPromotionAvailable[0].title}
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text>
+                  Có ({dataPromotionAvailable.length}) khuyến mãi được áp dụng
+                </Text>
+                <TouchableOpacity onPress={toggleModalPromotion}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Xem chi tiết
                   </Text>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
           <View></View>
@@ -1304,10 +1329,10 @@ const TicketScreen = ({ navigation, route }) => {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 7,
-              position:'absolute',
+              position: "absolute",
               bottom: 10,
-              width:'100%',
-              marginLeft:15
+              width: "100%",
+              marginLeft: 15,
             }}
             onPress={handlePayment}
           >
@@ -1455,7 +1480,14 @@ const TicketScreen = ({ navigation, route }) => {
             padding: 20,
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20, textAlign:'center' }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              marginBottom: 20,
+              textAlign: "center",
+            }}
+          >
             Danh sách khuyến mãi được áp dụng
           </Text>
           {dataPromotionAvailable.map((item, index) => (
@@ -1524,7 +1556,6 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   bottom: {
-    
     backgroundColor: "#ffffff",
     padding: 15,
   },

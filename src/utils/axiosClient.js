@@ -1,10 +1,10 @@
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const base_url = "http://192.168.0.5:3001";
+const base_url = "http://192.168.0.5:3001";
 // const base_url = "http://172.20.10.4:3001";
 
-const base_url = "https://ticket-booking-server.up.railway.app";
+// const base_url = "http://139.162.8.129:3001";
 const axiosClient = axios.create({
   baseURL: base_url,
   headers: {

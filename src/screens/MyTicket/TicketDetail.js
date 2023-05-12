@@ -60,36 +60,36 @@ const TicketDetail = ({ navigation, route }) => {
   };
 
   const handleCancel = async () => {
-    Alert.alert("Xác nhận", "Bạn có chắc muốn hủy vé không?", [
+    Alert.alert("Lưu ý", "Bạn vui lòng liên hệ hotline 0354.043.344 để nhân viên hỗ trợ hủy vé !", [
       {
-        text: "Hủy",
+        text: "Xác nhận",
         style: "cancel",
       },
-      {
-        text: "Đồng ý",
-        onPress: async () => {
-          // Xử lý khi người dùng xác nhận hủy
-          try {
-            const res = await orderApi.updateStatusOrder(detail?.code, {
-              status: "Hoàn tiền trả vé",
-            });
+      // {
+      //   text: "Đồng ý",
+      //   onPress: async () => {
+      //     // Xử lý khi người dùng xác nhận hủy
+      //     try {
+      //       const res = await orderApi.updateStatusOrder(detail?.code, {
+      //         status: "Hoàn tiền trả vé",
+      //       });
 
-            Alert.alert(
-              "Hủy thành công, gọi hotline 035.404.3344 để nhân viên hoàn tiền"
-            );
-            getOrderAvailable();
-            navigation.navigate("Vé của tôi");
-          } catch (error) {
-            ToastAndroid.showWithGravityAndOffset(
-              error.response.data.message,
-              ToastAndroid.LONG,
-              ToastAndroid.BOTTOM,
-              25,
-              50
-            );
-          }
-        },
-      },
+      //       Alert.alert(
+      //         "Hủy thành công, gọi hotline 035.404.3344 để nhân viên hoàn tiền"
+      //       );
+      //       getOrderAvailable();
+      //       navigation.navigate("Vé của tôi");
+      //     } catch (error) {
+      //       ToastAndroid.showWithGravityAndOffset(
+      //         error.response.data.message,
+      //         ToastAndroid.LONG,
+      //         ToastAndroid.BOTTOM,
+      //         25,
+      //         50
+      //       );
+      //     }
+      //   },
+      // },
     ]);
   };
   return (

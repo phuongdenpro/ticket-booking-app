@@ -26,7 +26,7 @@ const TicketList = ({ navigation, route }) => {
   const data = route.params?.data ?? [];
   const from = route.params.from || "Unknown";
   const to = route.params.to || "Unknown";
-  const date = moment(route.params.date, "MM-DD-YYYY").format("DD-MM-YYYY");
+  const date = moment(route.params.date, "MM-DD-YYYY").format("DD/MM/YYYY");
 
   return (
     <View style={{ backgroundColor: "#f5f5f5" }}>

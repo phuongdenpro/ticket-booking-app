@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import authApi from "../../utils/authApi";
+moment.locale('vi');
 const win = Dimensions.get("window");
 
 const MyAccountScreen = () => {

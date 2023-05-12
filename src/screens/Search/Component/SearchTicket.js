@@ -40,7 +40,7 @@ const SearchComponent = (props) => {
 
   const handleConfirm = (date) => {
     const dt = new Date(date);
-    const x = moment(dt).format("MM-DD-YYYY");
+    const x = moment(dt).format("MM/DD/YYYY");
     setSelectedDate(x);
     hideDatePicker();
   };
@@ -240,7 +240,7 @@ const SearchComponent = (props) => {
               // autoCapitalize={false}
               variant="standard"
               label="Ngày đi"
-              value={moment(selectedDate, "MM-DD-YYYY").format("DD-MM-YYYY")}
+              value={moment(selectedDate, "MM/DD/YYYY").format("DD/MM/YYYY")}
             ></TextInput>
           </TouchableOpacity>
           <DateTimePickerModal

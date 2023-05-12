@@ -74,6 +74,7 @@ const Payment = ({ navigation, route }) => {
 
   const onGoback = async () => {
     try {
+      console.log('vào');
       const res = await orderApi.updateStatusOrder(dataOrder.code, {
         status: "Hủy đặt vé",
       });
