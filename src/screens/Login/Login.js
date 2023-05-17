@@ -336,7 +336,7 @@ const LoginComponent = () => {
     } catch (error) {
       console.log("Failed:", error);
       ToastAndroid.showWithGravityAndOffset(
-        error.response.data.message,
+        "Sai số điện thoại hoặc mật khẩu!",
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM,
         25,
