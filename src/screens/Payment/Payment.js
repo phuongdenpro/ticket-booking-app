@@ -58,7 +58,6 @@ const Payment = ({ navigation, route }) => {
       const res = await orderApi.bookingZalo(dataOrder.code);
 
       const url = res?.data?.data?.zalo?.order_url;
-      console.log(url);
       navigation.navigate("PaymentScreen", { url: url, dataOrder: dataOrder });
     } catch (error) {
       console.log("Failed:", error);
@@ -74,7 +73,6 @@ const Payment = ({ navigation, route }) => {
 
   const onGoback = async () => {
     try {
-      console.log('vào');
       const res = await orderApi.updateStatusOrder(dataOrder.code, {
         status: "Hủy đặt vé",
       });
@@ -83,7 +81,6 @@ const Payment = ({ navigation, route }) => {
     } catch (error) {}
   };
 
-  console.log(detail);
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
       <View style={styles.top}>

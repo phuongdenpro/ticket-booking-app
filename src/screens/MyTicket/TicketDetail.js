@@ -27,7 +27,6 @@ const TicketDetail = ({ navigation, route }) => {
   const getDetail = async () => {
     try {
       const res = await orderApi.getOrderById(dataOrder.id);
-      console.log(res?.data.data);
       setDetail(res?.data.data);
     } catch (error) {
       console.log("Failed:", error);

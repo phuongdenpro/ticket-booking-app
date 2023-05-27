@@ -48,7 +48,6 @@ const TabNavigator = () => {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
-            console.log("vào 2");
 
             // Do something with the `navigation` object
             navigation.navigate("MyTicketIssued");
@@ -71,8 +70,6 @@ const TabNavigator = () => {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             // Prevent default action
-            console.log("vào 3");
-
             // Do something with the `navigation` object
             navigation.navigate("MyTicketCancel");
           },

@@ -36,13 +36,11 @@ import {
   
     const onVerify = async () => {
       try {
-        console.log(email);
         const parasUpdate = {
           email: email,
           otp: value,
           ...params
         }
-        console.log(parasUpdate);
         const res = await authApi.updateProfile(parasUpdate);
 
   

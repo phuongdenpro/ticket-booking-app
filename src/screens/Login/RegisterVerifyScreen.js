@@ -39,8 +39,6 @@ const RegisterVerifyScreen = (props) => {
 
   const onVerify = async () => {
     setIsLoading(true);
-    console.log(value);
-    console.log(phone);
     try {
       const res = await authApi.activeAccount({
         phone: phone,

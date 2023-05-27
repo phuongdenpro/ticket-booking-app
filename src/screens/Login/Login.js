@@ -348,7 +348,6 @@ const LoginComponent = () => {
 
   const handleVerifyCustomer = async () => {
     let token = await AsyncStorage.getItem("access");
-    console.log("access", token);
     try {
       const res = await authApi.getInfor();
       if (res.data.statusCode == 200) {
