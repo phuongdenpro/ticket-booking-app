@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "ticket-booking-app",
-    "slug": "ticket-booking-app",
+    "name": "PDBus",
+    "slug": "rnpdbus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.rnpdbus.myapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2efc2b8f-f290-4740-a9d5-763f3aeaa7ed"
+      }
     }
   }
 }
