@@ -1,11 +1,3 @@
-import {
-  Button,
-  Icon,
-  InputItem,
-  View,
-  Text,
-  Grid,
-} from "@ant-design/react-native";
 import { padding } from "../../utils/format";
 
 import { Image } from "react-native";
@@ -13,7 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { Dimensions } from "react-native";
 // import { CodeField } from 'react-native-confirmation-code-field'
 import Loader from "../../components/Loader/loader";
-import { ToastAndroid } from "react-native";
+import {
+  ToastAndroid,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
@@ -38,18 +36,17 @@ const ForgotVerifyScreen = (props) => {
     }
   }, [props.route.params.email]);
 
-
   useEffect(() => {
     let inputItems = [];
     for (var i = 0; i < 6; i++)
       inputItems.push(
-        <InputItem
+        <TextInput
           style={{
             flex: 1,
           }}
           placeholder="x"
           underlineColor="transparent"
-        ></InputItem>
+        ></TextInput>
       );
     setOtp(inputItems);
   }, []);
@@ -143,7 +140,7 @@ const ForgotVerifyScreen = (props) => {
           height: "50%",
         }}
       >
-        {" "}
+     
         <Image
           source={require("../../../assets/logo.png")}
           style={{ height: 100, width: 100 }}
@@ -177,14 +174,14 @@ const ForgotVerifyScreen = (props) => {
             </Text>
           </Text>
         </View>
-        <InputItem
+        <TextInput
           type="number-pad"
           maxLength={6}
           value={value}
           onChangeText={setValue}
           placeholder="Mã OTP"
-        ></InputItem>
-        <Button
+        ></TextInput>
+        <TouchableOpacity
           type="primary"
           style={{
             marginTop: 10,
@@ -194,8 +191,8 @@ const ForgotVerifyScreen = (props) => {
           }}
           onPress={onVerify}
         >
-          Xác thực OTP
-        </Button>
+          <Text>Xác thực OTP</Text>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",

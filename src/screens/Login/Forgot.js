@@ -1,13 +1,16 @@
-import { Button, InputItem, View, Text } from "@ant-design/react-native";
 import { padding } from "../../utils/format";
-import { IconOutline } from "@ant-design/icons-react-native";
 import { Image } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions } from "react-native";
 import Loader from "../../components/Loader/loader";
-import { ToastAndroid } from "react-native";
+import {
+  ToastAndroid,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import {
   default as Icon,
   default as MaterialIcons,
@@ -132,7 +135,6 @@ const ForgotScreen = (props) => {
           height: "50%",
         }}
       >
-        {" "}
         <Image
           source={require("../../../assets/logo.png")}
           style={{ height: 100, width: 100 }}
@@ -163,7 +165,7 @@ const ForgotScreen = (props) => {
             Quên mật khẩu
           </Text>
         </View>
-        <InputItem
+        <TextInput
           placeholder="Email hoặc số điện thoại"
           onChangeText={handleInputChange}
           // type="phone"
@@ -173,8 +175,8 @@ const ForgotScreen = (props) => {
             borderColor: "#ccc",
             padding: 3,
           }}
-        ></InputItem>
-        <Button
+        ></TextInput>
+        <TouchableOpacity
           type="primary"
           style={{
             marginTop: 10,
@@ -184,8 +186,8 @@ const ForgotScreen = (props) => {
           }}
           onPress={onSendOTP}
         >
-          Gửi mã OTP
-        </Button>
+          <Text>Gửi mã OTP</Text>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",

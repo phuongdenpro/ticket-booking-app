@@ -1,13 +1,5 @@
-import {
-  Button,
-  Icon,
-  InputItem,
-  View,
-  Text,
-  Toast,
-} from "@ant-design/react-native";
+
 import { padding } from "../../utils/format";
-// import { IconOutline } from '@ant-design/icons-react-native'
 import {
   Image,
   SafeAreaView,
@@ -16,6 +8,8 @@ import {
   ToastAndroid,
   TouchableOpacity,
   StyleSheet,
+  View,
+  Text
 } from "react-native";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -67,7 +61,7 @@ const TopComponent = ({ page, setPage }) => {
             flexDirection: "row",
           }}
         >
-          {" "}
+          
           <Image
             source={require("../../../assets/logo.png")}
             style={{ height: 100, width: 100 }}

@@ -1,4 +1,3 @@
-import { Button, InputItem, Text, View } from "@ant-design/react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
@@ -9,6 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   ToastAndroid,
+  Text,
+  View,
 } from "react-native";
 import Icons from "@expo/vector-icons/MaterialCommunityIcons";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -134,7 +135,7 @@ const UpdateProfile = ({ route }) => {
       };
       console.log(params);
       const res = await authApi.sendOtp(params);
-      
+
       ToastAndroid.showWithGravityAndOffset(
         "Gửi mã OTP thành công!",
         ToastAndroid.LONG,
@@ -144,12 +145,11 @@ const UpdateProfile = ({ route }) => {
       );
       navigation.navigate("ConfirmEmailScreen", {
         email: email,
-        params:{
+        params: {
           fullName: name,
           birthDate: birthDay,
           gender: gender,
-        }
-        
+        },
       });
     }
   };

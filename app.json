@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "PDBus",
-    "slug": "rnpdbus",
+    "slug": "pdbus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,14 +25,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.rnpdbus.myapp"
+      "package": "com.phuongdenpro.pdbus"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "2efc2b8f-f290-4740-a9d5-763f3aeaa7ed"
+        "projectId": "6e916f86-62fa-4155-b0e3-70694403d215"
       }
     }
   }

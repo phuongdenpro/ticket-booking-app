@@ -44,7 +44,7 @@ const TripPopular = (props) => {
     {
       price: 200000,
       name: "Sài Gòn - Cà Mau",
-      image: require("../../../../assets/R637096778929414583.png"),
+      image: require("../../../../assets/Cà_Mau_city_center.jpg"),
       backgroundColor: "#241b54",
       nameFrom:"Thành phố Hồ Chí Minh",
       nameTo:"Tỉnh Cà Mau",

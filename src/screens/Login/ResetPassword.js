@@ -1,27 +1,19 @@
-import {
-  Button,
-  Icon,
-  InputItem,
-  View,
-  Text,
-  Grid,
-} from "@ant-design/react-native";
-import { padding } from "../../utils/format";
 
-import { useEffect, useRef, useState } from "react";
+
+import { useState } from "react";
 import {
   Dimensions,
-  StyleSheet,
   Image,
-  SafeAreaView,
-  ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
   ToastAndroid,
   TouchableOpacity,
+  View
 } from "react-native";
 // import { CodeField } from 'react-native-confirmation-code-field'
-import Loader from "../../components/Loader/loader";
 import { useNavigation } from "@react-navigation/native";
+import Loader from "../../components/Loader/loader";
 import authApi from "../../utils/authApi";
 import { validPassword } from "../../utils/regex";
 const win = Dimensions.get("window");
@@ -129,7 +121,7 @@ const ResetPasswordScreen = (props) => {
           height: "50%",
         }}
       >
-        {" "}
+        
         <Image
           source={require("../../../assets/logo.png")}
           style={{ height: 100, width: 100 }}

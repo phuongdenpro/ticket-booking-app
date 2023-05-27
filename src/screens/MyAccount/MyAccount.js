@@ -1,5 +1,3 @@
-import { Text, View } from "@ant-design/react-native";
-
 import { Avatar } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
@@ -11,16 +9,17 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
+  Text,
+  View,
 } from "react-native";
 import authApi from "../../utils/authApi";
-moment.locale('vi');
+moment.locale("vi");
 const win = Dimensions.get("window");
 
 const MyAccountScreen = () => {
   const navigation = useNavigation();
   const [info, setInfo] = useState({});
   const handleInfo = async () => {
-    
     const _info = await authApi.getStorageInfo();
     setInfo(_info);
   };
@@ -44,7 +43,7 @@ const MyAccountScreen = () => {
           </View>
           <View style={styles.topInfo}>
             <Text style={{ color: "#fff", fontSize: 17, fontWeight: "bold" }}>
-              {info.fullName}
+              {info?.fullName}
             </Text>
             <Text style={{ color: "#fff", fontSize: 15, marginTop: 2 }}>
               {info?.customerGroup?.name}
@@ -76,15 +75,15 @@ const MyAccountScreen = () => {
       >
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Tên khách hàng</Text>
-          <Text style={styles.text}>{info.fullName}</Text>
+          <Text style={styles.text}>{info?.fullName}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Số điện thoại</Text>
-          <Text style={styles.text}>{info.phone}</Text>
+          <Text style={styles.text}>{info?.phone}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Email</Text>
-          <Text style={styles.text}>{info.email}</Text>
+          <Text style={styles.text}>{info?.email}</Text>
         </View>
         <View style={styles.itemProfileStyle}>
           <Text style={styles.text}>Ngày sinh</Text>

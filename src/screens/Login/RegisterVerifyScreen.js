@@ -1,14 +1,6 @@
-import {
-  Button,
-  Icon,
-  InputItem,
-  View,
-  Text,
-  Grid,
-} from "@ant-design/react-native";
 import { padding } from "../../utils/format";
 
-import { Image } from "react-native";
+import { Image, TouchableOpacity, TextInput, View, Text } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Dimensions } from "react-native";
 // import { CodeField } from 'react-native-confirmation-code-field'
@@ -43,7 +35,7 @@ const RegisterVerifyScreen = (props) => {
       const res = await authApi.activeAccount({
         phone: phone,
         otp: value,
-        type: "ACTIVE"
+        type: "ACTIVE",
       });
 
       ToastAndroid.showWithGravityAndOffset(
@@ -142,14 +134,14 @@ const RegisterVerifyScreen = (props) => {
             <Text style={{ color: "#0c1228" }}>{phone}</Text>
           </Text>
         </View>
-        <InputItem
+        <TextInput
           type="number-pad"
           maxLength={6}
           value={value}
           onChangeText={setValue}
           placeholder="Mã OTP"
-        ></InputItem>
-        <Button
+        ></TextInput>
+        <TouchableOpacity
           type="primary"
           style={{
             marginTop: 10,
@@ -159,8 +151,8 @@ const RegisterVerifyScreen = (props) => {
           }}
           onPress={onVerify}
         >
-          Xác thực OTP
-        </Button>
+          <Text>Xác thực OTP</Text>
+        </TouchableOpacity>
         <View
           style={{
             flexDirection: "row",

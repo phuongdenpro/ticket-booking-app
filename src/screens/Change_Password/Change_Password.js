@@ -1,16 +1,18 @@
-import { Button, InputItem, View, Text } from "@ant-design/react-native";
-import { padding } from "../../utils/format";
-import {
-  Image,
-  SafeAreaView,
-  ToastAndroid,
-  TouchableOpacity,
-} from "react-native";
-import { Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
+import {
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  ToastAndroid,
+  TouchableOpacity,
+  View
+} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import authApi from "../../utils/authApi";
+import { padding } from "../../utils/format";
 import { validPassword } from "../../utils/regex";
 
 const win = Dimensions.get("window");
@@ -112,30 +114,30 @@ const ChangePassScreen = ({ phone }) => {
         }}
       >
         <View style={styles.viewInput}>
-          <InputItem
+          <TextInput
             style={styles.inputform}
             type="password"
             placeholder="Mật khẩu cũ"
             onChangeText={setPassword}
-          ></InputItem>
+          ></TextInput>
         </View>
         <View style={styles.viewInput}>
-          <InputItem
+          <TextInput
             style={styles.inputform}
             type="password"
             placeholder="Mật khẩu mới"
             onChangeText={setNewPassword}
-          ></InputItem>
+          ></TextInput>
         </View>
         <View style={styles.viewInput}>
-          <InputItem
+          <TextInput
             style={styles.inputform}
             type="password"
             placeholder="Nhập lại mật khẩu mới"
             onChangeText={setReNewPassword}
-          ></InputItem>
+          ></TextInput>
         </View>
-        <Button
+        <TouchableOpacity
           style={{
             marginTop: 10,
             marginBottom: 10,
@@ -147,7 +149,7 @@ const ChangePassScreen = ({ phone }) => {
           <Text style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}>
             Đổi mật khẩu
           </Text>
-        </Button>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

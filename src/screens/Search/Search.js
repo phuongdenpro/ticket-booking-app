@@ -137,7 +137,7 @@ const SearchScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("Tài khoản")}
           >
             <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
-              Chào {info.fullName}
+              Chào {info?.fullName}
             </Text>
             <MaterialIcons name="navigate-next" color="#fff" size={25} />
           </TouchableOpacity>
