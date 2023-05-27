@@ -9,6 +9,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -27,7 +28,21 @@ const TicketList = ({ navigation, route }) => {
   const from = route.params.from || "Unknown";
   const to = route.params.to || "Unknown";
   const date = moment(route.params.date, "MM-DD-YYYY").format("DD/MM/YYYY");
+  const now = new Date();
 
+  const handleBooking = (item) => {
+    if (new Date(item.departureTime) > now) {
+      navigation.navigate("TicketScreen", { item: item });
+    } else {
+      ToastAndroid.showWithGravityAndOffset(
+        "Chuyến này đã khởi hành không thể đặt vé",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    }
+  };
   return (
     <View style={{ backgroundColor: "#f5f5f5" }}>
       <View style={styles.top}>
@@ -124,9 +139,7 @@ const TicketList = ({ navigation, route }) => {
                             fontWeight: "500",
                           }}
                         >
-                          {moment(item.departureTime).format(
-                            "HH:mm"
-                          )}
+                          {moment(item.departureTime).format("HH:mm")}
                         </Text>
                         <FontAwesome5
                           style={{ marginRight: 5 }}
@@ -203,8 +216,7 @@ const TicketList = ({ navigation, route }) => {
                             fontWeight: "500",
                           }}
                         >
-                        {moment(item.expectedTime).format('HH:mm') }
-                          
+                          {moment(item.expectedTime).format("HH:mm")}
                         </Text>
                         <FontAwesome5
                           style={{ marginRight: 5 }}
@@ -271,7 +283,7 @@ const TicketList = ({ navigation, route }) => {
                           color="#46c423"
                         />
                         <Text style={{ marginLeft: 7, marginTop: 3 }}>
-                          Không cần thanh toán trước
+                          Xác nhận vé tức thì
                         </Text>
                       </View>
 
@@ -282,7 +294,7 @@ const TicketList = ({ navigation, route }) => {
                           color="#46c423"
                         />
                         <Text style={{ marginLeft: 7, marginTop: 3 }}>
-                          Xác nhận vé tức thì
+                          Đảm bảo có vé
                         </Text>
                       </View>
                     </View>
@@ -297,9 +309,7 @@ const TicketList = ({ navigation, route }) => {
                         borderRadius: 10,
                         marginTop: 30,
                       }}
-                      onPress={() =>
-                        navigation.navigate("TicketScreen", { item: item })
-                      }
+                      onPress={() => handleBooking(item)}
                     >
                       <Text
                         style={{

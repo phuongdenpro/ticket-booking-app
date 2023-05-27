@@ -7,13 +7,11 @@ import {
   Text,
   ToastAndroid,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import {
-  default as Icon
-} from "react-native-vector-icons/MaterialIcons";
+import { default as Icon } from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../consts/color";
 import { convertCurrency } from "../../utils/curren";
 import orderApi from "../../utils/orderApi";
@@ -21,11 +19,10 @@ import orderApi from "../../utils/orderApi";
 const TicketDetail = ({ navigation, route }) => {
   const dataOrder = route.params.item;
   const { orderAvailable } = route.params;
-  const  getOrderAvailable  = orderAvailable.fn;
+  const getOrderAvailable = orderAvailable.fn;
   const [detail, setDetail] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [promotionLine, setPromotionLine] = useState([]);
-
 
   const getDetail = async () => {
     try {
@@ -60,37 +57,41 @@ const TicketDetail = ({ navigation, route }) => {
   };
 
   const handleCancel = async () => {
-    Alert.alert("Lưu ý", "Bạn vui lòng liên hệ hotline 0354.043.344 để nhân viên hỗ trợ hủy vé !", [
-      {
-        text: "Xác nhận",
-        style: "cancel",
-      },
-      // {
-      //   text: "Đồng ý",
-      //   onPress: async () => {
-      //     // Xử lý khi người dùng xác nhận hủy
-      //     try {
-      //       const res = await orderApi.updateStatusOrder(detail?.code, {
-      //         status: "Hoàn tiền trả vé",
-      //       });
+    Alert.alert(
+      "Lưu ý",
+      "Bạn vui lòng liên hệ hotline 0354.043.344 để nhân viên hỗ trợ hủy vé !",
+      [
+        {
+          text: "Xác nhận",
+          style: "cancel",
+        },
+        // {
+        //   text: "Đồng ý",
+        //   onPress: async () => {
+        //     // Xử lý khi người dùng xác nhận hủy
+        //     try {
+        //       const res = await orderApi.updateStatusOrder(detail?.code, {
+        //         status: "Hoàn tiền trả vé",
+        //       });
 
-      //       Alert.alert(
-      //         "Hủy thành công, gọi hotline 035.404.3344 để nhân viên hoàn tiền"
-      //       );
-      //       getOrderAvailable();
-      //       navigation.navigate("Vé của tôi");
-      //     } catch (error) {
-      //       ToastAndroid.showWithGravityAndOffset(
-      //         error.response.data.message,
-      //         ToastAndroid.LONG,
-      //         ToastAndroid.BOTTOM,
-      //         25,
-      //         50
-      //       );
-      //     }
-      //   },
-      // },
-    ]);
+        //       Alert.alert(
+        //         "Hủy thành công, gọi hotline 035.404.3344 để nhân viên hoàn tiền"
+        //       );
+        //       getOrderAvailable();
+        //       navigation.navigate("Vé của tôi");
+        //     } catch (error) {
+        //       ToastAndroid.showWithGravityAndOffset(
+        //         error.response.data.message,
+        //         ToastAndroid.LONG,
+        //         ToastAndroid.BOTTOM,
+        //         25,
+        //         50
+        //       );
+        //     }
+        //   },
+        // },
+      ]
+    );
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
@@ -129,7 +130,7 @@ const TicketDetail = ({ navigation, route }) => {
             marginBottom: 10,
           }}
         >
-          Mã QR Vé
+          Mã QR
         </Text>
         <QRCode
           value={detail?.code}
@@ -216,30 +217,13 @@ const TicketDetail = ({ navigation, route }) => {
             {detail?.status}
           </Text>
         </View>
-        <View
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              width: "100%",
-              marginTop: 10,
-              backgroundColor: "#f2e941",
-              height: 50,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 7,
-            }}
-            onPress={handleCancel}
-          >
-            <Text style={{ fontSize: 20, fontWeight: "bold", color: "#000" }}>
-              Hủy vé
-            </Text>
-          </TouchableOpacity>
+        <View style={{ display: "flex", flexDirection: "row", marginTop: 10 }}>
+          <Text style={styles.textItem}>* Lưu ý:</Text>
+          <Text style={{ marginRight: 10 }}>
+            Nếu muốn hủy vé, bạn vui lòng liên hệ hotline{" "}
+            <Text style={{ fontWeight: "bold" }}>0354.043.344</Text> để nhân
+            viên hỗ trợ hủy vé !
+          </Text>
         </View>
       </View>
     </SafeAreaView>

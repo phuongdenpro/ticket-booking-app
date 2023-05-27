@@ -107,7 +107,7 @@ export default WelcomeScreen = () => {
                 fontWeight: "500",
               }}
             >
-              PDCar
+              PDBus
             </Text>
           </Animated.View>
           <Animated.View
