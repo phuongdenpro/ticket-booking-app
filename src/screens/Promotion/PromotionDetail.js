@@ -99,9 +99,9 @@ const PromotionDetail = ({ navigation, route }) => {
             color: "#000",
             fontWeight: "400",
             fontSize: 20,
-            marginTop:10,
-            marginBottom:10,
-            marginLeft:10
+            marginTop: 10,
+            marginBottom: 10,
+            marginLeft: 10,
           }}
         >
           Thông tin chung
@@ -110,7 +110,10 @@ const PromotionDetail = ({ navigation, route }) => {
           <Text style={{ fontSize: 16 }}>
             Mô tả: {dataPromotion?.description}
           </Text>
-          <Text style={{ fontSize: 16 }}>Danh sách khuyến mãi chi tiết:</Text>
+          {promotionLine?.length > 0 && (
+            <Text style={{ fontSize: 16 }}>Danh sách khuyến mãi chi tiết:</Text>
+          )}
+
           <FlatList
             data={promotionLine}
             keyExtractor={(item) => item.id.toString()}
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
   },
   content2: {
     display: "flex",
-    backgroundColor: "#edd0d0",
+    backgroundColor: "#ddc7c7",
     borderRadius: 20,
     marginTop: 10,
     marginLeft: 10,

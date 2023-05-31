@@ -10,6 +10,8 @@ import { useNavigation } from "@react-navigation/native";
 import authApi from "../../utils/authApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const win = Dimensions.get("window");
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 const RegisterVerifyScreen = (props) => {
   const navigation = useNavigation();
@@ -101,8 +103,7 @@ const RegisterVerifyScreen = (props) => {
           flexDirection: "row",
           height: "50%",
         }}
-      >
-        {" "}
+      > 
         <Image
           source={require("../../../assets/logo.png")}
           style={{ height: 100, width: 100 }}
@@ -140,14 +141,28 @@ const RegisterVerifyScreen = (props) => {
           value={value}
           onChangeText={setValue}
           placeholder="Mã OTP"
+          style={{
+            width: "90%",
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            marginVertical: 10,
+            paddingHorizontal: 10,
+            marginLeft:20
+          }}
         ></TextInput>
         <TouchableOpacity
           type="primary"
           style={{
-            marginTop: 10,
-            marginBottom: 10,
-            backgroundColor: "#F9813A",
-            borderColor: "black",
+            height: 50,
+            width: windowWidth - 60,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#ea733c",
+            marginLeft: 10,
+            marginTop: 20,
+            marginBottom: 20,
+            borderRadius: 100,
           }}
           onPress={onVerify}
         >

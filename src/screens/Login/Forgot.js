@@ -17,6 +17,8 @@ import {
 } from "react-native-vector-icons/MaterialIcons";
 import authApi from "../../utils/authApi";
 const win = Dimensions.get("window");
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 const ForgotScreen = (props) => {
   const navigation = useNavigation();
@@ -169,20 +171,28 @@ const ForgotScreen = (props) => {
           placeholder="Email hoặc số điện thoại"
           onChangeText={handleInputChange}
           // type="phone"
+
           style={{
-            borderWidth: 1,
             width: "100%",
-            borderColor: "#ccc",
-            padding: 3,
+            height: 40,
+            borderColor: "gray",
+            borderWidth: 1,
+            marginVertical: 10,
+            paddingHorizontal: 10,
           }}
         ></TextInput>
         <TouchableOpacity
           type="primary"
           style={{
-            marginTop: 10,
-            marginBottom: 10,
-            backgroundColor: "#F9813A",
-            borderColor: "black",
+            height: 50,
+            width: windowWidth - 60,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#ea733c",
+            marginLeft: 10,
+            marginTop: 20,
+            marginBottom: 20,
+            borderRadius: 100,
           }}
           onPress={onSendOTP}
         >

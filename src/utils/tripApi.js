@@ -6,7 +6,8 @@ class TripApi {
     const url = `trip-detail`;
     const res = axiosClient.get(url, {
       params: {
-        sort:'DESC',
+        sort: "DESC",
+        isPriceDetailExist: 1,
         ...params,
       },
     });

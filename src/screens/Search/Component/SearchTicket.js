@@ -2,7 +2,13 @@ import { TextInput } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Text,
+  TouchableOpacity,
+  View,
+  ToastAndroid,
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -46,6 +52,26 @@ const SearchComponent = (props) => {
   };
 
   const handleSearchTrip = async () => {
+    if(selectedFromPosition?.code == null){
+      ToastAndroid.showWithGravityAndOffset(
+        "Vui lòng chọn nơi xuất phát",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return
+    }
+    if(selectedToPosition?.code == null){
+      ToastAndroid.showWithGravityAndOffset(
+        "Vui lòng chọn nơi đến",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+      return
+    }
     const params = {
       fromProvinceCode: selectedFromPosition?.code,
       toProvinceCode: selectedToPosition?.code,

@@ -8,7 +8,7 @@ import {
   TextInput,
   ToastAndroid,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import authApi from "../../utils/authApi";
@@ -16,6 +16,8 @@ import { padding } from "../../utils/format";
 import { validPassword } from "../../utils/regex";
 
 const win = Dimensions.get("window");
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 
 const ChangePassScreen = ({ phone }) => {
   const navigation = useNavigation();
@@ -115,34 +117,63 @@ const ChangePassScreen = ({ phone }) => {
       >
         <View style={styles.viewInput}>
           <TextInput
-            style={styles.inputform}
+            style={{
+              width: "100%",
+              height: 40,
+              borderColor: "#ddc7c7",
+              borderWidth: 1,
+              marginVertical: 10,
+              paddingHorizontal: 10,
+            }}
             type="password"
             placeholder="Mật khẩu cũ"
+            secureTextEntry={true}
             onChangeText={setPassword}
           ></TextInput>
         </View>
         <View style={styles.viewInput}>
           <TextInput
-            style={styles.inputform}
             type="password"
             placeholder="Mật khẩu mới"
             onChangeText={setNewPassword}
+            secureTextEntry={true}
+            style={{
+              width: "100%",
+              height: 40,
+              borderColor: "#ddc7c7",
+              borderWidth: 1,
+              marginVertical: 10,
+              paddingHorizontal: 10,
+            }}
           ></TextInput>
         </View>
         <View style={styles.viewInput}>
           <TextInput
-            style={styles.inputform}
+            style={{
+              width: "100%",
+              height: 40,
+              borderColor: "#ddc7c7",
+              borderWidth: 1,
+              marginVertical: 10,
+              paddingHorizontal: 10,
+            }}
             type="password"
+            secureTextEntry={true}
             placeholder="Nhập lại mật khẩu mới"
             onChangeText={setReNewPassword}
           ></TextInput>
         </View>
         <TouchableOpacity
           style={{
-            marginTop: 10,
-            marginBottom: 10,
-            marginHorizontal: 10,
+            height: 50,
+            width: windowWidth - 60,
+            justifyContent: "center",
+            alignItems: "center",
             backgroundColor: "#F43E26",
+            marginLeft: 20,
+            marginTop: 20,
+            marginBottom: 20,
+            borderRadius: 100,
           }}
           onPress={onChangePassword}
         >
